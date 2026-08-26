@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       document.getElementById('adminToggleBtn').addEventListener('click', () => {
         const pin = prompt('Введите PIN-код для открытия сайта:');
-        if (pin === '1234' || pin === 'admin') {
+        if (pin === '111221' || pin === 'admin') {
           localStorage.setItem('tashkent_site_open', 'true');
           isSiteOpen = true;
           closedOverlay.remove();
@@ -622,8 +622,8 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         clickCount = 0;
         const action = isSiteOpen ? 'ЗАКРЫТЬ (Выключить)' : 'ОТКРЫТЬ (Включить)';
-        const pin = prompt(`Режим Владельца: Вы хотите ${action} доступ к сайту по QR-коду?\nВведите PIN (1234):`);
-        if (pin === '1234' || pin === 'admin') {
+        const pin = prompt(`Режим Владельца: Вы хотите ${action} доступ к сайту по QR-коду?\nВведите PIN-код владельца:`);
+        if (pin === '111221' || pin === 'admin') {
           isSiteOpen = !isSiteOpen;
           localStorage.setItem('tashkent_site_open', isSiteOpen ? 'true' : 'false');
           checkSiteStatus();
