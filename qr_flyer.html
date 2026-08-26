@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Ташкент Караван • Табличка с QR-кодом для стола</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700&display=swap');
+    
+    body {
+      background: #f1f5f9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .flyer-card {
+      width: 400px;
+      background: #0b111e;
+      border: 3px solid #d4af37;
+      border-radius: 28px;
+      padding: 40px 30px;
+      text-align: center;
+      color: #ffffff;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .uzbek-strip {
+      height: 8px;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        #0d5c58 0px, #0d5c58 20px,
+        #c85a28 20px, #c85a28 40px,
+        #d4af37 40px, #d4af37 60px
+      );
+    }
+
+    .badge-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a8841a, #d4af37);
+      color: #0b111e;
+      font-family: 'Cinzel', serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px auto 15px auto;
+      border: 2px solid #fff;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    }
+
+    .title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      margin: 0;
+      color: #ffffff;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: #d4af37;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+    }
+
+    .qr-container {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 20px;
+      display: inline-block;
+      border: 2px solid #d4af37;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      margin-bottom: 25px;
+    }
+
+    .qr-container img {
+      width: 220px;
+      height: 220px;
+      display: block;
+    }
+
+    .scan-msg {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 8px;
+    }
+
+    .sub-msg {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    .footer-info {
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.8rem;
+      color: #d4af37;
+    }
+
+    @media print {
+      body { background: transparent; padding: 0; }
+      .flyer-card { box-shadow: none; border-color: #000; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="flyer-card">
+    <div class="uzbek-strip"></div>
+    <div class="badge-logo">Т</div>
+    <h1 class="title">ТАШКЕНТ КАРАВАН</h1>
+    <div class="subtitle">Tashkent Caravan Restaurant</div>
+
+    <div class="qr-container">
+      <img src="images/tashkent_caravan_qr.png" alt="QR Code Menu">
+    </div>
+
+    <div class="scan-msg">📱 Сканируйте для Меню</div>
+    <div class="sub-msg">
+      Scanați codul QR pentru a vedea meniul<br>
+      Scan QR code to view digital menu
+    </div>
+
+    <div class="footer-info">
+      Str. Mihai Eminescu 64 • 10:00 - 23:00
+    </div>
+  </div>
+
+</body>
+</html>
