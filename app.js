@@ -1,4 +1,4 @@
-// TASHKENT CARAVAN (ТАШКЕНТ КАРАВАН) - MULTILINGUAL & SITE STATUS ENGINE (RU, RO, EN)
+// TASHKENT CARAVAN (ТАШКЕНТ КАРАВАН) - GLOBAL MULTILINGUAL & SITE LOCKING ENGINE (RU, RO, EN)
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -7,22 +7,25 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentCategory = 'all';
   let searchQuery = '';
 
-  // Check URL parameters for status override (?status=closed or ?status=open)
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.has('status')) {
-    const statusParam = urlParams.get('status');
-    if (statusParam === 'closed' || statusParam === 'off') {
-      localStorage.setItem('tashkent_site_open', 'false');
-    } else if (statusParam === 'open' || statusParam === 'on') {
-      localStorage.setItem('tashkent_site_open', 'true');
+  // Global Site Open/Closed State (Synced via Serverless API)
+  let isSiteOpen = true;
+
+  // Fetch Global Site Status from Server
+  async function fetchGlobalSiteStatus() {
+    try {
+      const res = await fetch('/api/site-status');
+      if (res.ok) {
+        const data = await res.json();
+        isSiteOpen = data.isOpen !== false;
+      }
+    } catch (err) {
+      console.warn('Could not fetch server status, using cached state:', err);
     }
+    renderSiteStatusOverlay();
   }
 
-  // Site Open/Close status (default is true/open)
-  let isSiteOpen = localStorage.getItem('tashkent_site_open') !== 'false';
-
-  // Check and render closed screen if site is turned off
-  function checkSiteStatus() {
+  // Render Closed Overlay screen when site is locked globally
+  function renderSiteStatusOverlay() {
     let closedOverlay = document.getElementById('siteClosedOverlay');
 
     if (!isSiteOpen) {
@@ -45,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         : (currentLang === 'en' ? 'Online menu is currently unavailable. We look forward to welcoming you during working hours.' : 'Онлайн-меню сейчас недоступно. Ждем вас в гости в рабочие часы ресторана.');
 
       closedOverlay.innerHTML = `
-        <div style="max-width: 500px; background: rgba(16, 25, 44, 0.9); border: 2px solid var(--color-gold, #d4af37); border-radius: 24px; padding: 3rem 2rem; box-shadow: 0 25px 50px rgba(0,0,0,0.8);">
+        <div style="max-width: 500px; background: rgba(16, 25, 44, 0.95); border: 2px solid var(--color-gold, #d4af37); border-radius: 24px; padding: 3rem 2rem; box-shadow: 0 25px 50px rgba(0,0,0,0.8);">
           <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #a8841a, #d4af37); color: #0b111e; font-family: 'Cinzel', serif; font-size: 2rem; font-weight: 900; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto;">Т</div>
           <h1 style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: #ffffff; margin-bottom: 1rem;">${closedTitle}</h1>
           <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.6;">${closedSubtitle}</p>
@@ -57,25 +60,44 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           <button id="adminToggleBtn" style="background: transparent; border: 1px solid rgba(212, 175, 55, 0.4); color: #d4af37; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; cursor: pointer;">
-            🔓 Включить сайт (для владельца)
+            🔓 Открыть сайт глобально (для владельца)
           </button>
         </div>
       `;
 
-      document.getElementById('adminToggleBtn').addEventListener('click', () => {
-        const pin = prompt('Введите PIN-код для открытия сайта:');
-        if (pin === '111221' || pin === 'admin') {
-          localStorage.setItem('tashkent_site_open', 'true');
-          isSiteOpen = true;
-          closedOverlay.remove();
-          alert('Сайт успешно открыт для всех клиентов!');
-        } else if (pin) {
-          alert('Неверный PIN-код!');
+      document.getElementById('adminToggleBtn').addEventListener('click', async () => {
+        const pin = prompt('Введите PIN-код владельца:');
+        if (pin) {
+          await toggleGlobalSiteStatus(true, pin);
         }
       });
 
     } else if (closedOverlay) {
       closedOverlay.remove();
+    }
+  }
+
+  // Toggle Global Site Status via Server API
+  async function toggleGlobalSiteStatus(targetOpen, pin) {
+    try {
+      const res = await fetch('/api/site-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin, isOpen: targetOpen })
+      });
+
+      const data = await res.json();
+      if (res.ok && data.status === 'success') {
+        isSiteOpen = targetOpen;
+        renderSiteStatusOverlay();
+        alert(targetOpen 
+          ? '🟢 Сайт УСПЕШНО ОТКРЫТ для всех клиентов на всех устройствах в мире!' 
+          : '🔴 Сайт УСПЕШНО ЗАКРЫТ глобально! Теперь любой клиент, отсканировавший QR-код, увидит сообщение о закрытии ресторана.');
+      } else {
+        alert(data.message || 'Неверный PIN-код!');
+      }
+    } catch (err) {
+      alert('Ошибка соединения с сервером');
     }
   }
 
@@ -209,213 +231,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Full Menu Database with Multilingual Names & Descriptions
+  // Full Menu Database
   const menuData = [
-    // FIRST COURSES
-    {
-      id: 'm1', category: 'first', price: 120,
-      ru: { name: 'Шорпа', desc: 'Традиционный наваристый бульон из баранины с крупными овощами и зеленью', tag: 'Популярное' },
-      ro: { name: 'Ciorbă Șorpa', desc: 'Supă tradițională din carne de berbecuț cu legume proaspete și verdeață', tag: 'Popular' },
-      en: { name: 'Shorpa Soup', desc: 'Traditional rich lamb broth with chunky garden vegetables and fresh herbs', tag: 'Popular' }
-    },
-    {
-      id: 'm2', category: 'first', price: 120,
-      ru: { name: 'Лагман', desc: 'Аутентичная тянутая вручную лапша с сочным мясом и овощами в соусе', tag: 'Хит' },
-      ro: { name: 'Lagman', desc: 'Taței tradiționali făcuți manual cu carne suculentă și legume în sos', tag: 'Top' },
-      en: { name: 'Lagman Noodle Soup', desc: 'Authentic hand-pulled noodles with savory beef & fresh vegetables in broth', tag: 'Best Seller' }
-    },
-    {
-      id: 'm3', category: 'first', price: 120,
-      ru: { name: 'Дюшбера', desc: 'Миниатюрные домашние пельмени в прозрачном пряном бульоне', tag: 'Классика' },
-      ro: { name: 'Dușbera', desc: 'Colțunași speciali în supă limpede și aromată', tag: 'Clasic' },
-      en: { name: 'Dushbera Dumplings', desc: 'Delicate mini beef dumplings served in clear aromatic broth', tag: 'Classic' }
-    },
-    {
-      id: 'm4', category: 'first', price: 130,
-      ru: { name: 'Лагман жареный', desc: 'Обжаренная ручная лапша с телятиной, болгарским перцем и специями', tag: 'Острое' },
-      ro: { name: 'Lagman Prăjit', desc: 'Taței prăjiți de casă cu carne de vită, ardei dulce și condimente', tag: 'Picant' },
-      en: { name: 'Fried Lagman', desc: 'Pan-fried hand-pulled noodles with beef tenderloin and sweet peppers', tag: 'Savory' }
-    },
-
-    // SALADS
-    {
-      id: 'm5', category: 'salads', price: 85,
-      ru: { name: 'Чабан салат', desc: 'Свежие сочные огурцы, томаты, зелень и сладкий репчатый лук', tag: 'Свежее' },
-      ro: { name: 'Salată Ciobănească', desc: 'Castraveți proaspeți, roșii, verdeață și ceapă dulce', tag: 'Proaspăt' },
-      en: { name: 'Chaban Shepherd Salad', desc: 'Crisp fresh cucumbers, vine tomatoes, red onions, and garden herbs', tag: 'Fresh' }
-    },
-    {
-      id: 'm6', category: 'salads', price: 85,
-      ru: { name: 'Салат по-гречески', desc: 'Свежие овощи, сыр фета, маслины и оливковое масло', tag: 'Классика' },
-      ro: { name: 'Salată Grecească', desc: 'Legume proaspete, brânză feta, măsline și ulei de măsline', tag: 'Clasic' },
-      en: { name: 'Greek Salad', desc: 'Crisp vegetables, Greek feta cheese, olives, and extra virgin olive oil', tag: 'Classic' }
-    },
-    {
-      id: 'm7', category: 'salads', price: 85,
-      ru: { name: 'Цезарь с курицей', desc: 'Хрустящий салат романо, запеченная грудка, пармезан и соус цезарь', tag: 'Европа' },
-      ro: { name: 'Salată Caesar cu Pui', desc: 'Frunze de romano, piept de pui grilat, parmezan și sos caesar', tag: 'Delicios' },
-      en: { name: 'Chicken Caesar Salad', desc: 'Crisp romaine lettuce, grilled chicken breast, parmesan, and Caesar dressing', tag: 'Favorite' }
-    },
-    {
-      id: 'm8', category: 'salads', price: 60,
-      ru: { name: 'Ачичук', desc: 'Тончайше нарезанные томаты с луком — традиционное дополнение к плову', tag: 'К Плову' },
-      ro: { name: 'Salată Achichuk', desc: 'Roșii tăiate foarte fin cu ceapă — acompaniamentul perfect pentru plov', tag: 'Pentru Plov' },
-      en: { name: 'Achichuk Tomato Salad', desc: 'Paper-thin sliced tomatoes and red onions, traditional pairing for Plov', tag: 'Plov Pairing' }
-    },
-
-    // MAINS & KEBABS
-    {
-      id: 'm9', category: 'mains', price: 150,
-      ru: { name: 'Жаркое из баранины', desc: 'Сочная баранина, томленная с картофелем, луком и перцем', tag: 'Сытное' },
-      ro: { name: 'Friptură de Berbecuț', desc: 'Carne fragedă de berbecuț înăbușită cu cartofi și legume', tag: 'Gustoase' },
-      en: { name: 'Lamb Roast with Veggies', desc: 'Tender lamb slow-cooked with spiced potatoes, onions, and bell peppers', tag: 'Hearty' }
-    },
-    {
-      id: 'm10', category: 'mains', price: 150,
-      ru: { name: 'Жаркое из телятины', desc: 'Нежнейшая вырезка телятины с запеченными сезонными овощами', tag: 'Рекомендуем' },
-      ro: { name: 'Friptură de Vită', desc: 'Carne fragedă de mânzat coaptă cu legume de sezon', tag: 'Recomandat' },
-      en: { name: 'Veal Roast with Veggies', desc: 'Succulent veal strips roasted with roasted garlic and vegetables', tag: 'Recommended' }
-    },
-    {
-      id: 'm11', category: 'mains', price: 120,
-      ru: { name: 'Плов Ташкентский', desc: 'Король восточного стола: рис девзира, баранина, жёлтая морковь и зира', tag: 'Главный Хит' },
-      ro: { name: 'Plov Tașkent', desc: 'Regele bucătăriei uzbece: orez special, berbecuț, morcov galben și chimen', tag: 'Specialitatea Casei' },
-      en: { name: 'Tashkent Plov Pilaf', desc: 'The crown jewel: aromatic rice, tender lamb, yellow carrots, and cumin', tag: 'Signature Dish' }
-    },
-    {
-      id: 'm12', category: 'mains', price: 120,
-      ru: { name: 'Манты', desc: 'Сочные паровые узбекские манты с рубленым мясом и луком', tag: 'На пару' },
-      ro: { name: 'Manti Uzbec', desc: 'Colțunași mari uzbeci gătiți la abur cu carne tocată și ceapă', tag: 'La Abur' },
-      en: { name: 'Steamed Manty', desc: 'Large steamed Uzbek dumplings filled with spiced minced meat and onions', tag: 'Steamed' }
-    },
-    {
-      id: 'm13', category: 'mains', price: 130,
-      ru: { name: 'Казан кебаб', desc: 'Обжаренные до корочки баранины ребра с румяным картофелем из казана', tag: 'Хит' },
-      ro: { name: 'Kazan Kebab', desc: 'Coaste de berbecuț rumenite la ceaun cu cartofi aurii', tag: 'Delicios' },
-      en: { name: 'Kazan Kebab', desc: 'Crispy fried lamb ribs served with golden potatoes straight from the kazan', tag: 'Kazan Roasted' }
-    },
-    {
-      id: 'm14', category: 'mains', price: 150,
-      ru: { name: 'Вырезка из телятины', desc: 'Отборная телятина на раскаленной сковороде с овощами', tag: 'Премиум' },
-      ro: { name: 'Mușchi de Mânzat', desc: 'Carne selectă de vită la tigaie cu legume proaspete', tag: 'Premium' },
-      en: { name: 'Veal Tenderloin Strips', desc: 'Prime veal tenderloin stir-fried with fresh crisp vegetables', tag: 'Premium' }
-    },
-    {
-      id: 'm15', category: 'mains', price: 150,
-      ru: { name: 'Блюдо от Шеф-Повара', desc: 'Эксклюзивное ежедневное авторское блюдо от нашего Шефа', tag: 'Шеф-Повар' },
-      ro: { name: 'Specialitatea Bucătarului', desc: 'Preparat exclusiv creat zilnic de Bucătarul nostru Șef', tag: 'Chef Special' },
-      en: { name: "Chef's Special Creation", desc: "Exclusive signature dish crafted daily by our Uzbek Master Chef", tag: "Chef Special" }
-    },
-    {
-      id: 'm16', category: 'mains', price: 120,
-      ru: { name: 'Шашлык из говядины', desc: 'Сочные маринованные кусочки говядины на углях', tag: 'Мангал' },
-      ro: { name: 'Frigărui de Vită', desc: 'Bucăți suculente de vită marinate și frapte la grătar', tag: 'Grătar' },
-      en: { name: 'Beef Shashlik Skewer', desc: 'Tender marinated beef cubes grilled over open charcoal embers', tag: 'Charcoal' }
-    },
-    {
-      id: 'm17', category: 'mains', price: 120,
-      ru: { name: 'Шашлык из баранины', desc: 'Нежная баранина с ароматом дымка и зиры', tag: 'На углях' },
-      ro: { name: 'Frigărui de Berbecuț', desc: 'Carne fragedă de berbecuț cu aromă de fum și condimente', tag: 'La Cărbuni' },
-      en: { name: 'Lamb Shashlik Skewer', desc: 'Succulent lamb skewers infused with cumin, garlic, and smoke', tag: 'Charcoal' }
-    },
-    {
-      id: 'm18', category: 'mains', price: 120,
-      ru: { name: 'Люля-кебаб из курицы', desc: 'Нежный рубленый фарш из куриного филе на мангале', tag: 'Сочное' },
-      ro: { name: 'Lula-Kebab de Pui', desc: 'Carne tocată de pui cu verdeață pregătită la grătar', tag: 'Fraged' },
-      en: { name: 'Chicken Lyulya Kebab', desc: 'Minced chicken breast skewered and charcoal-grilled with herbs', tag: 'Grilled' }
-    },
-    {
-      id: 'm19', category: 'mains', price: 120,
-      ru: { name: 'Люля-кебаб из баранины', desc: 'Классический люля-кебаб из баранины с луком и кориандром', tag: 'Традиции' },
-      ro: { name: 'Lula-Kebab de Berbecuț', desc: 'Lula-kebab tradițional din carne de berbecuț cu condimente', tag: 'Tradițional' },
-      en: { name: 'Lamb Lyulya Kebab', desc: 'Traditional ground lamb kebab seasoned with coriander and grilled', tag: 'Traditional' }
-    },
-
-    // BAR & DRINKS
-    {
-      id: 'b1', category: 'bar', price: 30,
-      ru: { name: 'Эспрессо', desc: 'Бодрящий эспрессо двойного обжара', tag: 'Кофе' },
-      ro: { name: 'Espresso', desc: 'Espresso clasic tare și aromat', tag: 'Creație' },
-      en: { name: 'Espresso', desc: 'Rich and bold single shot espresso', tag: 'Coffee' }
-    },
-    {
-      id: 'b2', category: 'bar', price: 35,
-      ru: { name: 'Американо', desc: 'Классический черный кофе', tag: 'Кофе' },
-      ro: { name: 'Americano', desc: 'Cafea neagră clasică', tag: 'Cafea' },
-      en: { name: 'Americano', desc: 'Classic long black coffee', tag: 'Coffee' }
-    },
-    {
-      id: 'b3', category: 'bar', price: 40,
-      ru: { name: 'Капучино', desc: 'С пышной молочной пенкой', tag: 'Кофе' },
-      ro: { name: 'Cappuccino', desc: 'Cu spumă fină de lapte', tag: 'Cafea' },
-      en: { name: 'Cappuccino', desc: 'Espresso topped with creamy frothed milk', tag: 'Coffee' }
-    },
-    {
-      id: 'b4', category: 'bar', price: 45,
-      ru: { name: 'Латте', desc: 'Нежный кофе с мягким молоком', tag: 'Кофе' },
-      ro: { name: 'Latte', desc: 'Cafea delicată cu lapte cremos', tag: 'Cafea' },
-      en: { name: 'Caffè Latte', desc: 'Smooth espresso with steamed fresh milk', tag: 'Coffee' }
-    },
-    {
-      id: 'b5', category: 'bar', price: 60,
-      ru: { name: 'Эспрессо тоник', desc: 'Освежающий микс эспрессо и тоника со льдом', tag: 'Холодное' },
-      ro: { name: 'Espresso Tonic', desc: 'Mix răcoritor de espresso și apă tonică cu gheață', tag: 'Răcoritor' },
-      en: { name: 'Espresso Tonic', desc: 'Refreshing layered espresso and tonic water over ice', tag: 'Iced Coffee' }
-    },
-    {
-      id: 'b6', category: 'bar', price: 60,
-      ru: { name: 'Бамбо (Bumble)', desc: 'Слоистый кофейный напиток с апельсиновым соком', tag: 'Авторское' },
-      ro: { name: 'Bumble Coffee', desc: 'Băutură de cafea în straturi cu suc de portocale', tag: 'Special' },
-      en: { name: 'Bumble Coffee', desc: 'Layered iced espresso with orange juice and caramel syrup', tag: 'Signature' }
-    },
-    {
-      id: 'b7', category: 'bar', price: 45,
-      ru: { name: 'Айс латте', desc: 'Освежающий холодный латте со льдом', tag: 'Кофе' },
-      ro: { name: 'Ice Latte', desc: 'Latte rece și răcoritor cu gheață', tag: 'Rece' },
-      en: { name: 'Iced Latte', desc: 'Chilled espresso with cold milk over ice', tag: 'Iced Coffee' }
-    },
-    {
-      id: 'b8', category: 'bar', price: 50,
-      ru: { name: 'Айс латте карамель', desc: 'Холодный латте со сладкой карамелью', tag: 'Сладкое' },
-      ro: { name: 'Ice Latte Caramel', desc: 'Latte rece cu sos dulce de caramel', tag: 'Dulce' },
-      en: { name: 'Caramel Iced Latte', desc: 'Chilled iced latte with sweet caramel swirl', tag: 'Sweet' }
-    },
-    {
-      id: 'b9', category: 'bar', price: 110,
-      ru: { name: 'Апероль Сприц', desc: 'Игристый аперитив с нотами апельсина', tag: 'Коктейль' },
-      ro: { name: 'Aperol Spritz', desc: 'Cocktail spumant cu note de portocală', tag: 'Cocktail' },
-      en: { name: 'Aperol Spritz', desc: 'Classic sparkling cocktail with Aperol and Prosecco', tag: 'Cocktail' }
-    },
-    {
-      id: 'b10', category: 'bar', price: 40,
-      ru: { name: 'Вино белое (бокал)', desc: 'Изысканное сухое белое вино', tag: 'Вино' },
-      ro: { name: 'Vin Alb (pahar)', desc: 'Vin alb sec rafinat', tag: 'Vin' },
-      en: { name: 'White Wine (glass)', desc: 'Crisp dry white wine glass', tag: 'Wine' }
-    },
-    {
-      id: 'b11', category: 'bar', price: 40,
-      ru: { name: 'Вино красное (бокал)', desc: 'Насыщенное красное вино', tag: 'Вино' },
-      ro: { name: 'Vin Roșu (pahar)', desc: 'Vin roșu sec aromat', tag: 'Vin' },
-      en: { name: 'Red Wine (glass)', desc: 'Rich full-bodied red wine glass', tag: 'Wine' }
-    },
-    {
-      id: 'b12', category: 'bar', price: 60,
-      ru: { name: 'Дунканы тёмное', desc: 'Тёмное бархатистое пиво', tag: 'Пиво' },
-      ro: { name: 'Bere Neagră Duncan', desc: 'Bere neagră cremoasă', tag: 'Bere' },
-      en: { name: 'Dunkel Dark Beer', desc: 'Rich velvet dark craft beer', tag: 'Beer' }
-    },
-    {
-      id: 'b13', category: 'bar', price: 60,
-      ru: { name: 'Карлсберг', desc: 'Светлое лагерное пиво', tag: 'Пиво' },
-      ro: { name: 'Bere Carlsberg', desc: 'Bere blondă de calitate', tag: 'Bere' },
-      en: { name: 'Carlsberg Beer', desc: 'Premium blond lager beer', tag: 'Beer' }
-    },
-    {
-      id: 'b14', category: 'bar', price: 40,
-      ru: { name: 'Львовское', desc: 'Освежающее светлое пиво', tag: 'Пиво' },
-      ro: { name: 'Bere Lvivske', desc: 'Bere blondă răcoritoare', tag: 'Bere' },
-      en: { name: 'Lvivske Beer', desc: 'Refreshing light pale beer', tag: 'Beer' }
-    }
+    { id: 'm1', category: 'first', price: 120, ru: { name: 'Шорпа', desc: 'Традиционный наваристый бульон из баранины с крупными овощами и зеленью', tag: 'Популярное' }, ro: { name: 'Ciorbă Șorpa', desc: 'Supă tradițională din carne de berbecuț cu legume proaspete și verdeață', tag: 'Popular' }, en: { name: 'Shorpa Soup', desc: 'Traditional rich lamb broth with chunky garden vegetables and fresh herbs', tag: 'Popular' } },
+    { id: 'm2', category: 'first', price: 120, ru: { name: 'Лагман', desc: 'Аутентичная тянутая вручную лапша с сочным мясом и овощами в соусе', tag: 'Хит' }, ro: { name: 'Lagman', desc: 'Taței tradiționali făcuți manual cu carne suculentă și legume în sos', tag: 'Top' }, en: { name: 'Lagman Noodle Soup', desc: 'Authentic hand-pulled noodles with savory beef & fresh vegetables in broth', tag: 'Best Seller' } },
+    { id: 'm3', category: 'first', price: 120, ru: { name: 'Дюшбера', desc: 'Миниатюрные домашние пельмени в прозрачном пряном бульоне', tag: 'Классика' }, ro: { name: 'Dușbera', desc: 'Colțunași speciali în supă limpede și aromată', tag: 'Clasic' }, en: { name: 'Dushbera Dumplings', desc: 'Delicate mini beef dumplings served in clear aromatic broth', tag: 'Classic' } },
+    { id: 'm4', category: 'first', price: 130, ru: { name: 'Лагман жареный', desc: 'Обжаренная ручная лапша с телятиной, болгарским перцем и специями', tag: 'Острое' }, ro: { name: 'Lagman Prăjit', desc: 'Taței prăjiți de casă cu carne de vită, ardei dulce și condimente', tag: 'Picant' }, en: { name: 'Fried Lagman', desc: 'Pan-fried hand-pulled noodles with beef tenderloin and sweet peppers', tag: 'Savory' } },
+    { id: 'm5', category: 'salads', price: 85, ru: { name: 'Чабан салат', desc: 'Свежие сочные огурцы, томаты, зелень и сладкий репчатый лук', tag: 'Свежее' }, ro: { name: 'Salată Ciobănească', desc: 'Castraveți proaspeți, roșii, verdeață și ceapă dulce', tag: 'Proaspăt' }, en: { name: 'Chaban Shepherd Salad', desc: 'Crisp fresh cucumbers, vine tomatoes, red onions, and garden herbs', tag: 'Fresh' } },
+    { id: 'm6', category: 'salads', price: 85, ru: { name: 'Салат по-гречески', desc: 'Свежие овощи, сыр фета, маслины и оливковое масло', tag: 'Классика' }, ro: { name: 'Salată Grecească', desc: 'Legume proaspete, brânză feta, măsline și ulei de măsline', tag: 'Clasic' }, en: { name: 'Greek Salad', desc: 'Crisp vegetables, Greek feta cheese, olives, and extra virgin olive oil', tag: 'Classic' } },
+    { id: 'm7', category: 'salads', price: 85, ru: { name: 'Цезарь с курицей', desc: 'Хрустящий салат романо, запеченная грудка, пармезан и соус цезарь', tag: 'Европа' }, ro: { name: 'Salată Caesar cu Pui', desc: 'Frunze de romano, piept de pui grilat, parmezan și sos caesar', tag: 'Delicios' }, en: { name: 'Chicken Caesar Salad', desc: 'Crisp romaine lettuce, grilled chicken breast, parmesan, and Caesar dressing', tag: 'Favorite' } },
+    { id: 'm8', category: 'salads', price: 60, ru: { name: 'Ачичук', desc: 'Тончайше нарезанные томаты с луком — традиционное дополнение к плову', tag: 'К Плову' }, ro: { name: 'Salată Achichuk', desc: 'Roșii tăiate foarte fin cu ceapă — acompaniamentul perfect pentru plov', tag: 'Pentru Plov' }, en: { name: 'Achichuk Tomato Salad', desc: 'Paper-thin sliced tomatoes and red onions, traditional pairing for Plov', tag: 'Plov Pairing' } },
+    { id: 'm9', category: 'mains', price: 150, ru: { name: 'Жаркое из баранины', desc: 'Сочная баранина, томленная с картофелем, луком и перцем', tag: 'Сытное' }, ro: { name: 'Friptură de Berbecuț', desc: 'Carne fragedă de berbecuț înăbușită cu cartofi și legume', tag: 'Gustoase' }, en: { name: 'Lamb Roast with Veggies', desc: 'Tender lamb slow-cooked with spiced potatoes, onions, and bell peppers', tag: 'Hearty' } },
+    { id: 'm10', category: 'mains', price: 150, ru: { name: 'Жаркое из телятины', desc: 'Нежнейшая вырезка телятины с запеченными сезонными овощами', tag: 'Рекомендуем' }, ro: { name: 'Friptură de Vită', desc: 'Carne fragedă de mânzat coaptă cu legume de sezon', tag: 'Recomandat' }, en: { name: 'Veal Roast with Veggies', desc: 'Succulent veal strips roasted with roasted garlic and vegetables', tag: 'Recommended' } },
+    { id: 'm11', category: 'mains', price: 120, ru: { name: 'Плов Ташкентский', desc: 'Король восточного стола: рис девзира, баранина, жёлтая морковь и зира', tag: 'Главный Хит' }, ro: { name: 'Plov Tașkent', desc: 'Regele bucătăriei uzbece: orez special, berbecuț, morcov galben și chimen', tag: 'Specialitatea Casei' }, en: { name: 'Tashkent Plov Pilaf', desc: 'The crown jewel: aromatic rice, tender lamb, yellow carrots, and cumin', tag: 'Signature Dish' } },
+    { id: 'm12', category: 'mains', price: 120, ru: { name: 'Манты', desc: 'Сочные паровые узбекские манты с рубленым мясом и луком', tag: 'На пару' }, ro: { name: 'Manti Uzbec', desc: 'Colțunași mari uzbeci gătiți la abur cu carne tocată și ceapă', tag: 'La Abur' }, en: { name: 'Steamed Manty', desc: 'Large steamed Uzbek dumplings filled with spiced minced meat and onions', tag: 'Steamed' } },
+    { id: 'm13', category: 'mains', price: 130, ru: { name: 'Казан кебаб', desc: 'Обжаренные до корочки баранины ребра с румяным картофелем из казана', tag: 'Хит' }, ro: { name: 'Kazan Kebab', desc: 'Coaste de berbecuț rumenite la ceaun cu cartofi aurii', tag: 'Delicios' }, en: { name: 'Kazan Kebab', desc: 'Crispy fried lamb ribs served with golden potatoes straight from the kazan', tag: 'Kazan Roasted' } },
+    { id: 'm14', category: 'mains', price: 150, ru: { name: 'Вырезка из телятины', desc: 'Отборная телятина на раскаленной сковороде с овощами', tag: 'Премиум' }, ro: { name: 'Mușchi de Mânzat', desc: 'Carne selectă de vită la tigaie cu legume proaspete', tag: 'Premium' }, en: { name: 'Veal Tenderloin Strips', desc: 'Prime veal tenderloin stir-fried with fresh crisp vegetables', tag: 'Premium' } },
+    { id: 'm15', category: 'mains', price: 150, ru: { name: 'Блюдо от Шеф-Повара', desc: 'Эксклюзивное ежедневное авторское блюдо от нашего Шефа', tag: 'Шеф-Повар' }, ro: { name: 'Specialitatea Bucătarului', desc: 'Preparat exclusiv creat zilnic de Bucătarul nostru Șef', tag: 'Chef Special' }, en: { name: "Chef's Special Creation", desc: "Exclusive signature dish crafted daily by our Uzbek Master Chef", tag: "Chef Special" } },
+    { id: 'm16', category: 'mains', price: 120, ru: { name: 'Шашлык из говядины', desc: 'Сочные маринованные кусочки говядины на углях', tag: 'Мангал' }, ro: { name: 'Frigărui de Vită', desc: 'Bucăți suculente de vită marinate și frapte la grătar', tag: 'Grătar' }, en: { name: 'Beef Shashlik Skewer', desc: 'Tender marinated beef cubes grilled over open charcoal embers', tag: 'Charcoal' } },
+    { id: 'm17', category: 'mains', price: 120, ru: { name: 'Шашлык из баранины', desc: 'Нежная баранина с ароматом дымка и зиры', tag: 'На углях' }, ro: { name: 'Frigărui de Berbecuț', desc: 'Carne fragedă de berbecuț cu aromă de fum și condimente', tag: 'La Cărbuni' }, en: { name: 'Lamb Shashlik Skewer', desc: 'Succulent lamb skewers infused with cumin, garlic, and smoke', tag: 'Charcoal' } },
+    { id: 'm18', category: 'mains', price: 120, ru: { name: 'Люля-кебаб из курицы', desc: 'Нежный рубленый фарш из куриного филе на мангале', tag: 'Сочное' }, ro: { name: 'Lula-Kebab de Pui', desc: 'Carne tocată de pui cu verdeață pregătită la grătar', tag: 'Fraged' }, en: { name: 'Chicken Lyulya Kebab', desc: 'Minced chicken breast skewered and charcoal-grilled with herbs', tag: 'Grilled' } },
+    { id: 'm19', category: 'mains', price: 120, ru: { name: 'Люля-кебаб из баранины', desc: 'Классический люля-кебаб из баранины с луком и кориандром', tag: 'Традиции' }, ro: { name: 'Lula-Kebab de Berbecuț', desc: 'Lula-kebab tradițional din carne de berbecuț cu condimente', tag: 'Tradițional' }, en: { name: 'Lamb Lyulya Kebab', desc: 'Traditional ground lamb kebab seasoned with coriander and grilled', tag: 'Traditional' } },
+    { id: 'b1', category: 'bar', price: 30, ru: { name: 'Экспрессо', desc: 'Бодрящий эспрессо двойного обжара', tag: 'Кофе' }, ro: { name: 'Espresso', desc: 'Espresso clasic tare și aromat', tag: 'Creație' }, en: { name: 'Espresso', desc: 'Rich and bold single shot espresso', tag: 'Coffee' } },
+    { id: 'b2', category: 'bar', price: 35, ru: { name: 'Американо', desc: 'Классический черный кофе', tag: 'Кофе' }, ro: { name: 'Americano', desc: 'Cafea neagră clasică', tag: 'Cafea' }, en: { name: 'Americano', desc: 'Classic long black coffee', tag: 'Coffee' } },
+    { id: 'b3', category: 'bar', price: 40, ru: { name: 'Капучино', desc: 'С пышной молочной пенкой', tag: 'Кофе' }, ro: { name: 'Cappuccino', desc: 'Cu spumă fină de lapte', tag: 'Cafea' }, en: { name: 'Cappuccino', desc: 'Espresso topped with creamy frothed milk', tag: 'Coffee' } },
+    { id: 'b4', category: 'bar', price: 45, ru: { name: 'Латте', desc: 'Нежный кофе с мягким молоком', tag: 'Кофе' }, ro: { name: 'Latte', desc: 'Cafea delicată cu lapte cremos', tag: 'Cafea' }, en: { name: 'Caffè Latte', desc: 'Smooth espresso with steamed fresh milk', tag: 'Coffee' } },
+    { id: 'b5', category: 'bar', price: 60, ru: { name: 'Эспрессо тоник', desc: 'Освежающий микс эспрессо и тоника со льдом', tag: 'Холодное' }, ro: { name: 'Espresso Tonic', desc: 'Mix răcoritor de espresso și apă tonică cu gheață', tag: 'Răcoritor' }, en: { name: 'Espresso Tonic', desc: 'Refreshing layered espresso and tonic water over ice', tag: 'Iced Coffee' } },
+    { id: 'b6', category: 'bar', price: 60, ru: { name: 'Бамбо (Bumble)', desc: 'Слоистый кофейный напиток с апельсиновым соком', tag: 'Авторское' }, ro: { name: 'Bumble Coffee', desc: 'Băutură de cafea în straturi cu suc de portocale', tag: 'Special' }, en: { name: 'Bumble Coffee', desc: 'Layered iced espresso with orange juice and caramel syrup', tag: 'Signature' } },
+    { id: 'b7', category: 'bar', price: 45, ru: { name: 'Айс латте', desc: 'Освежающий холодный латте со льдом', tag: 'Кофе' }, ro: { name: 'Ice Latte', desc: 'Latte rece și răcoritor cu gheață', tag: 'Rece' }, en: { name: 'Iced Latte', desc: 'Chilled espresso with cold milk over ice', tag: 'Iced Coffee' } },
+    { id: 'b8', category: 'bar', price: 50, ru: { name: 'Айс латте карамель', desc: 'Холодный латте со сладкой карамелью', tag: 'Сладкое' }, ro: { name: 'Ice Latte Caramel', desc: 'Latte rece cu sos dulce de caramel', tag: 'Dulce' }, en: { name: 'Caramel Iced Latte', desc: 'Chilled iced latte with sweet caramel swirl', tag: 'Sweet' } },
+    { id: 'b9', category: 'bar', price: 110, ru: { name: 'Апероль Сприц', desc: 'Игристый аперитив с нотами апельсина', tag: 'Коктейль' }, ro: { name: 'Aperol Spritz', desc: 'Cocktail spumant cu note de portocală', tag: 'Cocktail' }, en: { name: 'Aperol Spritz', desc: 'Classic sparkling cocktail with Aperol and Prosecco', tag: 'Cocktail' } },
+    { id: 'b10', category: 'bar', price: 40, ru: { name: 'Вино белое (бокал)', desc: 'Изысканное сухое белое вино', tag: 'Вино' }, ro: { name: 'Vin Alb (pahar)', desc: 'Vin alb sec rafinat', tag: 'Vin' }, en: { name: 'White Wine (glass)', desc: 'Crisp dry white wine glass', tag: 'Wine' } },
+    { id: 'b11', category: 'bar', price: 40, ru: { name: 'Вино красное (бокал)', desc: 'Насыщенное красное вино', tag: 'Вино' }, ro: { name: 'Vin Roșu (pahar)', desc: 'Vin roșu sec aromat', tag: 'Vin' }, en: { name: 'Red Wine (glass)', desc: 'Rich full-bodied red wine glass', tag: 'Wine' } },
+    { id: 'b12', category: 'bar', price: 60, ru: { name: 'Дунканы тёмное', desc: 'Тёмное бархатистое пиво', tag: 'Пиво' }, ro: { name: 'Bere Neagră Duncan', desc: 'Bere neagră cremoasă', tag: 'Bere' }, en: { name: 'Dunkel Dark Beer', desc: 'Rich velvet dark craft beer', tag: 'Beer' } },
+    { id: 'b13', category: 'bar', price: 60, ru: { name: 'Карлсберг', desc: 'Светлое лагерное пиво', tag: 'Пиво' }, ro: { name: 'Bere Carlsberg', desc: 'Bere blondă de calitate', tag: 'Bere' }, en: { name: 'Carlsberg Beer', desc: 'Premium blond lager beer', tag: 'Beer' } },
+    { id: 'b14', category: 'bar', price: 40, ru: { name: 'Львовское', desc: 'Освежающее светлое пиво', tag: 'Пиво' }, ro: { name: 'Bere Lvivske', desc: 'Bere blondă răcoritoare', tag: 'Bere' }, en: { name: 'Lvivske Beer', desc: 'Refreshing light pale beer', tag: 'Beer' } }
   ];
 
   // DOM Elements
@@ -437,7 +287,6 @@ document.addEventListener('DOMContentLoaded', () => {
     currentLang = lang;
     const dict = i18n[lang] || i18n.ru;
 
-    // Update static HTML elements with data-i18n attribute
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       if (dict[key]) {
@@ -445,23 +294,19 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Update search placeholder
     if (menuSearchInput && dict.search_placeholder) {
       menuSearchInput.placeholder = dict.search_placeholder;
     }
 
-    // Update language buttons active state
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
     });
 
-    // Re-render Menu & Cart & Site status
-    checkSiteStatus();
+    renderSiteStatusOverlay();
     renderMenu();
     updateCartUI();
   }
 
-  // Language Button Click Handler
   if (langSwitcher) {
     langSwitcher.addEventListener('click', (e) => {
       if (e.target.classList.contains('lang-btn')) {
@@ -471,7 +316,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Render Menu Grid
   function renderMenu() {
     if (!menuGrid) return;
     menuGrid.innerHTML = '';
@@ -522,7 +366,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Category Filtering
   if (categoryTabs) {
     categoryTabs.addEventListener('click', (e) => {
       if (e.target.classList.contains('tab-btn')) {
@@ -534,7 +377,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Search Input Handler
   if (menuSearchInput) {
     menuSearchInput.addEventListener('input', (e) => {
       searchQuery = e.target.value;
@@ -542,7 +384,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Add To Cart Function
   window.addToCart = function(id) {
     const item = menuData.find(m => m.id === id);
     if (!item) return;
@@ -558,7 +399,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cartDrawer) cartDrawer.classList.add('active');
   };
 
-  // Update Cart UI Function
   function updateCartUI() {
     if (!cartItemsList) return;
     cartItemsList.innerHTML = '';
@@ -599,7 +439,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cartCountBadge) cartCountBadge.textContent = count;
   }
 
-  // Change Quantity
   window.changeCartQty = function(index, delta) {
     cart[index].qty += delta;
     if (cart[index].qty <= 0) {
@@ -608,31 +447,29 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartUI();
   };
 
-  // Cart Drawer Toggles
   if (cartOpenBtn && cartDrawer) cartOpenBtn.addEventListener('click', () => cartDrawer.classList.add('active'));
   if (cartCloseBtn && cartDrawer) cartCloseBtn.addEventListener('click', () => cartDrawer.classList.remove('active'));
 
-  // Secret Owner Toggle: Click Brand Logo 5 times to turn site On / Off!
+  // Secret Owner Toggle: Tap Logo 5 Times to Turn Site ON or OFF Globally
   const brandLogo = document.getElementById('brandLogoLink');
   let clickCount = 0;
   if (brandLogo) {
-    brandLogo.addEventListener('click', (e) => {
+    brandLogo.addEventListener('click', async (e) => {
       clickCount++;
       if (clickCount >= 5) {
         e.preventDefault();
         clickCount = 0;
-        const action = isSiteOpen ? 'ЗАКРЫТЬ (Выключить)' : 'ОТКРЫТЬ (Включить)';
-        const pin = prompt(`Режим Владельца: Вы хотите ${action} доступ к сайту по QR-коду?\nВведите PIN-код владельца:`);
-        if (pin === '111221' || pin === 'admin') {
-          isSiteOpen = !isSiteOpen;
-          localStorage.setItem('tashkent_site_open', isSiteOpen ? 'true' : 'false');
-          checkSiteStatus();
-          alert(isSiteOpen ? '🟢 Сайт и меню теперь открыты для всех клиентов!' : '🔴 Сайт временно закрыт. Клиенты увидят сообщение о закрытии ресторана.');
+        const targetState = !isSiteOpen;
+        const actionStr = targetState ? 'ОТКРЫТЬ (Включить)' : 'ЗАКРЫТЬ (Выключить)';
+        const pin = prompt(`ГЛОБАЛЬНОЕ УПРАВЛЕНИЕ САЙТОМ:\nВы хотите ${actionStr} сайт для ВСЕХ клиентов на ВСЕХ устройствах в мире?\nВведите PIN-код владельца:`);
+        if (pin) {
+          await toggleGlobalSiteStatus(targetState, pin);
         }
       }
     });
   }
 
-  // Initial Load
+  // Initial Load: Fetch global status from Vercel Serverless API
+  fetchGlobalSiteStatus();
   setLanguage('ru');
 });
