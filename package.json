@@ -1,0 +1,15 @@
+{
+  "name": "tashkent-caravan",
+  "version": "1.0.0",
+  "description": "Tashkent Caravan Uzbek Restaurant Website",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 server.py"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.13"
+  },
+  "keywords": ["restaurant", "uzbek", "tashkent-caravan", "food"],
+  "author": "Antigravity",
+  "license": "ISC"
+}

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ташкент Караван | Ресторан Узбекской Кухни (Tashkent Caravan)</title>
+  <meta name="description" content="Аутентичный ресторан узбекской кухни Ташкент Караван в Кишинёве. Плов, шашлыки, лагман, манты, шорпа и блюда на мангале. Улица Михаила Эминеску 64.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Uzbek Pattern Top Strip -->
+  <div class="uzbek-border-top"></div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand-logo" id="brandLogoLink">
+        <div class="logo-badge">Т</div>
+        <div class="brand-text">
+          <h1>ТАШКЕНТ КАРАВАН</h1>
+          <span>TASHKENT CARAVAN</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link" data-i18n="nav_home">Главная</a></li>
+        <li><a href="#menu" class="nav-link" data-i18n="nav_menu">Меню</a></li>
+        <li><a href="#about" class="nav-link" data-i18n="nav_about">О Нас</a></li>
+        <li><a href="#contact" class="nav-link" data-i18n="nav_contact">Контакты</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Multilingual Language Switcher -->
+        <div class="lang-switcher" id="langSwitcher">
+          <button class="lang-btn active" data-lang="ru">RU</button>
+          <button class="lang-btn" data-lang="ro">RO</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+
+        <!-- Pre-order Cart Button -->
+        <button class="cart-btn-trigger" id="cartOpenBtn" title="Ваш Заказ">
+          <i class="fa-solid fa-utensils"></i>
+          <span class="cart-btn-text" data-i18n="btn_order">Заказ</span>
+          <span class="cart-count" id="cartCountBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fa-solid fa-crown"></i> <span data-i18n="hero_badge">Аутентичная Восточная Кухня</span>
+        </div>
+        <h1 class="hero-title" data-i18n="hero_title">Вкус Истинного Узбекистана</h1>
+        <p class="hero-subtitle" data-i18n="hero_subtitle">
+          Погрузитесь в атмосферу восточной сказки. Самый ароматный плов, сочные шашлыки на углях, домашний лагман и выдержанные вина в сердце города.
+        </p>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="#menu" class="btn-primary" style="padding: 0.85rem 1.8rem; font-size: 1rem;">
+            <i class="fa-solid fa-book-open"></i> <span data-i18n="hero_menu_btn">Посмотреть Меню</span>
+          </a>
+        </div>
+
+        <div class="hero-meta-strip">
+          <div class="meta-item">
+            <div class="meta-icon"><i class="fa-regular fa-clock"></i></div>
+            <div class="meta-text">
+              <strong>10:00 - 23:00</strong>
+              <span data-i18n="schedule_days">Пн - Вос (L M Mi J V S D)</span>
+            </div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="meta-text">
+              <strong>Str. Mihai Eminescu 64</strong>
+              <span>SRL NAURUZ</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-image-container">
+        <div class="hero-image-frame">
+          <img src="images/hero.jpg" alt="Ташкентский Плов">
+        </div>
+        <div class="hero-float-badge">
+          <div class="float-badge-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+          <div class="float-badge-text">
+            <strong data-i18n="float_plov_title">Фирменный Ташкентский Плов</strong>
+            <span data-i18n="float_plov_desc">Готовится ежедневно из свежей баранины</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Section -->
+  <section class="section" id="menu">
+    <div class="section-header">
+      <span class="section-subtitle" data-i18n="menu_subtitle">Наше Гастрономическое Меню</span>
+      <h2 class="section-title" data-i18n="menu_title">Восточные Изысканности</h2>
+    </div>
+
+    <!-- Controls: Search & Category Filter -->
+    <div class="menu-controls">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="menuSearchInput" class="search-input" placeholder="Поиск блюд, напитков..." data-i18n-placeholder="search_placeholder">
+      </div>
+
+      <div class="category-tabs" id="categoryTabs">
+        <button class="tab-btn active" data-category="all" data-i18n="cat_all">Всё Меню</button>
+        <button class="tab-btn" data-category="first" data-i18n="cat_first">Первые блюда</button>
+        <button class="tab-btn" data-category="salads" data-i18n="cat_salads">Салаты</button>
+        <button class="tab-btn" data-category="mains" data-i18n="cat_mains">Горячие блюда & Шашлыки</button>
+        <button class="tab-btn" data-category="bar" data-i18n="cat_bar">Бар & Напитки</button>
+      </div>
+    </div>
+
+    <!-- Dynamic Menu Grid -->
+    <div class="menu-grid" id="menuGrid">
+      <!-- Injected by JavaScript -->
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section" id="about" style="background: rgba(16, 25, 44, 0.4); border-radius: 30px; margin-top: 2rem; border: 1px solid var(--border-glass);">
+    <div class="hero-grid">
+      <div>
+        <span class="section-subtitle" data-i18n="about_subtitle">Традиции & Гостеприимство</span>
+        <h2 class="section-title" style="margin-bottom: 1.5rem;" data-i18n="about_title">История Ташкент Караван</h2>
+        <p style="color: var(--color-text-muted); margin-bottom: 1.25rem;" data-i18n="about_p1">
+          В узбекской культуре гость — это благословение дома. В ресторане «Ташкент Караван» мы возрождаем вековые кулинарные традиции Великого Шёлкового пути.
+        </p>
+        <p style="color: var(--color-text-muted); margin-bottom: 1.5rem;" data-i18n="about_p2">
+          Каждое блюдо готовится по аутентичным рецептам с использованием настоящих узбекских специй (зиры, барбариса, кориандра), свежайшего мяса и авторской подачи.
+        </p>
+        <div style="display: flex; gap: 2rem;">
+          <div>
+            <h3 style="font-family: var(--font-heading); color: var(--color-gold); font-size: 2rem;">100%</h3>
+            <span style="font-size: 0.85rem; color: var(--color-text-muted);" data-i18n="about_stat1">Натуральные специи</span>
+          </div>
+          <div>
+            <h3 style="font-family: var(--font-heading); color: var(--color-gold); font-size: 2rem;">10:00 - 23:00</h3>
+            <span style="font-size: 0.85rem; color: var(--color-text-muted);" data-i18n="about_stat2">Ежедневно без выходных</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="background: linear-gradient(135deg, rgba(13,92,88,0.3), rgba(200,90,40,0.2)); border: 1px solid var(--border-gold); padding: 2.5rem; border-radius: 24px;">
+          <i class="fa-solid fa-quote-left" style="font-size: 3rem; color: var(--color-gold); opacity: 0.4; margin-bottom: 1rem; display: block;"></i>
+          <p style="font-size: 1.1rem; font-style: italic; color: #fff; margin-bottom: 1.5rem;" data-i18n="quote_text">
+            «Плов — это не просто еда, это дух узбекского гостеприимства и песня, исполненная на чугунном казане.»
+          </p>
+          <strong style="color: var(--color-gold); font-family: var(--font-heading); font-size: 1rem;" data-i18n="quote_author">— Шеф-повар Ташкент Караван</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact & Location Section -->
+  <section class="section" id="contact">
+    <div class="section-header">
+      <span class="section-subtitle" data-i18n="contact_subtitle">Ждём Вас в Гости</span>
+      <h2 class="section-title" data-i18n="contact_title">Контакты & График Работы</h2>
+    </div>
+
+    <div class="contact-grid" style="grid-template-columns: 1fr;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem;">
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+          <div class="meta-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div>
+            <strong style="color: #fff; display: block;" data-i18n="contact_address_lbl">Адрес:</strong>
+            <span style="color: var(--color-text-muted);">Str. Mihai Eminescu 64, Кишинёв</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+          <div class="meta-icon"><i class="fa-solid fa-phone"></i></div>
+          <div>
+            <strong style="color: #fff; display: block;" data-i18n="contact_phone_lbl">Телефон:</strong>
+            <a href="tel:078142910" style="color: var(--color-gold); font-size: 1.2rem; font-weight: 700; text-decoration: none;">078 142 910</a>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+          <div class="meta-icon"><i class="fa-regular fa-clock"></i></div>
+          <div>
+            <strong style="color: #fff; display: block;" data-i18n="contact_hours_lbl">График работы:</strong>
+            <span style="color: var(--color-text-muted);" data-i18n="schedule_days">Понедельник — Воскресенье (L-D)</span>
+            <br>
+            <strong style="color: var(--color-gold-light); font-size: 1.05rem;">10:00 - 23:00</strong>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+          <div class="meta-icon"><i class="fa-solid fa-building"></i></div>
+          <div>
+            <strong style="color: #fff; display: block;" data-i18n="contact_entity_lbl">Юридическое лицо:</strong>
+            <span style="color: var(--color-text-muted);">SRL NAURUZ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart / Pre-Order Drawer -->
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3 style="font-family: var(--font-heading); color: #fff;" data-i18n="cart_title">Ваш Предзаказ</h3>
+      <button class="modal-close" id="cartCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="cart-items-list" id="cartItemsList">
+      <!-- Items populated by JS -->
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span data-i18n="cart_total_lbl">Итого:</span>
+        <span id="cartTotalSum">0 lei</span>
+      </div>
+      <button class="btn-primary" id="checkoutBtn" style="width: 100%; justify-content: center;">
+        <i class="fa-solid fa-paper-plane"></i> <span data-i18n="cart_send_btn">Отправить Заказ</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2026 ТАШКЕНТ КАРАВАН (TASHKENT CARAVAN) • SRL NAURUZ</p>
+    <p style="margin-top: 0.25rem;">Str. Mihai Eminescu 64 • Tel: 078 142 910 • 10:00 - 23:00</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
