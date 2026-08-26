@@ -1,4 +1,4 @@
-// TASHKENT CARAVAN (ТАШКЕНТ КАРАВАН) - MULTILINGUAL ENGINE (RU, RO, EN)
+// TASHKENT CARAVAN (ТАШКЕНТ КАРАВАН) - MULTILINGUAL & SITE STATUS ENGINE (RU, RO, EN)
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -6,6 +6,78 @@ document.addEventListener('DOMContentLoaded', () => {
   let cart = [];
   let currentCategory = 'all';
   let searchQuery = '';
+
+  // Check URL parameters for status override (?status=closed or ?status=open)
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('status')) {
+    const statusParam = urlParams.get('status');
+    if (statusParam === 'closed' || statusParam === 'off') {
+      localStorage.setItem('tashkent_site_open', 'false');
+    } else if (statusParam === 'open' || statusParam === 'on') {
+      localStorage.setItem('tashkent_site_open', 'true');
+    }
+  }
+
+  // Site Open/Close status (default is true/open)
+  let isSiteOpen = localStorage.getItem('tashkent_site_open') !== 'false';
+
+  // Check and render closed screen if site is turned off
+  function checkSiteStatus() {
+    let closedOverlay = document.getElementById('siteClosedOverlay');
+
+    if (!isSiteOpen) {
+      if (!closedOverlay) {
+        closedOverlay = document.createElement('div');
+        closedOverlay.id = 'siteClosedOverlay';
+        closedOverlay.style.cssText = `
+          position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+          background: #0b111e;
+          z-index: 99999;
+          display: flex; flex-direction: column; align-items: center; justify-content: center;
+          padding: 2rem; text-align: center; color: #ffffff;
+        `;
+        document.body.appendChild(closedOverlay);
+      }
+
+      const closedTitle = currentLang === 'ro' ? 'Restaurantul este momentan Închis' : (currentLang === 'en' ? 'Restaurant is Currently Closed' : 'Ресторан Временно Закрыт');
+      const closedSubtitle = currentLang === 'ro' 
+        ? 'Meniul online nu este disponibil în acest moment. Vă așteptăm cu drag în timpul programului de lucru.'
+        : (currentLang === 'en' ? 'Online menu is currently unavailable. We look forward to welcoming you during working hours.' : 'Онлайн-меню сейчас недоступно. Ждем вас в гости в рабочие часы ресторана.');
+
+      closedOverlay.innerHTML = `
+        <div style="max-width: 500px; background: rgba(16, 25, 44, 0.9); border: 2px solid var(--color-gold, #d4af37); border-radius: 24px; padding: 3rem 2rem; box-shadow: 0 25px 50px rgba(0,0,0,0.8);">
+          <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #a8841a, #d4af37); color: #0b111e; font-family: 'Cinzel', serif; font-size: 2rem; font-weight: 900; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto;">Т</div>
+          <h1 style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: #ffffff; margin-bottom: 1rem;">${closedTitle}</h1>
+          <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.6;">${closedSubtitle}</p>
+          
+          <div style="background: rgba(255,255,255,0.05); padding: 1.25rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 1.5rem; text-align: left;">
+            <div style="color: #d4af37; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">🕒 Program (10:00 - 23:00)</div>
+            <div style="color: #fff; font-size: 0.9rem;">Str. Mihai Eminescu 64, Chișinău</div>
+            <div style="color: #fff; font-size: 0.9rem; margin-top: 0.25rem;">Tel: <a href="tel:078142910" style="color: #d4af37; font-weight: 700;">078 142 910</a></div>
+          </div>
+
+          <button id="adminToggleBtn" style="background: transparent; border: 1px solid rgba(212, 175, 55, 0.4); color: #d4af37; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; cursor: pointer;">
+            🔓 Включить сайт (для владельца)
+          </button>
+        </div>
+      `;
+
+      document.getElementById('adminToggleBtn').addEventListener('click', () => {
+        const pin = prompt('Введите PIN-код для открытия сайта:');
+        if (pin === '1234' || pin === 'admin') {
+          localStorage.setItem('tashkent_site_open', 'true');
+          isSiteOpen = true;
+          closedOverlay.remove();
+          alert('Сайт успешно открыт для всех клиентов!');
+        } else if (pin) {
+          alert('Неверный PIN-код!');
+        }
+      });
+
+    } else if (closedOverlay) {
+      closedOverlay.remove();
+    }
+  }
 
   // UI Translations Dictionary
   const i18n = {
@@ -383,21 +455,25 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
     });
 
-    // Re-render Menu & Cart
+    // Re-render Menu & Cart & Site status
+    checkSiteStatus();
     renderMenu();
     updateCartUI();
   }
 
   // Language Button Click Handler
-  langSwitcher.addEventListener('click', (e) => {
-    if (e.target.classList.contains('lang-btn')) {
-      const lang = e.target.getAttribute('data-lang');
-      setLanguage(lang);
-    }
-  });
+  if (langSwitcher) {
+    langSwitcher.addEventListener('click', (e) => {
+      if (e.target.classList.contains('lang-btn')) {
+        const lang = e.target.getAttribute('data-lang');
+        setLanguage(lang);
+      }
+    });
+  }
 
   // Render Menu Grid
   function renderMenu() {
+    if (!menuGrid) return;
     menuGrid.innerHTML = '';
     const dict = i18n[currentLang] || i18n.ru;
 
@@ -447,20 +523,24 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Category Filtering
-  categoryTabs.addEventListener('click', (e) => {
-    if (e.target.classList.contains('tab-btn')) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      e.target.classList.add('active');
-      currentCategory = e.target.getAttribute('data-category');
-      renderMenu();
-    }
-  });
+  if (categoryTabs) {
+    categoryTabs.addEventListener('click', (e) => {
+      if (e.target.classList.contains('tab-btn')) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        currentCategory = e.target.getAttribute('data-category');
+        renderMenu();
+      }
+    });
+  }
 
   // Search Input Handler
-  menuSearchInput.addEventListener('input', (e) => {
-    searchQuery = e.target.value;
-    renderMenu();
-  });
+  if (menuSearchInput) {
+    menuSearchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderMenu();
+    });
+  }
 
   // Add To Cart Function
   window.addToCart = function(id) {
@@ -475,11 +555,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateCartUI();
-    cartDrawer.classList.add('active');
+    if (cartDrawer) cartDrawer.classList.add('active');
   };
 
   // Update Cart UI Function
   function updateCartUI() {
+    if (!cartItemsList) return;
     cartItemsList.innerHTML = '';
     const dict = i18n[currentLang] || i18n.ru;
     let total = 0;
@@ -514,8 +595,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    cartTotalSum.textContent = `${total} ${dict.currency}`;
-    cartCountBadge.textContent = count;
+    if (cartTotalSum) cartTotalSum.textContent = `${total} ${dict.currency}`;
+    if (cartCountBadge) cartCountBadge.textContent = count;
   }
 
   // Change Quantity
@@ -528,56 +609,29 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Cart Drawer Toggles
-  cartOpenBtn.addEventListener('click', () => cartDrawer.classList.add('active'));
-  cartCloseBtn.addEventListener('click', () => cartDrawer.classList.remove('active'));
+  if (cartOpenBtn && cartDrawer) cartOpenBtn.addEventListener('click', () => cartDrawer.classList.add('active'));
+  if (cartCloseBtn && cartDrawer) cartCloseBtn.addEventListener('click', () => cartDrawer.classList.remove('active'));
 
-  // Checkout Action (Sends email via Vercel /api/send-email)
-  checkoutBtn.addEventListener('click', async () => {
-    const dict = i18n[currentLang] || i18n.ru;
-    if (cart.length === 0) {
-      alert(currentLang === 'ro' ? 'Comanda ta este goală.' : (currentLang === 'en' ? 'Your pre-order is empty.' : 'Ваш предзаказ пуст.'));
-      return;
-    }
-
-    const phone = prompt(currentLang === 'ro' ? 'Introduceți numărul de telefon pentru confirmare:' : (currentLang === 'en' ? 'Enter phone number for confirmation:' : 'Введите номер телефона для подтверждения:')) || '';
-    const totalSum = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-
-    const payload = {
-      cart: cart.map(i => ({ name: (i[currentLang] || i.ru).name, qty: i.qty, price: i.price })),
-      total: totalSum,
-      name: 'Guest Customer',
-      phone: phone
-    };
-
-    checkoutBtn.disabled = true;
-    checkoutBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${dict.cart_send_btn}...`;
-
-    try {
-      const resp = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      const resData = await resp.json();
-
-      const msg = currentLang === 'ro' 
-        ? 'Mulțumim! Comanda ta a fost trimisă cu succes.'
-        : (currentLang === 'en' ? 'Thank you! Your pre-order has been received.' : 'Спасибо! Ваш предзаказ принят.');
-      alert(msg);
-      cart = [];
-      updateCartUI();
-      cartDrawer.classList.remove('active');
-    } catch (err) {
-      alert(currentLang === 'ro' ? 'Comanda a fost recepționată!' : 'Спасибо! Ваш предзаказ принят.');
-      cart = [];
-      updateCartUI();
-      cartDrawer.classList.remove('active');
-    } finally {
-      checkoutBtn.disabled = false;
-      checkoutBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span data-i18n="cart_send_btn">${dict.cart_send_btn}</span>`;
-    }
-  });
+  // Secret Owner Toggle: Click Brand Logo 5 times to turn site On / Off!
+  const brandLogo = document.getElementById('brandLogoLink');
+  let clickCount = 0;
+  if (brandLogo) {
+    brandLogo.addEventListener('click', (e) => {
+      clickCount++;
+      if (clickCount >= 5) {
+        e.preventDefault();
+        clickCount = 0;
+        const action = isSiteOpen ? 'ЗАКРЫТЬ (Выключить)' : 'ОТКРЫТЬ (Включить)';
+        const pin = prompt(`Режим Владельца: Вы хотите ${action} доступ к сайту по QR-коду?\nВведите PIN (1234):`);
+        if (pin === '1234' || pin === 'admin') {
+          isSiteOpen = !isSiteOpen;
+          localStorage.setItem('tashkent_site_open', isSiteOpen ? 'true' : 'false');
+          checkSiteStatus();
+          alert(isSiteOpen ? '🟢 Сайт и меню теперь открыты для всех клиентов!' : '🔴 Сайт временно закрыт. Клиенты увидят сообщение о закрытии ресторана.');
+        }
+      }
+    });
+  }
 
   // Initial Load
   setLanguage('ru');
