@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentCategory = 'all';
   let searchQuery = '';
 
-  // Global Site Open/Closed State (Default CLOSED globally)
-  let isSiteOpen = false;
+  // Global Site Open/Closed State (Default OPEN globally)
+  let isSiteOpen = true;
 
   // Fetch Global Site Status from Server
   async function fetchGlobalSiteStatus() {
@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
       console.warn('Could not fetch server status, using cached state:', err);
     }
+    if (localStorage.getItem('tashkent_unlocked') === 'true') {
+      isSiteOpen = true;
+    }
     renderSiteStatusOverlay();
   }
 
@@ -28,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderSiteStatusOverlay() {
     let closedOverlay = document.getElementById('siteClosedOverlay');
 
-    if (!isSiteOpen) {
+    if (!isSiteOpen && localStorage.getItem('tashkent_unlocked') !== 'true') {
       if (!closedOverlay) {
         closedOverlay = document.createElement('div');
         closedOverlay.id = 'siteClosedOverlay';
@@ -89,6 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       if (res.ok && data.status === 'success') {
         isSiteOpen = targetOpen;
+        if (targetOpen) {
+          localStorage.setItem('tashkent_unlocked', 'true');
+        } else {
+          localStorage.removeItem('tashkent_unlocked');
+        }
         renderSiteStatusOverlay();
         alert(targetOpen 
           ? '🟢 Сайт УСПЕШНО ОТКРЫТ для всех клиентов на всех устройствах в мире!' 
@@ -252,20 +260,20 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'm17', category: 'mains', price: 120, image: 'images/shashlik_lamb.jpg', ru: { name: 'Шашлык из баранины', desc: 'Нежная баранина с ароматом дымка и зиры', tag: 'На углях' }, ro: { name: 'Frigărui de Berbecuț', desc: 'Carne fragedă de berbecuț cu aromă de fum și condimente', tag: 'La Cărbuni' }, en: { name: 'Lamb Shashlik Skewer', desc: 'Succulent lamb skewers infused with cumin, garlic, and smoke', tag: 'Charcoal' } },
     { id: 'm18', category: 'mains', price: 120, image: 'images/lyulya_kebab.jpg', ru: { name: 'Люля-кебаб из курицы', desc: 'Нежный рубленый фарш из куриного филе на мангале', tag: 'Сочное' }, ro: { name: 'Lula-Kebab de Pui', desc: 'Carne tocată de pui cu verdeață pregătită la grătar', tag: 'Fraged' }, en: { name: 'Chicken Lyulya Kebab', desc: 'Minced chicken breast skewered and charcoal-grilled with herbs', tag: 'Grilled' } },
     { id: 'm19', category: 'mains', price: 120, image: 'images/lyulya_kebab.jpg', ru: { name: 'Люля-кебаб из баранины', desc: 'Классический люля-кебаб из баранины с луком и кориандром', tag: 'Традиции' }, ro: { name: 'Lula-Kebab de Berbecuț', desc: 'Lula-kebab tradițional din carne de berbecuț cu condimente', tag: 'Tradițional' }, en: { name: 'Lamb Lyulya Kebab', desc: 'Traditional ground lamb kebab seasoned with coriander and grilled', tag: 'Traditional' } },
-    { id: 'b1', category: 'bar', price: 30, ru: { name: 'Экспрессо', desc: 'Бодрящий эспрессо двойного обжара', tag: 'Кофе' }, ro: { name: 'Espresso', desc: 'Espresso clasic tare și aromat', tag: 'Creație' }, en: { name: 'Espresso', desc: 'Rich and bold single shot espresso', tag: 'Coffee' } },
-    { id: 'b2', category: 'bar', price: 35, ru: { name: 'Американо', desc: 'Классический черный кофе', tag: 'Кофе' }, ro: { name: 'Americano', desc: 'Cafea neagră clasică', tag: 'Cafea' }, en: { name: 'Americano', desc: 'Classic long black coffee', tag: 'Coffee' } },
-    { id: 'b3', category: 'bar', price: 40, ru: { name: 'Капучино', desc: 'С пышной молочной пенкой', tag: 'Кофе' }, ro: { name: 'Cappuccino', desc: 'Cu spumă fină de lapte', tag: 'Cafea' }, en: { name: 'Cappuccino', desc: 'Espresso topped with creamy frothed milk', tag: 'Coffee' } },
-    { id: 'b4', category: 'bar', price: 45, ru: { name: 'Латте', desc: 'Нежный кофе с мягким молоком', tag: 'Кофе' }, ro: { name: 'Latte', desc: 'Cafea delicată cu lapte cremos', tag: 'Cafea' }, en: { name: 'Caffè Latte', desc: 'Smooth espresso with steamed fresh milk', tag: 'Coffee' } },
-    { id: 'b5', category: 'bar', price: 60, ru: { name: 'Эспрессо тоник', desc: 'Освежающий микс эспрессо и тоника со льдом', tag: 'Холодное' }, ro: { name: 'Espresso Tonic', desc: 'Mix răcoritor de espresso și apă tonică cu gheață', tag: 'Răcoritor' }, en: { name: 'Espresso Tonic', desc: 'Refreshing layered espresso and tonic water over ice', tag: 'Iced Coffee' } },
-    { id: 'b6', category: 'bar', price: 60, ru: { name: 'Бамбо (Bumble)', desc: 'Слоистый кофейный напиток с апельсиновым соком', tag: 'Авторское' }, ro: { name: 'Bumble Coffee', desc: 'Băutură de cafea în straturi cu suc de portocale', tag: 'Special' }, en: { name: 'Bumble Coffee', desc: 'Layered iced espresso with orange juice and caramel syrup', tag: 'Signature' } },
-    { id: 'b7', category: 'bar', price: 45, ru: { name: 'Айс латте', desc: 'Освежающий холодный латте со льдом', tag: 'Кофе' }, ro: { name: 'Ice Latte', desc: 'Latte rece și răcoritor cu gheață', tag: 'Rece' }, en: { name: 'Iced Latte', desc: 'Chilled espresso with cold milk over ice', tag: 'Iced Coffee' } },
-    { id: 'b8', category: 'bar', price: 50, ru: { name: 'Айс латте карамель', desc: 'Холодный латте со сладкой карамелью', tag: 'Сладкое' }, ro: { name: 'Ice Latte Caramel', desc: 'Latte rece cu sos dulce de caramel', tag: 'Dulce' }, en: { name: 'Caramel Iced Latte', desc: 'Chilled iced latte with sweet caramel swirl', tag: 'Sweet' } },
-    { id: 'b9', category: 'bar', price: 110, ru: { name: 'Апероль Сприц', desc: 'Игристый аперитив с нотами апельсина', tag: 'Коктейль' }, ro: { name: 'Aperol Spritz', desc: 'Cocktail spumant cu note de portocală', tag: 'Cocktail' }, en: { name: 'Aperol Spritz', desc: 'Classic sparkling cocktail with Aperol and Prosecco', tag: 'Cocktail' } },
-    { id: 'b10', category: 'bar', price: 40, ru: { name: 'Вино белое (бокал)', desc: 'Изысканное сухое белое вино', tag: 'Вино' }, ro: { name: 'Vin Alb (pahar)', desc: 'Vin alb sec rafinat', tag: 'Vin' }, en: { name: 'White Wine (glass)', desc: 'Crisp dry white wine glass', tag: 'Wine' } },
-    { id: 'b11', category: 'bar', price: 40, ru: { name: 'Вино красное (бокал)', desc: 'Насыщенное красное вино', tag: 'Вино' }, ro: { name: 'Vin Roșu (pahar)', desc: 'Vin roșu sec aromat', tag: 'Vin' }, en: { name: 'Red Wine (glass)', desc: 'Rich full-bodied red wine glass', tag: 'Wine' } },
-    { id: 'b12', category: 'bar', price: 60, ru: { name: 'Дунканы тёмное', desc: 'Тёмное бархатистое пиво', tag: 'Пиво' }, ro: { name: 'Bere Neagră Duncan', desc: 'Bere neagră cremoasă', tag: 'Bere' }, en: { name: 'Dunkel Dark Beer', desc: 'Rich velvet dark craft beer', tag: 'Beer' } },
-    { id: 'b13', category: 'bar', price: 60, ru: { name: 'Карлсберг', desc: 'Светлое лагерное пиво', tag: 'Пиво' }, ro: { name: 'Bere Carlsberg', desc: 'Bere blondă de calitate', tag: 'Bere' }, en: { name: 'Carlsberg Beer', desc: 'Premium blond lager beer', tag: 'Beer' } },
-    { id: 'b14', category: 'bar', price: 40, ru: { name: 'Львовское', desc: 'Освежающее светлое пиво', tag: 'Пиво' }, ro: { name: 'Bere Lvivske', desc: 'Bere blondă răcoritoare', tag: 'Bere' }, en: { name: 'Lvivske Beer', desc: 'Refreshing light pale beer', tag: 'Beer' } }
+    { id: 'b1', category: 'bar', price: 30, image: 'images/coffee.jpg', ru: { name: 'Экспрессо', desc: 'Бодрящий эспрессо двойного обжара', tag: 'Кофе' }, ro: { name: 'Espresso', desc: 'Espresso clasic tare și aromat', tag: 'Creație' }, en: { name: 'Espresso', desc: 'Rich and bold single shot espresso', tag: 'Coffee' } },
+    { id: 'b2', category: 'bar', price: 35, image: 'images/coffee.jpg', ru: { name: 'Американо', desc: 'Классический черный кофе', tag: 'Кофе' }, ro: { name: 'Americano', desc: 'Cafea neagră clasică', tag: 'Cafea' }, en: { name: 'Americano', desc: 'Classic long black coffee', tag: 'Coffee' } },
+    { id: 'b3', category: 'bar', price: 40, image: 'images/coffee.jpg', ru: { name: 'Капучино', desc: 'С пышной молочной пенкой', tag: 'Кофе' }, ro: { name: 'Cappuccino', desc: 'Cu spumă fină de lapte', tag: 'Cafea' }, en: { name: 'Cappuccino', desc: 'Espresso topped with creamy frothed milk', tag: 'Coffee' } },
+    { id: 'b4', category: 'bar', price: 45, image: 'images/coffee.jpg', ru: { name: 'Латте', desc: 'Нежный кофе с мягким молоком', tag: 'Кофе' }, ro: { name: 'Latte', desc: 'Cafea delicată cu lapte cremos', tag: 'Cafea' }, en: { name: 'Caffè Latte', desc: 'Smooth espresso with steamed fresh milk', tag: 'Coffee' } },
+    { id: 'b5', category: 'bar', price: 60, image: 'images/coffee.jpg', ru: { name: 'Эспрессо тоник', desc: 'Освежающий микс эспрессо и тоника со льдом', tag: 'Холодное' }, ro: { name: 'Espresso Tonic', desc: 'Mix răcoritor de espresso și apă tonică cu gheață', tag: 'Răcoritor' }, en: { name: 'Espresso Tonic', desc: 'Refreshing layered espresso and tonic water over ice', tag: 'Iced Coffee' } },
+    { id: 'b6', category: 'bar', price: 60, image: 'images/coffee.jpg', ru: { name: 'Бамбо (Bumble)', desc: 'Слоистый кофейный напиток с апельсиновым соком', tag: 'Авторское' }, ro: { name: 'Bumble Coffee', desc: 'Băutură de cafea în straturi cu suc de portocale', tag: 'Special' }, en: { name: 'Bumble Coffee', desc: 'Layered iced espresso with orange juice and caramel syrup', tag: 'Signature' } },
+    { id: 'b7', category: 'bar', price: 45, image: 'images/coffee.jpg', ru: { name: 'Айс латте', desc: 'Освежающий холодный латте со льдом', tag: 'Кофе' }, ro: { name: 'Ice Latte', desc: 'Latte rece și răcoritor cu gheață', tag: 'Rece' }, en: { name: 'Iced Latte', desc: 'Chilled espresso with cold milk over ice', tag: 'Iced Coffee' } },
+    { id: 'b8', category: 'bar', price: 50, image: 'images/coffee.jpg', ru: { name: 'Айс латте карамель', desc: 'Холодный латте со сладкой карамелью', tag: 'Сладкое' }, ro: { name: 'Ice Latte Caramel', desc: 'Latte rece cu sos dulce de caramel', tag: 'Dulce' }, en: { name: 'Caramel Iced Latte', desc: 'Chilled iced latte with sweet caramel swirl', tag: 'Sweet' } },
+    { id: 'b9', category: 'bar', price: 110, image: 'images/hero.jpg', ru: { name: 'Апероль Сприц', desc: 'Игристый аперитив с нотами апельсина', tag: 'Коктейль' }, ro: { name: 'Aperol Spritz', desc: 'Cocktail spumant cu note de portocală', tag: 'Cocktail' }, en: { name: 'Aperol Spritz', desc: 'Classic sparkling cocktail with Aperol and Prosecco', tag: 'Cocktail' } },
+    { id: 'b10', category: 'bar', price: 40, image: 'images/hero.jpg', ru: { name: 'Вино белое (бокал)', desc: 'Изысканное сухое белое вино', tag: 'Вино' }, ro: { name: 'Vin Alb (pahar)', desc: 'Vin alb sec rafinat', tag: 'Vin' }, en: { name: 'White Wine (glass)', desc: 'Crisp dry white wine glass', tag: 'Wine' } },
+    { id: 'b11', category: 'bar', price: 40, image: 'images/hero.jpg', ru: { name: 'Вино красное (бокал)', desc: 'Насыщенное красное вино', tag: 'Вино' }, ro: { name: 'Vin Roșu (pahar)', desc: 'Vin roșu sec aromat', tag: 'Vin' }, en: { name: 'Red Wine (glass)', desc: 'Rich full-bodied red wine glass', tag: 'Wine' } },
+    { id: 'b12', category: 'bar', price: 60, image: 'images/hero.jpg', ru: { name: 'Дунканы тёмное', desc: 'Тёмное бархатистое пиво', tag: 'Пиво' }, ro: { name: 'Bere Neagră Duncan', desc: 'Bere neagră cremoasă', tag: 'Bere' }, en: { name: 'Dunkel Dark Beer', desc: 'Rich velvet dark craft beer', tag: 'Beer' } },
+    { id: 'b13', category: 'bar', price: 60, image: 'images/hero.jpg', ru: { name: 'Карлсберг', desc: 'Светлое лагерное пиво', tag: 'Пиво' }, ro: { name: 'Bere Carlsberg', desc: 'Bere blondă de calitate', tag: 'Bere' }, en: { name: 'Carlsberg Beer', desc: 'Premium blond lager beer', tag: 'Beer' } },
+    { id: 'b14', category: 'bar', price: 40, image: 'images/hero.jpg', ru: { name: 'Львовское', desc: 'Освежающее светлое пиво', tag: 'Пиво' }, ro: { name: 'Bere Lvivske', desc: 'Bere blondă răcoritoare', tag: 'Bere' }, en: { name: 'Lvivske Beer', desc: 'Refreshing light pale beer', tag: 'Beer' } }
   ];
 
   // DOM Elements
@@ -344,15 +352,25 @@ document.addEventListener('DOMContentLoaded', () => {
       const itemLang = item[currentLang] || item.ru;
       const card = document.createElement('div');
       card.className = 'menu-card';
+      
+      const imgHtml = item.image ? `
+        <div class="card-image-wrapper">
+          <img src="${item.image}" alt="${itemLang.name}" class="card-img" loading="lazy">
+          <span class="card-tag-badge"><i class="fa-solid fa-tag"></i> ${itemLang.tag}</span>
+        </div>
+      ` : `
+        <div class="card-image-wrapper placeholder-wrapper">
+          <span class="card-tag-badge"><i class="fa-solid fa-tag"></i> ${itemLang.tag}</span>
+        </div>
+      `;
+
       card.innerHTML = `
-        <div>
+        ${imgHtml}
+        <div class="card-body">
           <div class="card-top">
             <h3 class="card-title">${itemLang.name}</h3>
             <span class="card-price">${item.price} ${dict.currency}</span>
           </div>
-          <span style="font-size: 0.75rem; color: var(--color-gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; display: block;">
-            <i class="fa-solid fa-tag"></i> ${itemLang.tag}
-          </span>
           <p class="card-desc">${itemLang.desc}</p>
         </div>
         <div class="card-footer">
