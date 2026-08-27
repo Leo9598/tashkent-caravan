@@ -7,12 +7,12 @@ function getGlobalStatus() {
   if (fs.existsSync(STATUS_FILE)) {
     try {
       const data = JSON.parse(fs.readFileSync(STATUS_FILE, 'utf8'));
-      return data.isOpen !== false;
+      return data.isOpen === true;
     } catch (err) {
-      return true;
+      return false;
     }
   }
-  return true;
+  return false;
 }
 
 function setGlobalStatus(isOpen) {

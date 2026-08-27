@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentCategory = 'all';
   let searchQuery = '';
 
-  // Global Site Open/Closed State (Synced via Serverless API)
-  let isSiteOpen = true;
+  // Global Site Open/Closed State (Default CLOSED globally)
+  let isSiteOpen = false;
 
   // Fetch Global Site Status from Server
   async function fetchGlobalSiteStatus() {
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await fetch('/api/site-status');
       if (res.ok) {
         const data = await res.json();
-        isSiteOpen = data.isOpen !== false;
+        isSiteOpen = data.isOpen === true;
       }
     } catch (err) {
       console.warn('Could not fetch server status, using cached state:', err);
