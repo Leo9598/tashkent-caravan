@@ -408,15 +408,16 @@ document.addEventListener('DOMContentLoaded', () => {
           <img src="${item.image}" alt="${itemLang.name}" class="card-img" loading="lazy">
           <span class="card-tag-badge"><i class="fa-solid fa-tag"></i> ${itemLang.tag}</span>
         </div>
-      ` : `
-        <div class="card-image-wrapper placeholder-wrapper">
-          <span class="card-tag-badge"><i class="fa-solid fa-tag"></i> ${itemLang.tag}</span>
-        </div>
-      `;
+      ` : '';
+
+      const inlineTagHtml = (!item.image && itemLang.tag) ? `
+        <span class="inline-tag-badge"><i class="fa-solid fa-tag"></i> ${itemLang.tag}</span>
+      ` : '';
 
       card.innerHTML = `
         ${imgHtml}
         <div class="card-body">
+          ${inlineTagHtml}
           <div class="card-top">
             <h3 class="card-title">${itemLang.name}</h3>
             <span class="card-price">${item.price} ${dict.currency}</span>

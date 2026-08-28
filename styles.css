@@ -584,6 +584,21 @@ body {
   gap: 0.35rem;
 }
 
+.inline-tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid var(--border-gold);
+  color: var(--color-gold);
+  padding: 0.25rem 0.65rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  width: fit-content;
+}
+
 .card-top {
   display: flex;
   justify-content: space-between;
