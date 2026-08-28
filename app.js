@@ -134,13 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_bar: 'Бар & Напитки',
       cat_alcohol: 'Алкогольные напитки',
       about_subtitle: 'Традиции & Гостеприимство',
-      about_title: 'История Ташкент Караван',
-      about_p1: 'В узбекской культуре гость — это благословение дома. В ресторане «Ташкент Караван» мы возрождаем вековые кулинарные традиции Великого Шёлкового пути.',
+      about_title: 'История Ташкент',
+      about_p1: 'В узбекской культуре гость — это благословение дома. В ресторане «Ташкент» мы возрождаем вековые кулинарные традиции Великого Шёлкового пути.',
       about_p2: 'Каждое блюдо готовится по аутентичным рецептам с использованием настоящих узбекских специй (зиры, барбариса, кориандра), свежайшего мяса и авторской подачи.',
       about_stat1: 'Натуральные специи',
       about_stat2: 'Ежедневно без выходных',
       quote_text: '«Плов — это не просто еда, это дух узбекского гостеприимства и песня, исполненная на чугунном казане.»',
-      quote_author: '— Шеф-повар Ташкент Караван',
+      quote_author: '— Шеф-повар Ташкент',
       contact_subtitle: 'Ждём Вас в Гости',
       contact_title: 'Контакты & График Работы',
       contact_address_lbl: 'Адрес:',
@@ -177,13 +177,13 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_bar: 'Bar & Băuturi',
       cat_alcohol: 'Băuturi Alcoolice',
       about_subtitle: 'Tradiție & Ospitalitate',
-      about_title: 'Istoria Tashkent Caravan',
-      about_p1: 'În cultura uzbecă, oaspetele este o binecuvântare a casei. La restaurantul „Tashkent Caravan” reînviem tradițiile culinare seculare ale Drumului Mătăsii.',
+      about_title: 'Istoria Tashkent',
+      about_p1: 'În cultura uzbecă, oaspetele este o binecuvântare a casei. La restaurantul „Tashkent” reînviem tradițiile culinare seculare ale Drumului Mătăsii.',
       about_p2: 'Fiecare preparat este gătit după rețete autentice, folosind condimente uzbece originale (chimen, dudițe, coriadru) și carne de cea mai înaltă calitate.',
       about_stat1: 'Condimente Naturale',
       about_stat2: 'Zilnic fără zile libere',
       quote_text: '«Plovul nu este doar mâncare, este sufletul ospitalității uzbece și o melodie cântată într-un ceaun de fontă.»',
-      quote_author: '— Bucătar Șef Tashkent Caravan',
+      quote_author: '— Bucătar Șef Tashkent',
       contact_subtitle: 'Vă Așteptăm cu Drag',
       contact_title: 'Contacte & Program de Lucru',
       contact_address_lbl: 'Adresă:',
@@ -220,13 +220,13 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_bar: 'Bar & Drinks',
       cat_alcohol: 'Alcoholic Drinks',
       about_subtitle: 'Tradition & Hospitality',
-      about_title: 'Story of Tashkent Caravan',
-      about_p1: 'In Uzbek culture, a guest is a blessing to the home. At "Tashkent Caravan", we revive centuries-old culinary traditions of the Silk Road.',
+      about_title: 'Story of Tashkent',
+      about_p1: 'In Uzbek culture, a guest is a blessing to the home. At "Tashkent", we revive centuries-old culinary traditions of the Silk Road.',
       about_p2: 'Every dish is crafted using authentic recipes, genuine Uzbek spices (cumin, barberry, coriander), and premium meats.',
       about_stat1: 'Natural Spices',
       about_stat2: 'Open Every Day',
       quote_text: '«Plov is not just food, it is the spirit of Uzbek hospitality and a song played inside a cast-iron kazan.»',
-      quote_author: '— Executive Chef Tashkent Caravan',
+      quote_author: '— Executive Chef Tashkent',
       contact_subtitle: 'We Welcome You',
       contact_title: 'Contact & Opening Hours',
       contact_address_lbl: 'Address:',
@@ -425,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <p class="card-desc">${itemLang.desc}</p>
         </div>
         <div class="card-footer">
-          <span style="font-size: 0.8rem; color: var(--color-text-muted);">Tashkent Caravan</span>
+          <span style="font-size: 0.8rem; color: var(--color-text-muted);">Tashkent</span>
           <button class="btn-add-item" onclick="addToCart('${item.id}')">
             <i class="fa-solid fa-plus"></i> ${dict.btn_add_to_cart}
           </button>

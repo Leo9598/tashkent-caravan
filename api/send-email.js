@@ -34,7 +34,7 @@ function generateOrderHtml(cart, total, customerName = 'Guest', customerPhone = 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Pre-Order - Tashkent Caravan</title>
+  <title>New Pre-Order - Tashkent</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #0b111e; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
   <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #0b111e; padding: 40px 12px;">
@@ -45,7 +45,7 @@ function generateOrderHtml(cart, total, customerName = 'Guest', customerPhone = 
           <!-- Header Banner -->
           <tr>
             <td style="background: linear-gradient(135deg, #092c28 0%, #0d5c58 60%, #c85a28 100%); padding: 36px 30px; text-align: center; border-bottom: 3px solid #d4af37;">
-              <div style="font-size: 11px; font-weight: 700; color: #d4af37; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 8px;">TASHKENT CARAVAN • ТАШКЕНТ КАРАВАН</div>
+              <div style="font-size: 11px; font-weight: 700; color: #d4af37; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 8px;">TASHKENT • ТАШКЕНТ</div>
               <h1 style="margin: 0; font-size: 26px; color: #ffffff; font-weight: 700;">New Food Pre-Order</h1>
             </td>
           </tr>
@@ -86,7 +86,7 @@ function generateOrderHtml(cart, total, customerName = 'Guest', customerPhone = 
           <!-- Footer Banner -->
           <tr>
             <td style="background-color: #f8fafc; padding: 24px; text-align: center; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b;">
-              <strong>Tashkent Caravan Restaurant</strong><br>
+              <strong>Tashkent Restaurant</strong><br>
               Str. Mihai Eminescu 64 • Tel: 078 142 910 • 10:00 - 23:00
             </td>
           </tr>
@@ -120,9 +120,9 @@ export default async function handler(req, res) {
     });
 
     const mailOptions = {
-      from: `"Tashkent Caravan Orders" <${process.env.GMAIL_USER}>`,
+      from: `"Tashkent Orders" <${process.env.GMAIL_USER}>`,
       to: process.env.GMAIL_USER,
-      subject: `🍲 New Tashkent Caravan Order: ${name} (${total} lei)`,
+      subject: `🍲 New Tashkent Order: ${name} (${total} lei)`,
       html: generateOrderHtml(cart, total, name, phone, notes),
     };
 
