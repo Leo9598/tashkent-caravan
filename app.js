@@ -45,10 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(closedOverlay);
       }
 
-      const closedTitle = currentLang === 'ro' ? 'Restaurantul este momentan Închis' : (currentLang === 'en' ? 'Restaurant is Currently Closed' : 'Ресторан Временно Закрыт');
-      const closedSubtitle = currentLang === 'ro' 
-        ? 'Meniul online nu este disponibil în acest moment. Vă așteptăm cu drag în timpul programului de lucru.'
-        : (currentLang === 'en' ? 'Online menu is currently unavailable. We look forward to welcoming you during working hours.' : 'Онлайн-меню сейчас недоступно. Ждем вас в гости в рабочие часы ресторана.');
+      const closedTitle = 'Site-ul nu lucrează temporar!';
+      const closedSubtitle = 'Meniul online nu este disponibil în acest moment. Vă așteptăm cu drag în timpul programului de lucru.';
 
       closedOverlay.innerHTML = `
         <div style="max-width: 500px; background: rgba(16, 25, 44, 0.95); border: 2px solid var(--color-gold, #d4af37); border-radius: 24px; padding: 3rem 2rem; box-shadow: 0 25px 50px rgba(0,0,0,0.8);">
@@ -63,13 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           <button id="adminToggleBtn" style="background: transparent; border: 1px solid rgba(212, 175, 55, 0.4); color: #d4af37; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; cursor: pointer;">
-            🔓 Открыть сайт глобально (для владельца)
+            🔓 Deschide site-ul global (pentru proprietar)
           </button>
         </div>
       `;
 
       document.getElementById('adminToggleBtn').addEventListener('click', async () => {
-        const pin = prompt('Введите PIN-код владельца:');
+        const pin = prompt('Introduceți codul PIN al proprietarului:');
         if (pin) {
           await toggleGlobalSiteStatus(true, pin);
         }
@@ -99,13 +97,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         renderSiteStatusOverlay();
         alert(targetOpen 
-          ? '🟢 Сайт УСПЕШНО ОТКРЫТ для всех клиентов на всех устройствах в мире!' 
-          : '🔴 Сайт УСПЕШНО ЗАКРЫТ глобально! Теперь любой клиент, отсканировавший QR-код, увидит сообщение о закрытии ресторана.');
+          ? '🟢 Site-ul a fost DESCHIS cu succes pentru toți clienții!' 
+          : '🔴 Site-ul a fost ÎNCHIS cu succes! Mesajul "Site-ul nu lucrează temporar!" este afișat.');
       } else {
-        alert(data.message || 'Неверный PIN-код!');
+        alert(data.message || 'Cod PIN incorect!');
       }
     } catch (err) {
-      alert('Ошибка соединения с сервером');
+      alert('Eroare de conexiune cu serverul');
     }
   }
 
@@ -282,8 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'w1_s', category: 'alcohol', price: 60, ru: { name: 'TARABOSTE Pinot Noir — 1 бокал', desc: 'Chateau Vartely • Порция сухого красного вина • 1 бокал (60 лей)', tag: 'Chateau Vartely' }, ro: { name: 'TARABOSTE Pinot Noir — 1 pahar', desc: 'Chateau Vartely • Porție vin roșu sec • 1 pahar (60 lei)', tag: 'Chateau Vartely' }, en: { name: 'TARABOSTE Pinot Noir — 1 glass', desc: 'Chateau Vartely • Glass of dry red wine • 1 glass (60 lei)', tag: 'Chateau Vartely' } },
     { id: 'w2_b', category: 'alcohol', price: 400, ru: { name: 'TARABOSTE Chardonnay — 0.75л', desc: 'Chateau Vartely • Сухое белое вино • Бутылка 0.750л (1 бокал — 60 лей)', tag: 'Chateau Vartely' }, ro: { name: 'TARABOSTE Chardonnay — Sticlă 0.75L', desc: 'Chateau Vartely • Vin alb sec • Sticlă 0.750 L (1 pahar — 60 lei)', tag: 'Chateau Vartely' }, en: { name: 'TARABOSTE Chardonnay — Bottle 0.75L', desc: 'Chateau Vartely • Dry white wine • Bottle 0.750 L (1 glass — 60 lei)', tag: 'Chateau Vartely' } },
     { id: 'w2_s', category: 'alcohol', price: 60, ru: { name: 'TARABOSTE Chardonnay — 1 бокал', desc: 'Chateau Vartely • Порция сухого белого вина • 1 бокал (60 лей)', tag: 'Chateau Vartely' }, ro: { name: 'TARABOSTE Chardonnay — 1 pahar', desc: 'Chateau Vartely • Porție vin alb sec • 1 pahar (60 lei)', tag: 'Chateau Vartely' }, en: { name: 'TARABOSTE Chardonnay — 1 glass', desc: 'Chateau Vartely • Glass of dry white wine • 1 glass (60 lei)', tag: 'Chateau Vartely' } },
-    { id: 'w3_b', category: 'alcohol', price: 500, ru: { name: 'ICE WINE Riesling — 0.375л', desc: 'Chateau Vartely • Десертное ледяное вино • Бутылка 0.375л (1 бокал — 60 лей)', tag: 'Chateau Vartely' }, ro: { name: 'ICE WINE Riesling — Sticlă 0.375L', desc: 'Chateau Vartely • Vin dulce de desert • Sticlă 0.375 L (1 pahar — 60 lei)', tag: 'Chateau Vartely' }, en: { name: 'ICE WINE Riesling — Bottle 0.375L', desc: 'Chateau Vartely • Dessert Ice Wine • Bottle 0.375 L (1 glass — 60 lei)', tag: 'Chateau Vartely' } },
-    { id: 'w3_s', category: 'alcohol', price: 60, ru: { name: 'ICE WINE Riesling — 1 бокал', desc: 'Chateau Vartely • Порция ледяного десертного вина • 1 бокал (60 лей)', tag: 'Chateau Vartely' }, ro: { name: 'ICE WINE Riesling — 1 pahar', desc: 'Chateau Vartely • Porție vin de desert • 1 pahar (60 lei)', tag: 'Chateau Vartely' }, en: { name: 'ICE WINE Riesling — 1 glass', desc: 'Chateau Vartely • Glass of dessert Ice Wine • 1 glass (60 lei)', tag: 'Chateau Vartely' } },
+    { id: 'w3_b', category: 'alcohol', price: 500, ru: { name: 'ICE WINE Riesling — 0.375л', desc: 'Chateau Vartely • Десертное ледяное вино • Бутылка 0.375л', tag: 'Chateau Vartely' }, ro: { name: 'ICE WINE Riesling — Sticlă 0.375L', desc: 'Chateau Vartely • Vin dulce de desert • Sticlă 0.375 L', tag: 'Chateau Vartely' }, en: { name: 'ICE WINE Riesling — Bottle 0.375L', desc: 'Chateau Vartely • Dessert Ice Wine • Bottle 0.375 L', tag: 'Chateau Vartely' } },
     { id: 'w4_b', category: 'alcohol', price: 300, ru: { name: 'LATE HARVEST Sauvignon Blanc — 0.5л', desc: 'Chateau Vartely • Вино позднего сбора • Бутылка 0.500л (1 бокал — 60 лей)', tag: 'Chateau Vartely' }, ro: { name: 'LATE HARVEST Sauvignon Blanc — Sticlă 0.5L', desc: 'Chateau Vartely • Vin dulce Late Harvest • Sticlă 0.500 L (1 pahar — 60 lei)', tag: 'Chateau Vartely' }, en: { name: 'LATE HARVEST Sauvignon Blanc — Bottle 0.5L', desc: 'Chateau Vartely • Late Harvest dessert wine • Bottle 0.500 L (1 glass — 60 lei)', tag: 'Chateau Vartely' } },
     { id: 'w4_s', category: 'alcohol', price: 60, ru: { name: 'LATE HARVEST Sauvignon Blanc — 1 бокал', desc: 'Chateau Vartely • Порция вина позднего сбора • 1 бокал (60 лей)', tag: 'Chateau Vartely' }, ro: { name: 'LATE HARVEST Sauvignon Blanc — 1 pahar', desc: 'Chateau Vartely • Porție vin dulce Late Harvest • 1 pahar (60 lei)', tag: 'Chateau Vartely' }, en: { name: 'LATE HARVEST Sauvignon Blanc — 1 glass', desc: 'Chateau Vartely • Glass of Late Harvest wine • 1 glass (60 lei)', tag: 'Chateau Vartely' } },
     { id: 'w5_b', category: 'alcohol', price: 200, ru: { name: 'TOTEM Viorica — 0.75л', desc: 'Chateau Vartely • Белое сухое вино • Бутылка 0.750л (1 бокал — 60 лей)', tag: 'Chateau Vartely' }, ro: { name: 'TOTEM Viorica — Sticlă 0.75L', desc: 'Chateau Vartely • Vin alb sec • Sticlă 0.750 L (1 pahar — 60 lei)', tag: 'Chateau Vartely' }, en: { name: 'TOTEM Viorica — Bottle 0.75L', desc: 'Chateau Vartely • Dry white wine • Bottle 0.750 L (1 glass — 60 lei)', tag: 'Chateau Vartely' } },
@@ -546,8 +543,8 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         clickCount = 0;
         const targetState = !isSiteOpen;
-        const actionStr = targetState ? 'ОТКРЫТЬ (Включить)' : 'ЗАКРЫТЬ (Выключить)';
-        const pin = prompt(`ГЛОБАЛЬНОЕ УПРАВЛЕНИЕ САЙТОМ:\nВы хотите ${actionStr} сайт для ВСЕХ клиентов на ВСЕХ устройствах в мире?\nВведите PIN-код владельца:`);
+        const actionStr = targetState ? 'DESCHIDE (Porniți)' : 'ÎNCHIDE (Opriți)';
+        const pin = prompt(`ADMINISTRARE GLOBALĂ SITE:\nDoriți să ${actionStr} site-ul pentru toți clienții?\nIntroduceți codul PIN al proprietarului:`);
         if (pin) {
           await toggleGlobalSiteStatus(targetState, pin);
         }
