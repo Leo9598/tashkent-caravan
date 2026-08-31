@@ -629,6 +629,7 @@ body {
   color: var(--color-text-muted);
   margin-bottom: 1.25rem;
   flex-grow: 1;
+  white-space: pre-line;
 }
 
 .card-footer {

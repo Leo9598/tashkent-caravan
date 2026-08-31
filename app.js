@@ -126,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
       menu_title: 'Восточные Изысканности',
       search_placeholder: 'Поиск блюд, напитков...',
       cat_all: 'Всё Меню',
+      cat_lunch: 'Бизнес-ланч',
       cat_starters: 'Холодные закуски',
       cat_salads: 'Салаты',
       cat_soups: 'Супы',
@@ -174,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
       menu_title: 'Delicii Orientale',
       search_placeholder: 'Căutare mâncăruri, băuturi...',
       cat_all: 'Tot Meniul',
+      cat_lunch: 'Business Lunch',
       cat_starters: 'Gustări Reci',
       cat_salads: 'Salate',
       cat_soups: 'Supe',
@@ -222,6 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
       menu_title: 'Oriental Delicacies',
       search_placeholder: 'Search dishes, drinks...',
       cat_all: 'All Menu',
+      cat_lunch: 'Business Lunch',
       cat_starters: 'Cold Starters',
       cat_salads: 'Salads',
       cat_soups: 'Soups',
@@ -257,6 +260,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Full Menu Database
   const menuData = [
+    // 0. БИЗНЕС-ЛАНЧ (lunch)
+    { id: 'l1', category: 'lunch', price: 170, image: 'images/tashkent_plov.jpg', ru: { name: 'Бизнес-ланч: Понедельник', desc: '• Чечевичный суп\n• Ташкентский плов\n• Узбекская лепёшка\n• Чай', tag: 'Понедельник' }, ro: { name: 'Business Lunch: Luni', desc: '• Supă de linte\n• Plov Tașkent\n• Lipie uzbecă\n• Ceai', tag: 'Luni' }, en: { name: 'Business Lunch: Monday', desc: '• Red Lentil Soup\n• Tashkent Plov\n• Uzbek Flatbread\n• Tea', tag: 'Monday' } },
+    { id: 'l2', category: 'lunch', price: 170, image: 'images/surpa_veal.jpg', ru: { name: 'Бизнес-ланч: Вторник', desc: '• Шурпа с телятиной\n• Манты с телятиной\n• Узбекская лепёшка\n• Домашний компот', tag: 'Вторник' }, ro: { name: 'Business Lunch: Marți', desc: '• Șurpa cu vită\n• Manti cu vită\n• Lipie uzbecă\n• Compot de casă', tag: 'Marți' }, en: { name: 'Business Lunch: Tuesday', desc: '• Veal Surpa Soup\n• Steamed Veal Manti\n• Uzbek Flatbread\n• Homemade Compote', tag: 'Tuesday' } },
+    { id: 'l3', category: 'lunch', price: 170, image: 'images/lagman.jpg', ru: { name: 'Бизнес-ланч: Среда', desc: '• Лагман\n• Рис с гуляшом\n• Узбекская лепёшка\n• Домашний лимонад', tag: 'Среда' }, ro: { name: 'Business Lunch: Miercuri', desc: '• Lagman\n• Orez cu gulaș\n• Lipie uzbecă\n• Limonadă de casă', tag: 'Miercuri' }, en: { name: 'Business Lunch: Wednesday', desc: '• Lagman Noodle Soup\n• Rice with Goulash\n• Uzbek Flatbread\n• Homemade Lemonade', tag: 'Wednesday' } },
+    { id: 'l4', category: 'lunch', price: 170, image: 'images/surpa.jpg', ru: { name: 'Бизнес-ланч: Четверг', desc: '• Шурпа с бараниной\n• Манты с бараниной\n• Узбекская лепёшка\n• Зелёный чай', tag: 'Четверг' }, ro: { name: 'Business Lunch: Joi', desc: '• Șurpa cu berbecuț\n• Manti cu berbecuț\n• Lipie uzbecă\n• Ceai verde', tag: 'Business Lunch: Thursday', desc: '• Lamb Surpa Soup\n• Steamed Lamb Manti\n• Uzbek Flatbread\n• Green Tea', tag: 'Thursday' } },
+    { id: 'l5', category: 'lunch', price: 170, image: 'images/holiday_plov.jpg', ru: { name: 'Бизнес-ланч: Пятница', desc: '• Чечевичный суп\n• Праздничный плов\n• Узбекская лепёшка\n• Компот из сухофруктов', tag: 'Пятница' }, ro: { name: 'Business Lunch: Vineri', desc: '• Supă de linte\n• Plov festiv\n• Lipie uzbecă\n• Compot din fructe uscate', tag: 'Vineri' }, en: { name: 'Business Lunch: Friday', desc: '• Red Lentil Soup\n• Festive Holiday Plov\n• Uzbek Flatbread\n• Dried Fruit Compote', tag: 'Friday' } },
+
     // 1. ХОЛОДНЫЕ ЗАКУСКИ (starters)
     { id: 'st1', category: 'starters', price: 120, image: 'images/babaganoush.jpg', ru: { name: 'Восточный бабагануш', desc: 'Запечённые баклажаны, тахини, чеснок, лимонный сок, оливковое масло и специи', tag: 'Закуска' }, ro: { name: 'Babaganoush Oriental', desc: 'Vinete coapte, tahini, usturoi, suc de lămâie, ulei de măsline și condimente', tag: 'Gustare' }, en: { name: 'Oriental Babaganoush', desc: 'Baked eggplants, tahini, garlic, lemon juice, olive oil, and oriental spices', tag: 'Starter' } },
     { id: 'st2', category: 'starters', price: 250, image: 'images/cheese_platter.jpg', ru: { name: 'Сырное плато', desc: 'Ассорти отборных сыров', tag: 'Ассорти' }, ro: { name: 'Platou de Brânzeturi', desc: 'Asortiment de brânzeturi alese', tag: 'Asortat' }, en: { name: 'Cheese Platter', desc: 'Assortment of selected fine cheeses', tag: 'Platter' } },
