@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  let currentLang = 'ru';
+  let currentLang = 'ro';
   let cart = [];
   let currentCategory = 'all';
   let searchQuery = '';
@@ -629,5 +629,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial Load: Fetch global status from Vercel Serverless API
   fetchGlobalSiteStatus();
-  setLanguage('ru');
+  setLanguage('ro');
 });
