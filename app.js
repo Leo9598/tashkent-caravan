@@ -387,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'dr39', category: 'bar', price: 90, ru: { name: 'Красный лимонад', desc: 'Ягодный сочный лимонад', tag: 'Лимонад' }, ro: { name: 'Limonadă Roșie', desc: 'Limonadă suculentă cu fructe de pădure', tag: 'Limonadă' }, en: { name: 'Red Lemonade', desc: 'Red berry infused juicy lemonade', tag: 'Lemonade' } },
 
     // КОМПОТ
-    { id: 'dr40', category: 'bar', price: 600, image: 'images/compot_30l.jpg', ru: { name: 'Домашний компот (30 л)', desc: 'Натуральный узбекский домашний компот из сухофруктов и ягод (30 литров)', tag: 'Компот' }, ro: { name: 'Compot de casă (30L)', desc: 'Compot tradițional uzbec din fructe uscate și fructe de pădure (30 litri)', tag: 'Compot' }, en: { name: 'Homemade Compote (30L)', desc: 'Traditional Uzbek fruit compote made with dried fruits & berries (30L)', tag: 'Compote' } },
+    { id: 'dr40', category: 'bar', price: 30, image: 'images/compot_30l.jpg', ru: { name: 'Домашний компот', desc: 'Натуральный узбекский домашний компот из сухофруктов и ягод', tag: 'Компот' }, ro: { name: 'Compot de casă', desc: 'Compot tradițional uzbec din fructe uscate și fructe de pădure', tag: 'Compot' }, en: { name: 'Homemade Compote', desc: 'Traditional Uzbek fruit compote made with dried fruits & berries', tag: 'Compote' } },
 
     // 10. АЛКОГОЛЬНЫЕ НАПИТКИ (alcohol)
     // КОКТЕЙЛИ (Cocktails)
