@@ -134,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_mangal: 'Мангал',
       cat_bakery: 'Выпечка',
       cat_sides: 'Гарниры',
+      cat_sauces: 'Соусы',
       cat_desserts: 'Десерты',
       cat_bar: 'Бар & Напитки',
       cat_alcohol: 'Алкогольные напитки',
@@ -183,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_mangal: 'Grătar (Mangal)',
       cat_bakery: 'Patiserie',
       cat_sides: 'Garnituri',
+      cat_sauces: 'Sosuri',
       cat_desserts: 'Deserturi',
       cat_bar: 'Bar & Băuturi',
       cat_alcohol: 'Băuturi Alcoolice',
@@ -232,6 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cat_mangal: 'Mangal Grill',
       cat_bakery: 'Bakery',
       cat_sides: 'Side Dishes',
+      cat_sauces: 'Sauces',
       cat_desserts: 'Desserts',
       cat_bar: 'Bar & Drinks',
       cat_alcohol: 'Alcoholic Drinks',
@@ -325,6 +328,16 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'sd1', category: 'sides', price: 70, image: 'images/french_fries.jpg', ru: { name: 'Картофель фри', desc: 'Хрустящий золотистый картофель фри со солью', tag: 'Гарнир' }, ro: { name: 'Cartofi Prăjiți', desc: 'Cartofi prăjiți crocanti și aurii', tag: 'Garnitură' }, en: { name: 'French Fries', desc: 'Crispy golden french fries salted to perfection', tag: 'Side' } },
     { id: 'sd2', category: 'sides', price: 95, image: 'images/crispy_eggplant.jpg', ru: { name: 'Хрустящие баклажаны', desc: 'Хрустящие ломтики баклажанов в кисло-сладком соусе с зеленью', tag: 'Хит' }, ro: { name: 'Vinete Crocante', desc: 'Vinete crocante în sos dulce-acrișor cu verdeață', tag: 'Top' }, en: { name: 'Crispy Eggplants', desc: 'Crispy fried eggplant cubes in sweet chili sauce with cilantro', tag: 'Favorite' } },
     { id: 'sd3', category: 'sides', price: 110, image: 'images/chicken_nuggets.jpg', ru: { name: 'Куриные наггетсы', desc: 'Сочные кусочки куриного филе в хрустящей панировке', tag: 'Гарнир' }, ro: { name: 'Nuggets de Pui', desc: 'Nuggets suculente de pui în crustă crocantă', tag: 'Garnitură' }, en: { name: 'Chicken Nuggets', desc: 'Crispy golden fried chicken nuggets', tag: 'Side' } },
+
+    // 7.5. СОУСЫ (sauces)
+    { id: 'sc1', category: 'sauces', price: 20, ru: { name: 'Гранатовый соус «Наршараб»', desc: 'Насыщенный кисло-сладкий соус из граната. Идеально подходит к мясу, шашлыку и люля-кебабу.', tag: 'Соус' }, ro: { name: 'Sos de rodii «Narșarab»', desc: 'Sos bogat dulce-acrișor din rodie. Ideal pentru carne, frigărui și lula-kebab.', tag: 'Sos' }, en: { name: 'Pomegranate Sauce "Narsharab"', desc: 'Rich sweet and sour pomegranate sauce. Perfect pairing for meat, shashlik, and kebab.', tag: 'Sauce' } },
+    { id: 'sc2', category: 'sauces', price: 20, ru: { name: 'Чесночный соус', desc: 'Нежный сливочный соус с ароматным чесноком и лёгкими пряными нотками.', tag: 'Соус' }, ro: { name: 'Sos de usturoi', desc: 'Sos fin cremos cu usturoi aromat și note ușor condimentate.', tag: 'Sos' }, en: { name: 'Garlic Sauce', desc: 'Delicate creamy sauce with aromatic garlic and subtle spice notes.', tag: 'Sauce' } },
+    { id: 'sc3', category: 'sauces', price: 20, ru: { name: 'Аджика', desc: 'Острый соус из томатов, сладкого и острого перца с ароматными специями.', tag: 'Острый' }, ro: { name: 'Adjica', desc: 'Sos picant din roșii, ardei dulce și iute cu condimente aromate.', tag: 'Picant' }, en: { name: 'Adjika', desc: 'Spicy sauce made from tomatoes, sweet and hot peppers with oriental spices.', tag: 'Spicy' } },
+    { id: 'sc4', category: 'sauces', price: 20, ru: { name: 'Сладкий чили', desc: 'Кисло-сладкий соус с приятной остротой. Отлично сочетается с курицей, мясом и закусками.', tag: 'Соус' }, ro: { name: 'Sweet Chili', desc: 'Sos dulce-acrișor cu o iuțeală plăcută. Se potrivește excelent cu pui, carne și gustări.', tag: 'Sos' }, en: { name: 'Sweet Chili', desc: 'Sweet and sour sauce with a gentle kick. Pairs great with chicken, meat, and appetizers.', tag: 'Sauce' } },
+    { id: 'sc5', category: 'sauces', price: 20, ru: { name: 'Томатный соус', desc: 'Ароматный соус из спелых томатов с пряными травами и специями. Подходит к мясным блюдам и картофелю.', tag: 'Соус' }, ro: { name: 'Sos de roșii', desc: 'Sos aromat din roșii coapte cu ierburi condimentate. Potrivit pentru mâncăruri din carne și cartofi.', tag: 'Sos' }, en: { name: 'Tomato Sauce', desc: 'Aromatic sauce made from ripe tomatoes with herbs and spices. Great for meat dishes and potatoes.', tag: 'Sauce' } },
+    { id: 'sc6', category: 'sauces', price: 20, ru: { name: 'Ткемали', desc: 'Кисло-пряный соус из алычи с зеленью и ароматными специями. Прекрасно дополняет мясо.', tag: 'Соус' }, ro: { name: 'Tkemali', desc: 'Sos acrișor-condimentat din corcodușe cu verdeață și condimente aromate. Completează de minune carnea.', tag: 'Sos' }, en: { name: 'Tkemali', desc: 'Tangy and spiced plum sauce with herbs. Perfectly complements grilled meats.', tag: 'Sauce' } },
+    { id: 'sc7', category: 'sauces', price: 20, ru: { name: 'Сметанно-чесночный соус', desc: 'Нежный соус на основе сметаны с чесноком и свежей зеленью.', tag: 'Соус' }, ro: { name: 'Sos de smântână cu usturoi', desc: 'Sos delicat pe bază de smântână cu usturoi și verdeață proaspătă.', tag: 'Sos' }, en: { name: 'Sour Cream & Garlic Sauce', desc: 'Delicate sour cream based sauce with garlic and fresh garden herbs.', tag: 'Sauce' } },
+    { id: 'sc8', category: 'sauces', price: 20, ru: { name: 'Острый перечно-томатный соус', desc: 'Пикантный соус из томатов и острого перца для любителей яркого и насыщенного вкуса.', tag: 'Острый' }, ro: { name: 'Sos picant de ardei și roșii', desc: 'Sos picant din roșii și ardei iute pentru iubitorii de gust intens și vibrant.', tag: 'Picant' }, en: { name: 'Spicy Pepper & Tomato Sauce', desc: 'Zesty sauce made of ripe tomatoes and hot chili peppers for bold flavor lovers.', tag: 'Spicy' } },
 
     // 8. ДЕСЕРТЫ (desserts)
     { id: 'ds1', category: 'desserts', price: 80, image: 'images/ice_cream.jpg', ru: { name: 'Мороженое', desc: 'Ассорти сливочного мороженого с ягодным соусом', tag: 'Десерт' }, ro: { name: 'Înghețată', desc: 'Inghețată asortată cu sos de fructe de pădure', tag: 'Desert' }, en: { name: 'Ice Cream', desc: 'Assorted cream ice cream scoops with berry sauce', tag: 'Dessert' } },
