@@ -342,16 +342,51 @@ body {
   border: 2px solid var(--border-gold);
 }
 
-.hero-image-frame img {
-  width: 100%;
+.hero-graphic-card {
   height: 460px;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.5s ease;
+  background: radial-gradient(circle at center, rgba(13, 92, 88, 0.6) 0%, rgba(16, 25, 44, 0.95) 80%),
+              linear-gradient(135deg, rgba(212, 175, 55, 0.1), transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2.5rem;
 }
 
-.hero-image-frame:hover img {
-  transform: scale(1.03);
+.hero-graphic-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.hero-graphic-icon {
+  font-size: 4.5rem;
+  color: var(--color-gold);
+  filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.5));
+  animation: pulseGold 3s infinite ease-in-out;
+}
+
+@keyframes pulseGold {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4)); }
+  50% { transform: scale(1.08); filter: drop-shadow(0 0 35px rgba(212, 175, 55, 0.7)); }
+}
+
+.hero-graphic-title {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 1.5px;
+  margin: 0;
+}
+
+.hero-graphic-text {
+  font-size: 1.05rem;
+  color: var(--color-gold-light);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0;
 }
 
 .hero-float-badge {
