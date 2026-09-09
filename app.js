@@ -96,8 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
           localStorage.removeItem('tashkent_unlocked');
         }
         renderSiteStatusOverlay();
-        alert(targetOpen 
-          ? '🟢 Site-ul a fost DESCHIS cu succes pentru toți clienții!' 
+        alert(targetOpen
+          ? '🟢 Site-ul a fost DESCHIS cu succes pentru toți clienții!'
           : '🔴 Site-ul a fost ÎNCHIS cu succes! Mesajul "Site-ul nu lucrează temporar!" este afișat.');
       } else {
         alert(data.message || 'Cod PIN incorect!');
@@ -292,9 +292,9 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'sup5', category: 'soups', price: 100, weight: 200, ru: { name: 'Чечевичный суп', desc: 'Нежный крем-суп из красной чечевицы со специями и долькой лимона', tag: 'Крем-суп' }, ro: { name: 'Supă de Linte', desc: 'Supă cremă delicată de linte roșie cu condimente și lămâie', tag: 'Supă Cremă' }, en: { name: 'Red Lentil Soup', desc: 'Creamy red lentil soup with aromatic oriental spices and fresh lemon', tag: 'Cream Soup' } },
 
     // 4. ОСНОВНЫЕ БЛЮДА (mains)
-    { id: 'm1', category: 'mains', price: 150, weight: 350, ru: { name: 'Ташкентский плов', desc: 'Король восточного стола: рис, баранина, жёлтая морковь, нут и зира', tag: 'Главный Хит' }, ro: { name: 'Plov Tașkent', desc: 'Regele bucătăriei uzbece: orez special, berbecuț, morcov galben și chimen', tag: 'Specialitatea Casei' }, en: { name: 'Tashkent Plov Pilaf', desc: 'The crown jewel: aromatic rice, tender lamb, yellow carrots, and cumin', tag: 'Signature Dish' } },
+    { id: 'm1', category: 'mains', price: 150, weight: 350, ru: { name: 'Ташкекий плов', desc: 'Король восточного стола: рис, баранина, жёлтая морковь, нут и зира', tag: 'Главный Хит' }, ro: { name: 'Plov Tașkent', desc: 'Regele bucătăriei uzbece: orez special, berbecuț, morcov galben și chimen', tag: 'Specialitatea Casei' }, en: { name: 'Tashkent Plov Pilaf', desc: 'The crown jewel: aromatic rice, tender lamb, yellow carrots, and cumin', tag: 'Signature Dish' } },
     { id: 'm2', category: 'mains', price: 130, weight: 350, ru: { name: 'Праздничный плов', desc: 'Традиционный узбекский праздничный плов с телятиной, изюмом и нутом', tag: 'Праздник' }, ro: { name: 'Plov Festiv', desc: 'Plov uzbec festiv cu carne de vită, stafide și năut', tag: 'Festiv' }, en: { name: 'Festive Holiday Plov', desc: 'Traditional festive Uzbek plov with tender beef, raisins, and chickpeas', tag: 'Festive' } },
-    { id: 'm3', category: 'mains', price: 120, weight: 150, ru: { name: 'Манты с телятиной', desc: 'Сочные паровые узбекские манты с рубленым мясом телятины и луком', tag: 'На пару' }, ro: { name: 'Manti cu Vită', desc: 'Colțunași mari uzbeci la abur cu carne de mânzat și ceapă', tag: 'La Abur' }, en: { name: 'Steamed Veal Manti', desc: 'Large steamed Uzbek dumplings filled with spiced minced veal and onions', tag: 'Steamed' } },
+    { id: 'm3', category: 'mains', price: 120, weight: 150, ru: { name: 'Манты с нтстелятиной', desc: 'Сочные паровые узбекские манты с рубленым мясом телятины и луком', tag: 'На пару' }, ro: { name: 'Manti cu Vită', desc: 'Colțunași mari uzbeci la abur cu carne de mânzat și ceapă', tag: 'La Abur' }, en: { name: 'Steamed Veal Manti', desc: 'Large steamed Uzbek dumplings filled with spiced minced veal and onions', tag: 'Steamed' } },
     { id: 'm4', category: 'mains', price: 120, weight: 150, ru: { name: 'Манты с бараниной', desc: 'Паровые манты с рубленой бараниной, курдюком и восточными специями', tag: 'На пару' }, ro: { name: 'Manti cu Berbecuț', desc: 'Colțunași la abur umpluți cu carne de berbecuț și condimente oriental', tag: 'La Abur' }, en: { name: 'Steamed Lamb Manti', desc: 'Steamed dumplings stuffed with chopped lamb and oriental spices', tag: 'Steamed' } },
     { id: 'm5', category: 'mains', price: 150, weight: 150, ru: { name: 'Жареные манты', desc: 'Хрустящие обжаренные манты с золотистой корочкой и сочной начинкой', tag: 'Хрустящее' }, ro: { name: 'Manti Prăjiți', desc: 'Colțunași prăjiți crocanți cu umplutură suculentă de carne', tag: 'Crocant' }, en: { name: 'Fried Manti Dumplings', desc: 'Crispy pan-fried dumplings with juicy savory meat filling', tag: 'Crispy' } },
     { id: 'm6', category: 'mains', price: 140, weight: 350, ru: { name: 'Казан-кебаб', desc: 'Обжаренные до корочки бараньи рёбра с румяным картофелем из казана', tag: 'Хит' }, ro: { name: 'Kazan Kebab', desc: 'Coaste de berbecuț rumenite la ceaun cu cartofi aurii', tag: 'Delicios' }, en: { name: 'Kazan Kebab', desc: 'Crispy fried lamb ribs served with golden potatoes straight from the kazan', tag: 'Kazan Special' } },
@@ -358,16 +358,16 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'dr9', category: 'bar', price: 85, ru: { name: 'Айс Раф', desc: 'Освежающий сливочно-ванильный раф со льдом', tag: 'Холодный кофе' }, ro: { name: 'Ice Raf', desc: 'Raf cremós rece cu frișcă și gheață', tag: 'Cafea rece' }, en: { name: 'Iced Raf', desc: 'Chilled creamy vanilla Raf coffee over ice', tag: 'Cold Coffee' } },
 
     // ЧАЙ
-    { id: 'dr10', category: 'bar', price: 55, ru: { name: 'Чёрный чай', desc: 'Ароматный листовой чёрный чай в чайнике', tag: 'Чай' }, ro: { name: 'Ceai Negru', desc: 'Ceai negru aromat infuzat în ceainic', tag: 'Ceai' }, en: { name: 'Black Tea', desc: 'Aromatic loose leaf black tea in a pot', tag: 'Tea' } },
-    { id: 'dr11', category: 'bar', price: 55, ru: { name: 'Зелёный чай', desc: 'Освежающий зелёный чай в чайнике', tag: 'Чай' }, ro: { name: 'Ceai Verde', desc: 'Ceai verde răcoritor infuzat în ceainic', tag: 'Ceai' }, en: { name: 'Green Tea', desc: 'Refreshing green tea in a pot', tag: 'Tea' } },
+    { id: 'dr10', category: 'bar', price: 55, volume: 700, ru: { name: 'Чёрный чай', desc: 'Ароматный листовой чёрный чай в чайнике', tag: 'Чай' }, ro: { name: 'Ceai Negru', desc: 'Ceai negru aromat infuzat în ceainic', tag: 'Ceai' }, en: { name: 'Black Tea', desc: 'Aromatic loose leaf black tea in a pot', tag: 'Tea' } },
+    { id: 'dr11', category: 'bar', price: 55, volume: 700, ru: { name: 'Зелёный чай', desc: 'Освежающий зелёный чай в чайнике', tag: 'Чай' }, ro: { name: 'Ceai Verde', desc: 'Ceai verde răcoritor infuzat în ceainic', tag: 'Ceai' }, en: { name: 'Green Tea', desc: 'Refreshing green tea in a pot', tag: 'Tea' } },
 
     // СОКИ
-    { id: 'dr13', category: 'bar', price: 40, ru: { name: 'Сок Апельсиновый', desc: 'Натуральный апельсиновый сок', tag: 'Сок' }, ro: { name: 'Suc de Portocale', desc: 'Suc natural de portocale', tag: 'Suc' }, en: { name: 'Orange Juice', desc: 'Natural orange juice', tag: 'Juice' } },
-    { id: 'dr14', category: 'bar', price: 40, ru: { name: 'Сок Апельсин–Манго', desc: 'Сочный микс апельсина и манго', tag: 'Сок' }, ro: { name: 'Suc de Portocale și Mango', desc: 'Amestec suculent de portocale și mango', tag: 'Suc' }, en: { name: 'Orange–Mango Juice', desc: 'Delicious blend of orange and mango', tag: 'Juice' } },
-    { id: 'dr15', category: 'bar', price: 40, ru: { name: 'Сок Яблочный', desc: 'Натуральный яблочный сок', tag: 'Сок' }, ro: { name: 'Suc de Mere', desc: 'Suc natural de mere', tag: 'Suc' }, en: { name: 'Apple Juice', desc: 'Natural apple juice', tag: 'Juice' } },
-    { id: 'dr16', category: 'bar', price: 40, ru: { name: 'Сок Яблоко–Виноград', desc: 'Освежающий сок яблоко-виноград', tag: 'Сок' }, ro: { name: 'Suc de Mere și Struguri', desc: 'Suc de mere și struguri', tag: 'Suc' }, en: { name: 'Apple–Grape Juice', desc: 'Apple and grape juice mix', tag: 'Juice' } },
-    { id: 'dr17', category: 'bar', price: 40, ru: { name: 'Сок Томатный', desc: 'Насыщенный томатный сок', tag: 'Сок' }, ro: { name: 'Suc de Roșii', desc: 'Suc natural de roșii', tag: 'Suc' }, en: { name: 'Tomato Juice', desc: 'Rich tomato juice', tag: 'Juice' } },
-    { id: 'dr18', category: 'bar', price: 40, ru: { name: 'Сок Мультивитамин', desc: 'Витаминный микс фруктовых соков', tag: 'Сок' }, ro: { name: 'Suc Multivitamin', desc: 'Suc multivitaminic', tag: 'Suc' }, en: { name: 'Multivitamin Juice', desc: 'Multivitamin juice blend', tag: 'Juice' } },
+    { id: 'dr13', category: 'bar', price: 40, volume: 200, ru: { name: 'Сок Апельсиновый', desc: 'Натуральный апельсиновый сок', tag: 'Сок' }, ro: { name: 'Suc de Portocale', desc: 'Suc natural de portocale', tag: 'Suc' }, en: { name: 'Orange Juice', desc: 'Natural orange juice', tag: 'Juice' } },
+    { id: 'dr14', category: 'bar', price: 40, volume: 200, ru: { name: 'Сок Апельсин–Манго', desc: 'Сочный микс апельсина и манго', tag: 'Сок' }, ro: { name: 'Suc de Portocale și Mango', desc: 'Amestec suculent de portocale și mango', tag: 'Suc' }, en: { name: 'Orange–Mango Juice', desc: 'Delicious blend of orange and mango', tag: 'Juice' } },
+    { id: 'dr15', category: 'bar', price: 40, volume: 200, ru: { name: 'Сок Яблочный', desc: 'Натуральный яблочный сок', tag: 'Сок' }, ro: { name: 'Suc de Mere', desc: 'Suc natural de mere', tag: 'Suc' }, en: { name: 'Apple Juice', desc: 'Natural apple juice', tag: 'Juice' } },
+    { id: 'dr16', category: 'bar', price: 40, volume: 200, ru: { name: 'Сок Яблоко–Виноград', desc: 'Освежающий сок яблоко-виноград', tag: 'Сок' }, ro: { name: 'Suc de Mere și Struguri', desc: 'Suc de mere și struguri', tag: 'Suc' }, en: { name: 'Apple–Grape Juice', desc: 'Apple and grape juice mix', tag: 'Juice' } },
+    { id: 'dr17', category: 'bar', price: 40, volume: 200, ru: { name: 'Сок Томатный', desc: 'Насыщенный томатный сок', tag: 'Сок' }, ro: { name: 'Suc de Roșii', desc: 'Suc natural de roșii', tag: 'Suc' }, en: { name: 'Tomato Juice', desc: 'Rich tomato juice', tag: 'Juice' } },
+    { id: 'dr18', category: 'bar', price: 40, volume: 200, ru: { name: 'Сок Мультивитамин', desc: 'Витаминный микс фруктовых соков', tag: 'Сок' }, ro: { name: 'Suc Multivitamin', desc: 'Suc multivitaminic', tag: 'Suc' }, en: { name: 'Multivitamin Juice', desc: 'Multivitamin juice blend', tag: 'Juice' } },
 
     // ГАЗИРОВАННЫЕ НАПИТКИ
     { id: 'dr19', category: 'bar', price: 45, ru: { name: 'Coca-Cola (0.33 л)', desc: 'Прохладительный напиток Coca-Cola', tag: 'Газировка' }, ro: { name: 'Coca-Cola (0.33L)', desc: 'Băutură răcoritoare carbogazoasă', tag: 'Soda' }, en: { name: 'Coca-Cola (0.33L)', desc: 'Chilled soft soda drink', tag: 'Soda' } },
@@ -391,13 +391,13 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'dr35', category: 'bar', price: 35, ru: { name: 'Dorna 0.25 л', desc: 'Минеральная вода', tag: 'Вода' }, ro: { name: 'Dorna 0.25L', desc: 'Apă minerală plată / carbogazoasă', tag: 'Apă' }, en: { name: 'Dorna 0.25L', desc: 'Mineral water bottle', tag: 'Water' } },
 
     // ЛИМОНАДЫ
-    { id: 'dr36', category: 'bar', price: 85, ru: { name: 'Классический лимонад', desc: 'Свежевыжатый лимонный лимонад с мятой', tag: 'Лимонад' }, ro: { name: 'Limonadă Clasică', desc: 'Limonadă proaspătă cu lămâie și mentă', tag: 'Limonadă' }, en: { name: 'Classic Lemonade', desc: 'Freshly squeezed lemon lemonade with mint', tag: 'Lemonade' } },
-    { id: 'dr37', category: 'bar', price: 90, ru: { name: 'Мохито-лимонад', desc: 'Освежающий лимонад со вкусом Мохито и мятой', tag: 'Лимонад' }, ro: { name: 'Limonadă Mojito', desc: 'Limonadă răcoritoare cu aromă de Mojito și mentă', tag: 'Limonadă' }, en: { name: 'Mojito Lemonade', desc: 'Refreshing Mojito styled minty lemonade', tag: 'Lemonade' } },
-    { id: 'dr38', category: 'bar', price: 90, ru: { name: 'Цитрусовый лимонад', desc: 'Микс апельсина, грейпфрута и лимона', tag: 'Лимонад' }, ro: { name: 'Limonadă de Citrice', desc: 'Mix de portocale, grefon și lămâie', tag: 'Limonadă' }, en: { name: 'Citrus Lemonade', desc: 'Citrus blend of orange, grapefruit, and lemon', tag: 'Lemonade' } },
-    { id: 'dr39', category: 'bar', price: 90, ru: { name: 'Красный лимонад', desc: 'Ягодный сочный лимонад', tag: 'Лимонад' }, ro: { name: 'Limonadă Roșie', desc: 'Limonadă suculentă cu fructe de pădure', tag: 'Limonadă' }, en: { name: 'Red Lemonade', desc: 'Red berry infused juicy lemonade', tag: 'Lemonade' } },
+    { id: 'dr36', category: 'bar', price: 85, volume: 400, ru: { name: 'Классический лимонад', desc: 'Свежевыжатый лимонный лимонад с мятой', tag: 'Лимонад' }, ro: { name: 'Limonadă Clasică', desc: 'Limonadă proaspătă cu lămâie și mentă', tag: 'Limonadă' }, en: { name: 'Classic Lemonade', desc: 'Freshly squeezed lemon lemonade with mint', tag: 'Lemonade' } },
+    { id: 'dr37', category: 'bar', price: 90, volume: 400, ru: { name: 'Мохито-лимонад', desc: 'Освежающий лимонад со вкусом Мохито и мятой', tag: 'Лимонад' }, ro: { name: 'Limonadă Mojito', desc: 'Limonadă răcoritoare cu aromă de Mojito și mentă', tag: 'Limonadă' }, en: { name: 'Mojito Lemonade', desc: 'Refreshing Mojito styled minty lemonade', tag: 'Lemonade' } },
+    { id: 'dr38', category: 'bar', price: 90, volume: 400, ru: { name: 'Цитрусовый лимонад', desc: 'Микс апельсина, грейпфрута и лимона', tag: 'Лимонад' }, ro: { name: 'Limonadă de Citrice', desc: 'Mix de portocale, grefon și lămâie', tag: 'Limonadă' }, en: { name: 'Citrus Lemonade', desc: 'Citrus blend of orange, grapefruit, and lemon', tag: 'Lemonade' } },
+    { id: 'dr39', category: 'bar', price: 90, volume: 400, ru: { name: 'Красный лимонад', desc: 'Ягодный сочный лимонад', tag: 'Лимонад' }, ro: { name: 'Limonadă Roșie', desc: 'Limonadă suculentă cu fructe de pădure', tag: 'Limonadă' }, en: { name: 'Red Lemonade', desc: 'Red berry infused juicy lemonade', tag: 'Lemonade' } },
 
     // КОМПОТ
-    { id: 'dr40', category: 'bar', price: 30, ru: { name: 'Домашний компот', desc: 'Натуральный узбекский домашний компот из сухофруктов и ягод', tag: 'Компот' }, ro: { name: 'Compot de casă', desc: 'Compot tradițional uzbec din fructe uscate și fructe de pădure', tag: 'Compot' }, en: { name: 'Homemade Compote', desc: 'Traditional Uzbek fruit compote made with dried fruits & berries', tag: 'Compote' } },
+    { id: 'dr40', category: 'bar', price: 30, volume: 350, ru: { name: 'Домашний компот', desc: 'Натуральный узбекский домашний компот из сухофруктов и ягод', tag: 'Компот' }, ro: { name: 'Compot de casă', desc: 'Compot tradițional uzbec din fructe uscate și fructe de pădure', tag: 'Compot' }, en: { name: 'Homemade Compote', desc: 'Traditional Uzbek fruit compote made with dried fruits & berries', tag: 'Compote' } },
 
     // 10. АЛКОГОЛЬНЫЕ НАПИТКИ (alcohol)
     // КОКТЕЙЛИ (Cocktails)
@@ -479,9 +479,10 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'w18_b', category: 'alcohol', price: 400, ru: { name: 'Inspiro Vartely Brut — Бутылка (750 мл)', desc: 'Игристое вино брют', tag: 'Игристое вино (750 мл)' }, ro: { name: 'Inspiro Vartely Brut — Sticlă (750 ml)', desc: 'Vin spumant brut', tag: 'Vin spumant (750 ml)' }, en: { name: 'Inspiro Vartely Brut — Bottle (750 ml)', desc: 'Brut sparkling wine', tag: 'Sparkling Wine (750 ml)' } },
 
     // ПИВО
-    { id: 'br1', category: 'alcohol', price: 50, ru: { name: 'Пиво Львівське (0.5 л)', desc: 'Светлое фильтрованное пиво', tag: 'Пиво (0.5 л)' }, ro: { name: 'Bere Lvivske (0.5L)', desc: 'Bere blondă filtrată', tag: 'Bere (0.5L)' }, en: { name: 'Lvivske Beer (0.5L)', desc: 'Light pale lager', tag: 'Beer (0.5L)' } },
-    { id: 'br2', category: 'alcohol', price: 60, ru: { name: 'Пиво Carlsberg Pilsner (0.5 л)', desc: 'Классическое светлое пиво', tag: 'Пиво (0.5 л)' }, ro: { name: 'Bere Carlsberg Pilsner (0.5L)', desc: 'Bere blondă premium', tag: 'Bere (0.5L)' }, en: { name: 'Carlsberg Pilsner (0.5L)', desc: 'Classic premium pilsner beer', tag: 'Beer (0.5L)' } },
-    { id: 'br3', category: 'alcohol', price: 60, ru: { name: 'Пиво Львівське 1715 (0.5 л)', desc: 'Традиционное светлое пиво', tag: 'Пиво (0.5 л)' }, ro: { name: 'Bere Lvivske 1715 (0.5L)', desc: 'Bere tradițională blondă', tag: 'Bere (0.5L)' }, en: { name: 'Lvivske 1715 Beer (0.5L)', desc: 'Traditional premium pale lager', tag: 'Beer (0.5L)' } }
+    { id: 'br1', category: 'alcohol', price: 50, volume: '0.5 л', ru: { name: 'Пиво Львівське (0.5 л)', desc: 'Светлое фильтрованное пиво', tag: 'Пиво' }, ro: { name: 'Bere Lvivske (0.5L)', desc: 'Bere blondă filtrată', tag: 'Bere' }, en: { name: 'Lvivske Beer (0.5L)', desc: 'Light pale lager', tag: 'Beer' } },
+    { id: 'br2', category: 'alcohol', price: 60, volume: '0.5 л', ru: { name: 'Пиво Carlsberg Pilsner (0.5 л)', desc: 'Классическое светлое пиво', tag: 'Пиво' }, ro: { name: 'Bere Carlsberg Pilsner (0.5L)', desc: 'Bere blondă premium', tag: 'Bere' }, en: { name: 'Carlsberg Pilsner (0.5L)', desc: 'Classic premium pilsner beer', tag: 'Beer' } },
+    { id: 'br3', category: 'alcohol', price: 60, volume: '0.5 л', ru: { name: 'Пиво Львівське 1715 (0.5 л)', desc: 'Традиционное светлое пиво', tag: 'Пиво' }, ro: { name: 'Bere Lvivske 1715 (0.5L)', desc: 'Bere tradițională blondă', tag: 'Bere' }, en: { name: 'Lvivske 1715 Beer (0.5L)', desc: 'Traditional premium pale lager', tag: 'Beer' } },
+    { id: 'br4', category: 'alcohol', price: 55, volume: '0.5 л', ru: { name: 'Пиво на разлив (0.5 л)', desc: 'Свежее прохладное разливное пиво', tag: 'Разливное' }, ro: { name: 'Bere la Rozetă (0.5L)', desc: 'Bere proaspătă rece la rozetă', tag: 'Bere' }, en: { name: 'Draft Beer (0.5L)', desc: 'Fresh cold draft beer', tag: 'Draft Beer' } }
   ];
 
   // DOM Elements
@@ -540,9 +541,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const filtered = menuData.filter(item => {
       const itemLang = item[currentLang] || item.ru;
       const matchesCategory = (currentCategory === 'all') || (item.category === currentCategory);
-      const matchesSearch = itemLang.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            itemLang.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            itemLang.tag.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = itemLang.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        itemLang.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        itemLang.tag.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
 
@@ -560,7 +561,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const itemLang = item[currentLang] || item.ru;
       const card = document.createElement('div');
       card.className = 'menu-card';
-      
+
       const imgHtml = item.image ? `
         <div class="card-image-wrapper">
           <img src="${item.image}" alt="${itemLang.name}" class="card-img" loading="lazy">
@@ -619,7 +620,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  window.addToCart = function(id) {
+  window.addToCart = function (id) {
     const item = menuData.find(m => m.id === id);
     if (!item) return;
 
@@ -676,7 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cartCountBadge) cartCountBadge.textContent = count;
   }
 
-  window.changeCartQty = function(index, delta) {
+  window.changeCartQty = function (index, delta) {
     cart[index].qty += delta;
     if (cart[index].qty <= 0) {
       cart.splice(index, 1);
