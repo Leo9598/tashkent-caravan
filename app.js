@@ -574,7 +574,14 @@ document.addEventListener('DOMContentLoaded', () => {
       ` : '';
 
       const weightUnit = currentLang === 'ru' ? 'г' : 'g';
-      const weightText = item.weight ? `${item.weight} ${weightUnit}` : '';
+      const volumeUnit = currentLang === 'ru' ? 'мл' : 'ml';
+
+      let portionText = '';
+      if (item.weight) {
+        portionText = `${item.weight} ${weightUnit}`;
+      } else if (item.volume) {
+        portionText = typeof item.volume === 'number' ? `${item.volume} ${volumeUnit}` : item.volume;
+      }
 
       card.innerHTML = `
         ${imgHtml}
@@ -583,7 +590,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="card-top">
             <div>
               <h3 class="card-title">${itemLang.name}</h3>
-              ${weightText ? `<span style="font-size: 0.8rem; color: var(--color-gold); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; margin-top: 3px;"><i class="fa-solid fa-scale-balanced" style="font-size: 0.75rem;"></i>${weightText}</span>` : ''}
+              ${portionText ? `<span style="font-size: 0.8rem; color: var(--color-gold); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; margin-top: 3px;"><i class="fa-solid ${item.volume ? 'fa-glass-water' : 'fa-scale-balanced'}" style="font-size: 0.75rem;"></i>${portionText}</span>` : ''}
             </div>
             <span class="card-price">${item.price} ${dict.currency}</span>
           </div>
@@ -591,7 +598,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="card-footer">
           <span style="font-size: 0.82rem; color: var(--color-text-muted); display: inline-flex; align-items: center; gap: 4px;">
-            ${weightText ? `<i class="fa-solid fa-utensils" style="color: var(--color-gold); font-size: 0.75rem;"></i> Tashkent` : 'Tashkent'}
+            ${portionText ? `<i class="fa-solid fa-utensils" style="color: var(--color-gold); font-size: 0.75rem;"></i> Tashkent` : 'Tashkent'}
           </span>
           <button class="btn-add-item" onclick="addToCart('${item.id}')">
             <i class="fa-solid fa-plus"></i> ${dict.btn_add_to_cart}
@@ -654,13 +661,19 @@ document.addEventListener('DOMContentLoaded', () => {
         total += item.price * item.qty;
         count += item.qty;
         const weightUnit = currentLang === 'ru' ? 'г' : 'g';
-        const weightStr = item.weight ? ` (${item.weight} ${weightUnit})` : '';
+        const volumeUnit = currentLang === 'ru' ? 'мл' : 'ml';
+        let portionStr = '';
+        if (item.weight) {
+          portionStr = ` (${item.weight} ${weightUnit})`;
+        } else if (item.volume) {
+          portionStr = ` (${typeof item.volume === 'number' ? `${item.volume} ${volumeUnit}` : item.volume})`;
+        }
 
         const cartRow = document.createElement('div');
         cartRow.className = 'cart-item';
         cartRow.innerHTML = `
           <div>
-            <strong style="color: #fff; display: block; font-size: 0.95rem;">${itemLang.name}${weightStr}</strong>
+            <strong style="color: #fff; display: block; font-size: 0.95rem;">${itemLang.name}${portionStr}</strong>
             <span style="color: var(--color-gold); font-size: 0.85rem;">${item.price} ${dict.currency} × ${item.qty}</span>
           </div>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
