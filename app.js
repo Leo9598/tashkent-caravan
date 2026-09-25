@@ -623,6 +623,8 @@ document.addEventListener('DOMContentLoaded', () => {
         e.target.classList.add('active');
         currentCategory = e.target.getAttribute('data-category');
         renderMenu();
+        // Smoothly scroll active tab into view on mobile
+        e.target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       }
     });
   }
@@ -695,6 +697,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (cartTotalSum) cartTotalSum.textContent = `${total} ${dict.currency}`;
     if (cartCountBadge) cartCountBadge.textContent = count;
+
+    // Mobile Floating Bottom Cart Bar Updates
+    const mobileCartBar = document.getElementById('mobileCartBar');
+    const mobileCartCount = document.getElementById('mobileCartCount');
+    const mobileCartTotal = document.getElementById('mobileCartTotal');
+
+    if (count > 0) {
+      if (mobileCartBar) mobileCartBar.classList.add('active');
+      if (mobileCartCount) {
+        const word = currentLang === 'ro' ? (count === 1 ? '1 produs' : `${count} produse`) : (currentLang === 'en' ? (count === 1 ? '1 item' : `${count} items`) : (count === 1 ? '1 блюдо' : `${count} блюд`));
+        mobileCartCount.textContent = word;
+      }
+      if (mobileCartTotal) mobileCartTotal.textContent = `${total} ${dict.currency}`;
+    } else {
+      if (mobileCartBar) mobileCartBar.classList.remove('active');
+    }
   }
 
   window.changeCartQty = function (index, delta) {
@@ -707,6 +725,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (cartOpenBtn && cartDrawer) cartOpenBtn.addEventListener('click', () => cartDrawer.classList.add('active'));
   if (cartCloseBtn && cartDrawer) cartCloseBtn.addEventListener('click', () => cartDrawer.classList.remove('active'));
+
+  const mobileCartOpenBtn = document.getElementById('mobileCartOpenBtn');
+  if (mobileCartOpenBtn && cartDrawer) {
+    mobileCartOpenBtn.addEventListener('click', () => cartDrawer.classList.add('active'));
+  }
 
   // Secret Owner Toggle: Tap Logo 5 Times to Turn Site ON or OFF Globally
   const brandLogo = document.getElementById('brandLogoLink');
