@@ -339,8 +339,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 8. ДЕСЕРТЫ (desserts)
     { id: 'ds1', category: 'desserts', price: 80, weight: 150, ru: { name: 'Мороженое', desc: 'Ассорти сливочного мороженого с ягодным соусом', tag: 'Десерт' }, ro: { name: 'Înghețată', desc: 'Inghețată asortată cu sos de fructe de pădure', tag: 'Desert' }, en: { name: 'Ice Cream', desc: 'Assorted cream ice cream scoops with berry sauce', tag: 'Dessert' } },
-    { id: 'ds2', category: 'desserts', price: 100, weight: 100, ru: { name: 'Баклава', desc: 'Традиционная восточная баклава с орехами и медовым сиропом', tag: 'Восток' }, ro: { name: 'Baclava', desc: 'Baclava tradițională orientală cu nuci și miere', tag: 'Oriental' }, en: { name: 'Baklava', desc: 'Authentic oriental sweet baklava with walnuts and honey', tag: 'Sweet' } },
-    { id: 'ds3', category: 'desserts', price: 90, weight: 180, ru: { name: 'Наполеон', desc: 'Нежный домашний слоёный торт с заварным ванильным кремом', tag: 'Десерт' }, ro: { name: 'Tort Napoleon', desc: 'Tort foietaj delicat de casă cu cremă fină de vanilie', tag: 'Desert' }, en: { name: 'Napoleon Cake', desc: 'Classic homemade puff pastry cake layered with vanilla custard cream', tag: 'Dessert' } },
+    { id: 'ds2', category: 'desserts', price: 150, weight: 100, ru: { name: 'Баклава', desc: 'Традиционная восточная баклава с орехами и медовым сиропом', tag: 'Восток' }, ro: { name: 'Baclava', desc: 'Baclava tradițională orientală cu nuci și miere', tag: 'Oriental' }, en: { name: 'Baklava', desc: 'Authentic oriental sweet baklava with walnuts and honey', tag: 'Sweet' } },
+    { id: 'ds3', category: 'desserts', price: 110, weight: 180, ru: { name: 'Наполеон', desc: 'Нежный домашний слоёный торт с заварным ванильным кремом', tag: 'Десерт' }, ro: { name: 'Tort Napoleon', desc: 'Tort foietaj delicat de casă cu cremă fină de vanilie', tag: 'Desert' }, en: { name: 'Napoleon Cake', desc: 'Classic homemade puff pastry cake layered with vanilla custard cream', tag: 'Dessert' } },
 
     // 9. БАР & НАПИТКИ (bar)
     // КОФЕ
