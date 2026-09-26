@@ -522,6 +522,13 @@ document.addEventListener('DOMContentLoaded', () => {
       menuSearchInput.placeholder = dict.search_placeholder;
     }
 
+    const nameInput = document.getElementById('orderCustomerName');
+    const phoneInput = document.getElementById('orderCustomerPhone');
+    const notesInput = document.getElementById('orderNotes');
+    if (nameInput) nameInput.placeholder = lang === 'ro' ? 'Numele Dvs. *' : (lang === 'en' ? 'Your Name *' : 'Ваше Имя *');
+    if (phoneInput) phoneInput.placeholder = lang === 'ro' ? 'Număr de telefon (ex: 078142910) *' : (lang === 'en' ? 'Phone number (e.g. 078142910) *' : 'Номер телефона (например: 078142910) *');
+    if (notesInput) notesInput.placeholder = lang === 'ro' ? 'Masa / Comentariu (opțional)' : (lang === 'en' ? 'Table / Notes (optional)' : 'Столик / Комментарий к заказу');
+
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
     });
@@ -729,6 +736,81 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileCartOpenBtn = document.getElementById('mobileCartOpenBtn');
   if (mobileCartOpenBtn && cartDrawer) {
     mobileCartOpenBtn.addEventListener('click', () => cartDrawer.classList.add('active'));
+  }
+
+  // Send Order to Telegram Bot API
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', async () => {
+      const dict = i18n[currentLang] || i18n.ru;
+
+      if (cart.length === 0) {
+        alert(dict.cart_empty ? dict.cart_empty.replace(/<br\s*\/?>/gi, ' ') : 'Coșul este gol!');
+        return;
+      }
+
+      const nameInput = document.getElementById('orderCustomerName');
+      const phoneInput = document.getElementById('orderCustomerPhone');
+      const notesInput = document.getElementById('orderNotes');
+
+      const name = nameInput ? nameInput.value.trim() : '';
+      const phone = phoneInput ? phoneInput.value.trim() : '';
+      const notes = notesInput ? notesInput.value.trim() : '';
+
+      if (!name || !phone) {
+        alert(currentLang === 'ro' 
+          ? 'Vă rugăm să introduceți numele și numărul de telefon!' 
+          : (currentLang === 'en' ? 'Please enter your name and phone number!' : 'Пожалуйста, укажите Ваше имя и номер телефона!'));
+        if (!name && nameInput) nameInput.focus();
+        else if (!phone && phoneInput) phoneInput.focus();
+        return;
+      }
+
+      let totalSum = 0;
+      cart.forEach(item => { totalSum += item.price * item.qty; });
+
+      const originalBtnHtml = checkoutBtn.innerHTML;
+      checkoutBtn.disabled = true;
+      checkoutBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${currentLang === 'ro' ? 'Se trimite...' : (currentLang === 'en' ? 'Sending...' : 'Отправка...')}`;
+
+      try {
+        const res = await fetch('/api/send-telegram', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            cart,
+            total: totalSum,
+            name,
+            phone,
+            notes
+          })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.status === 'success') {
+          alert(currentLang === 'ro'
+            ? '✅ Comanda Dvs. a fost trimisă cu succes! Vă vom contacta în curând pentru confirmare.'
+            : (currentLang === 'en'
+              ? '✅ Your order has been sent successfully! We will contact you shortly.'
+              : '✅ Ваш заказ успешно отправлен! Мы свяжемся с вами в ближайшее время.'));
+
+          cart = [];
+          updateCartUI();
+          if (nameInput) nameInput.value = '';
+          if (phoneInput) phoneInput.value = '';
+          if (notesInput) notesInput.value = '';
+          if (cartDrawer) cartDrawer.classList.remove('active');
+        } else {
+          alert(data.message || 'Eroare la trimiterea comenzii în Telegram.');
+        }
+      } catch (err) {
+        console.error('Error sending order to Telegram:', err);
+        alert('Eroare de conexiune cu serverul. Vă rugăm să sunați la 078 142 910 pentru a plasa comanda.');
+      } finally {
+        checkoutBtn.disabled = false;
+        checkoutBtn.innerHTML = originalBtnHtml;
+      }
+    });
   }
 
   // Secret Owner Toggle: Tap Logo 5 Times to Turn Site ON or OFF Globally
