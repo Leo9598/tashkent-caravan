@@ -505,8 +505,54 @@ document.addEventListener('DOMContentLoaded', () => {
   const cartItemsList = document.getElementById('cartItemsList');
   const cartTotalSum = document.getElementById('cartTotalSum');
   const cartCountBadge = document.getElementById('cartCountBadge');
-  const checkoutBtn = document.getElementById('checkoutBtn');
   const langSwitcher = document.getElementById('langSwitcher');
+
+  // Image Lightbox Modal Engine
+  let lightboxModal = document.getElementById('imageLightboxModal');
+  if (!lightboxModal) {
+    lightboxModal = document.createElement('div');
+    lightboxModal.id = 'imageLightboxModal';
+    lightboxModal.className = 'lightbox-overlay';
+    lightboxModal.innerHTML = `
+      <div class="lightbox-container">
+        <button class="lightbox-close-btn" id="lightboxCloseBtn" aria-label="Close">&times;</button>
+        <img id="lightboxImg" class="lightbox-img" src="" alt="">
+        <div id="lightboxCaption" class="lightbox-caption"></div>
+      </div>
+    `;
+    document.body.appendChild(lightboxModal);
+
+    lightboxModal.addEventListener('click', (e) => {
+      if (e.target === lightboxModal || e.target.id === 'lightboxCloseBtn' || e.target.closest('#lightboxCloseBtn')) {
+        closeImageLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightboxModal.classList.contains('active')) {
+        closeImageLightbox();
+      }
+    });
+  }
+
+  window.openImageLightbox = function (imgSrc, captionText) {
+    const imgEl = document.getElementById('lightboxImg');
+    const capEl = document.getElementById('lightboxCaption');
+    if (imgEl && capEl && lightboxModal) {
+      imgEl.src = imgSrc;
+      imgEl.alt = captionText || '';
+      capEl.textContent = captionText || '';
+      lightboxModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  window.closeImageLightbox = function () {
+    if (lightboxModal) {
+      lightboxModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  };
 
   // Change Language Function
   function setLanguage(lang) {
@@ -578,10 +624,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = document.createElement('div');
       card.className = 'menu-card';
 
+      const safeName = itemLang.name.replace(/'/g, "\\'");
       const imgHtml = item.image ? `
-        <div class="card-image-wrapper">
+        <div class="card-image-wrapper" onclick="openImageLightbox('${item.image}', '${safeName}')" title="Apăsați pentru a mări">
           <img src="${item.image}" alt="${itemLang.name}" class="card-img" loading="lazy">
           <span class="card-tag-badge"><i class="fa-solid fa-tag"></i> ${itemLang.tag}</span>
+          <span class="zoom-hint-badge"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
         </div>
       ` : '';
 
