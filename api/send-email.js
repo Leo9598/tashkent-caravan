@@ -87,7 +87,7 @@ function generateOrderHtml(cart, total, customerName = 'Guest', customerPhone = 
           <tr>
             <td style="background-color: #f8fafc; padding: 24px; text-align: center; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b;">
               <strong>Tashkent Restaurant</strong><br>
-              Str. Mihai Eminescu 64 • Tel: 078 142 910 • 10:00 - 23:00
+              Str. Mihai Eminescu 64 • Tel: 078 142 911 • 10:00 - 23:00
             </td>
           </tr>
 
