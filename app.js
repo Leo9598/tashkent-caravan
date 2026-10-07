@@ -356,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ЧАЙ
     { id: 'dr10', category: 'bar', price: 85, volume: 700, ru: { name: 'Чёрный чай', desc: 'Ароматный листовой чёрный чай в чайнике', tag: 'Чай' }, ro: { name: 'Ceai Negru', desc: 'Ceai negru aromat infuzat în ceainic', tag: 'Ceai' }, en: { name: 'Black Tea', desc: 'Aromatic loose leaf black tea in a pot', tag: 'Tea' } },
     { id: 'dr11', category: 'bar', price: 85, volume: 700, ru: { name: 'Зелёный чай', desc: 'Освежающий зелёный чай в чайнике', tag: 'Чай' }, ro: { name: 'Ceai Verde', desc: 'Ceai verde răcoritor infuzat în ceainic', tag: 'Ceai' }, en: { name: 'Green Tea', desc: 'Refreshing green tea in a pot', tag: 'Tea' } },
+    { id: 'dr_herbal_life', category: 'bar', price: 85, volume: 700, ru: { name: 'Life Energy (Травяной чай)', desc: 'Ароматный травяной чай в чайнике', tag: 'Травяной чай' }, ro: { name: 'Life Energy (Ceai de plante)', desc: 'Ceai infuzat din plante aromatice în ceainic', tag: 'Ceai de plante' }, en: { name: 'Life Energy (Herbal Tea)', desc: 'Aromatic herbal tea served in a pot', tag: 'Herbal Tea' } },
     { id: 'dr12', category: 'bar', price: 100, volume: 700, ru: { name: 'Авторский чай (Облепиха, имбирь)', desc: 'Ароматный авторский чай с облепихой и имбирём в чайнике', tag: 'Чай' }, ro: { name: 'Ceai de Autor (Cătină, Ghimbir)', desc: 'Ceai aromat de autor cu cătină și ghimbir în ceainic', tag: 'Ceai' }, en: { name: 'Signature Tea (Sea Buckthorn, Ginger)', desc: 'Aromatic signature tea with sea buckthorn and ginger in a pot', tag: 'Tea' } },
 
     // СОКИ
@@ -481,7 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     { id: 'w17_b', category: 'alcohol', price: 450, ru: { name: 'Martelletti Asti — Бутылка (750 мл)', desc: 'Итальянское сладкое игристое вино Асти', tag: 'Игристое вино (750 мл)' }, ro: { name: 'Martelletti Asti — Sticlă (750 ml)', desc: 'Vin spumant dulce italian Asti', tag: 'Vin spumant (750 ml)' }, en: { name: 'Martelletti Asti — Bottle (750 ml)', desc: 'Italian sweet Asti sparkling wine', tag: 'Sparkling Wine (750 ml)' } },
 
-    { id: 'w18_b', category: 'alcohol', price: 400, ru: { name: 'Inspiro Vartely Brut — Бутылка (750 мл)', desc: 'Игристое вино брют', tag: 'Игристое вино (750 мл)' }, ro: { name: 'Inspiro Vartely Brut — Sticlă (750 ml)', desc: 'Vin spumant brut', tag: 'Vin spumant (750 ml)' }, en: { name: 'Inspiro Vartely Brut — Bottle (750 ml)', desc: 'Brut sparkling wine', tag: 'Sparkling Wine (750 ml)' } },
+    { id: 'w18_b', category: 'alcohol', price: 700, ru: { name: 'Vartely — Spumant de calitate Brut — Бутылка (750 мл)', desc: 'Игристое вино брют высшего качества', tag: 'Игристое вино (750 мл)' }, ro: { name: 'Vartely — Spumant de calitate Brut — Sticlă (750 ml)', desc: 'Vin spumant de calitate brut', tag: 'Vin spumant (750 ml)' }, en: { name: 'Vartely — Spumant de calitate Brut — Bottle (750 ml)', desc: 'Quality Brut sparkling wine', tag: 'Sparkling Wine (750 ml)' } },
 
     // ПИВО
     { id: 'br1', category: 'alcohol', price: 50, volume: '0.5 л', ru: { name: 'Пиво Львівське (0.5 л)', desc: 'Светлое фильтрованное пиво', tag: 'Пиво' }, ro: { name: 'Bere Lvivske (0.5L)', desc: 'Bere blondă filtrată', tag: 'Bere' }, en: { name: 'Lvivske Beer (0.5L)', desc: 'Light pale lager', tag: 'Beer' } },
