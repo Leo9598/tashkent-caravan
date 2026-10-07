@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Full Menu Database
   const menuData = [
     // 0. БИЗНЕС-ЛАНЧ (lunch)
-    { id: 'l1', category: 'lunch', price: 170, ru: { name: 'Бизнес-ланч: Четверг', desc: '• Шурпа с бараниной\n• Манты с бараниной\n• Узбекская лепёшка\n• Зелёный чай', tag: 'Четверг' }, ro: { name: 'Business Lunch: Joi', desc: '• Șurpa cu berbecuț\n• Manti cu berbecuț\n• Lipie uzbecă\n• Ceai verde', tag: 'Joi' }, en: { name: 'Business Lunch: Thursday', desc: '• Lamb Surpa Soup\n• Steamed Lamb Manti\n• Uzbek Flatbread\n• Green Tea', tag: 'Thursday' } },
+    { id: 'l1', category: 'lunch', price: 170, ru: { name: 'Бизнес-ланч', desc: '• Шурпа с бараниной\n• Манты с бараниной\n• Узбекская лепёшка\n• Зелёный чай', tag: 'Бизнес-ланч' }, ro: { name: 'Business Lunch', desc: '• Șurpa cu berbecuț\n• Manti cu berbecuț\n• Lipie uzbecă\n• Ceai verde', tag: 'Business Lunch' }, en: { name: 'Business Lunch', desc: '• Lamb Surpa Soup\n• Steamed Lamb Manti\n• Uzbek Flatbread\n• Green Tea', tag: 'Business Lunch' } },
 
     // 1. ХОЛОДНЫЕ ЗАКУСКИ (starters)
     { id: 'st1', category: 'starters', price: 120, weight: 150, image: 'images/babaganoush.jpg', ru: { name: 'Восточный бабагануш', desc: 'Запечённые баклажаны, тахини, чеснок, лимонный сок, оливковое масло и специи', tag: 'Закуска' }, ro: { name: 'Babaganoush Oriental', desc: 'Vinete coapte, tahini, usturoi, suc de lămâie, ulei de măsline și condimente', tag: 'Gustare' }, en: { name: 'Oriental Babaganoush', desc: 'Baked eggplants, tahini, garlic, lemon juice, olive oil, and oriental spices', tag: 'Starter' } },
