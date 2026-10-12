@@ -110,6 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // UI Translations Dictionary
   const i18n = {
     ru: {
+      brand_name: 'ТАШКЕНТ',
+      logo_badge: 'Т',
       nav_home: 'Главная',
       nav_menu: 'Меню',
       nav_about: 'О Нас',
@@ -160,6 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
       currency: 'лей'
     },
     ro: {
+      brand_name: 'TASHKENT',
+      logo_badge: 'T',
       nav_home: 'Acasă',
       nav_menu: 'Meniu',
       nav_about: 'Despre Noi',
@@ -210,6 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
       currency: 'lei'
     },
     en: {
+      brand_name: 'TASHKENT',
+      logo_badge: 'T',
       nav_home: 'Home',
       nav_menu: 'Menu',
       nav_about: 'About Us',
