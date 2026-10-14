@@ -58,7 +58,7 @@ export default async function handler(req, res) {
   });
 
   const telegramMessage = `
-🍲 <b>COMANDĂ NOUĂ — TASHKENT CARAVAN</b>
+🍲 <b>COMANDĂ NOUĂ — TASHKENT</b>
 ───────────────
 👤 <b>Client:</b> ${escapeHtml(name)}
 📞 <b>Telefon:</b> <a href="tel:${escapeHtml(phone)}">${escapeHtml(phone)}</a>
