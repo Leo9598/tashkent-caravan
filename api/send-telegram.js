@@ -54,7 +54,8 @@ export default async function handler(req, res) {
   cart.forEach((item, index) => {
     const itemTotal = item.price * item.qty;
     const itemName = item.ro?.name || item.ru?.name || item.name || 'Produs';
-    itemsList += `${index + 1}. <b>${itemName}</b> × ${item.qty} = <b>${itemTotal} lei</b>\n`;
+    const itemDetails = item.selectedSummary ? `   ▫️ <i>${escapeHtml(item.selectedSummary)}</i>\n` : '';
+    itemsList += `${index + 1}. <b>${itemName}</b> × ${item.qty} = <b>${itemTotal} lei</b>\n${itemDetails}`;
   });
 
   const telegramMessage = `

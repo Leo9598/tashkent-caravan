@@ -159,7 +159,19 @@ document.addEventListener('DOMContentLoaded', () => {
       cart_send_btn: 'Отправить Заказ',
       cart_empty: 'Ваш предзаказ пуст.<br>Выберите блюда из меню!',
       btn_add_to_cart: 'В Заказ',
-      currency: 'лей'
+      currency: 'лей',
+      lunch_title: 'Бизнес-ланч',
+      lunch_subtitle: 'Соберите свой обед на выбор!',
+      lunch_first_title: 'Первое блюдо (на выбор)',
+      lunch_second_title: 'Второе блюдо (на выбор)',
+      lunch_add_title: 'Дополнительно',
+      lunch_bread: '½ узбекской лепёшки',
+      lunch_order_btn: 'В Заказ',
+      lunch_modal_title: 'Соберите свой Бизнес-ланч',
+      lunch_modal_subtitle: 'Выберите 1 первое и 1 второе блюдо',
+      lunch_modal_confirm: 'Добавить в Заказ',
+      hero_lunch_cta: 'Бизнес-ланч • 170 лей',
+      lunch_price_lbl: 'Цена:'
     },
     ro: {
       brand_name: 'TASHKENT',
@@ -211,7 +223,19 @@ document.addEventListener('DOMContentLoaded', () => {
       cart_send_btn: 'Trimite Comanda',
       cart_empty: 'Comanda ta este goală.<br>Alege preparate din meniu!',
       btn_add_to_cart: 'Adaugă',
-      currency: 'lei'
+      currency: 'lei',
+      lunch_title: 'Business Lunch',
+      lunch_subtitle: 'Compuneți prânzul la alegere!',
+      lunch_first_title: 'Felul întâi (la alegere)',
+      lunch_second_title: 'Felul doi (la alegere)',
+      lunch_add_title: 'Suplimentar',
+      lunch_bread: '½ lipie uzbecă',
+      lunch_order_btn: 'În Comandă',
+      lunch_modal_title: 'Compuneți Business Lunch-ul',
+      lunch_modal_subtitle: 'Alegeți felul întâi și felul doi după preferință',
+      lunch_modal_confirm: 'Adaugă în Comandă',
+      hero_lunch_cta: 'Business Lunch • 170 lei',
+      lunch_price_lbl: 'Preț:'
     },
     en: {
       brand_name: 'TASHKENT',
@@ -263,14 +287,73 @@ document.addEventListener('DOMContentLoaded', () => {
       cart_send_btn: 'Send Order',
       cart_empty: 'Your pre-order is empty.<br>Select delicious items from our menu!',
       btn_add_to_cart: 'Add to Order',
-      currency: 'lei'
+      currency: 'lei',
+      lunch_title: 'Business Lunch',
+      lunch_subtitle: 'Build your choice of lunch!',
+      lunch_first_title: 'First Course (to choice)',
+      lunch_second_title: 'Second Course (to choice)',
+      lunch_add_title: 'Included',
+      lunch_bread: '½ Uzbek flatbread',
+      lunch_order_btn: 'Add to Order',
+      lunch_modal_title: 'Build Your Business Lunch',
+      lunch_modal_subtitle: 'Choose your 1st and 2nd courses',
+      lunch_modal_confirm: 'Add to Order',
+      hero_lunch_cta: 'Business Lunch • 170 lei',
+      lunch_price_lbl: 'Price:'
     }
   };
 
   // Full Menu Database
   const menuData = [
     // 0. БИЗНЕС-ЛАНЧ (lunch)
-    { id: 'l1', category: 'lunch', price: 170, ru: { name: 'Бизнес-ланч', desc: '• Шурпа с бараниной\n• Манты с бараниной\n• Узбекская лепёшка\n• Зелёный чай', tag: 'Бизнес-ланч' }, ro: { name: 'Business Lunch', desc: '• Șurpa cu berbecuț\n• Manti cu berbecuț\n• Lipie uzbecă\n• Ceai verde', tag: 'Business Lunch' }, en: { name: 'Business Lunch', desc: '• Lamb Surpa Soup\n• Steamed Lamb Manti\n• Uzbek Flatbread\n• Green Tea', tag: 'Business Lunch' } },
+    {
+      id: 'l1',
+      category: 'lunch',
+      price: 170,
+      isBusinessLunch: true,
+      firstCourses: {
+        ru: ['Чечевичный суп', 'Шурпа с бараниной', 'Лагман', 'Куриный суп', 'Харчо'],
+        ro: ['Supă de linte', 'Șurpa de berbecuț', 'Lagman', 'Supă de pui', 'Harcio'],
+        en: ['Red Lentil Soup', 'Lamb Shurpa Soup', 'Lagman Noodle Soup', 'Chicken Soup', 'Kharcho Soup']
+      },
+      secondCourses: {
+        ru: ['Плов', 'Манты с бараниной', 'Пюре с гуляшом', 'Гречка с гуляшом', 'Рис с гуляшом'],
+        ro: ['Plov', 'Manti cu berbecuț', 'Piure cu gulaș', 'Hrișcă cu gulaș', 'Orez cu gulaș'],
+        en: ['Uzbek Plov', 'Steamed Lamb Manti', 'Mashed Potatoes with Goulash', 'Buckwheat with Goulash', 'Rice with Goulash']
+      },
+      additional: {
+        ru: ['½ узбекской лепёшки'],
+        ro: ['½ lipie uzbecă'],
+        en: ['½ Uzbek flatbread']
+      },
+      ru: {
+        name: 'Бизнес-ланч',
+        subtitle: 'Соберите свой обед на выбор!',
+        tag: 'Бизнес-ланч',
+        firstTitle: 'Первое блюдо (на выбор)',
+        secondTitle: 'Второе блюдо (на выбор)',
+        additionalTitle: 'Дополнительно',
+        desc: 'Чечевичный суп, Шурпа с бараниной, Лагман, Куриный суп, Харчо • Плов, Манты с бараниной, Пюре с гуляшом, Гречка с гуляшом, Рис с гуляшом • ½ узбекской лепёшки'
+      },
+      ro: {
+        name: 'Business Lunch',
+        subtitle: 'Compuneți prânzul la alegere!',
+        tag: 'Business Lunch',
+        firstTitle: 'Felul întâi (la alegere)',
+        secondTitle: 'Felul doi (la alegere)',
+        additionalTitle: 'Suplimentar',
+        desc: 'Supă de linte, Șurpa de berbecuț, Lagman, Supă de pui, Harcio • Plov, Manti cu berbecuț, Piure cu gulaș, Hrișcă cu gulaș, Orez cu gulaș • ½ lipie uzbecă'
+      },
+      en: {
+        name: 'Business Lunch',
+        subtitle: 'Build your choice of lunch!',
+        tag: 'Business Lunch',
+        firstTitle: 'First Course (to choice)',
+        secondTitle: 'Second Course (to choice)',
+        additionalTitle: 'Included',
+        desc: 'Red Lentil Soup, Lamb Shurpa, Lagman, Chicken Soup, Kharcho • Uzbek Plov, Lamb Manti, Mashed Potatoes with Goulash, Buckwheat, Rice • ½ Uzbek flatbread'
+      }
+    },
 
     // 1. ХОЛОДНЫЕ ЗАКУСКИ (starters)
     { id: 'st1', category: 'starters', price: 120, weight: 150, image: 'images/babaganoush.jpg', ru: { name: 'Восточный бабагануш', desc: 'Запечённые баклажаны, тахини, чеснок, лимонный сок, оливковое масло и специи', tag: 'Закуска' }, ro: { name: 'Babaganoush Oriental', desc: 'Vinete coapte, tahini, usturoi, suc de lămâie, ulei de măsline și condimente', tag: 'Gustare' }, en: { name: 'Oriental Babaganoush', desc: 'Baked eggplants, tahini, garlic, lemon juice, olive oil, and oriental spices', tag: 'Starter' } },
@@ -540,6 +623,13 @@ document.addEventListener('DOMContentLoaded', () => {
     menuGrid.innerHTML = '';
     const dict = i18n[currentLang] || i18n.ru;
 
+    // Center single card when viewing the lunch category
+    if (currentCategory === 'lunch') {
+      menuGrid.classList.add('menu-grid-lunch-focused');
+    } else {
+      menuGrid.classList.remove('menu-grid-lunch-focused');
+    }
+
     const filtered = menuData.filter(item => {
       const itemLang = item[currentLang] || item.ru;
       const matchesCategory = (currentCategory === 'all') || (item.category === currentCategory);
@@ -561,6 +651,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
     filtered.forEach(item => {
       const itemLang = item[currentLang] || item.ru;
+
+      // Special presentation for Business Lunch matching official restaurant design
+      if (item.isBusinessLunch) {
+        const card = document.createElement('div');
+        card.className = 'menu-card lunch-card-custom';
+
+        const firstListHtml = (item.firstCourses[currentLang] || item.firstCourses.ru).map(dish => `<li>${dish}</li>`).join('');
+        const secondListHtml = (item.secondCourses[currentLang] || item.secondCourses.ru).map(dish => `<li>${dish}</li>`).join('');
+        const addListHtml = (item.additional[currentLang] || item.additional.ru).map(dish => `<li>${dish}</li>`).join('');
+
+        card.innerHTML = `
+          <div>
+            <div class="lunch-card-top-row">
+              <div class="lunch-tag-pill">
+                <i class="fa-solid fa-tag"></i> <span>${itemLang.tag}</span>
+              </div>
+              <div class="lunch-price-pill">
+                <span class="lunch-price-num">${item.price}</span>
+                <span class="lunch-curr">${dict.currency}</span>
+              </div>
+            </div>
+
+            <h3 class="lunch-card-title">${itemLang.name}</h3>
+            <p class="lunch-card-subtitle">${itemLang.subtitle}</p>
+
+            <div class="lunch-divider">
+              <span class="lunch-diamond">◇</span>
+              <span>${itemLang.firstTitle}</span>
+              <span class="lunch-diamond">◇</span>
+            </div>
+            <ul class="lunch-list">
+              ${firstListHtml}
+            </ul>
+
+            <div class="lunch-divider">
+              <span class="lunch-diamond">◇</span>
+              <span>${itemLang.secondTitle}</span>
+              <span class="lunch-diamond">◇</span>
+            </div>
+            <ul class="lunch-list">
+              ${secondListHtml}
+            </ul>
+
+            <div class="lunch-divider">
+              <span class="lunch-diamond">◇</span>
+              <span>${itemLang.additionalTitle}</span>
+              <span class="lunch-diamond">◇</span>
+            </div>
+            <ul class="lunch-list">
+              ${addListHtml}
+            </ul>
+          </div>
+
+          <div class="lunch-card-footer">
+            <span class="lunch-brand">Tashkent</span>
+            <button class="btn-lunch-order" onclick="openLunchBuilderModal()">
+              <i class="fa-solid fa-plus"></i> <span>${dict.lunch_order_btn || (currentLang === 'ro' ? 'În Comandă' : (currentLang === 'en' ? 'Add to Order' : 'В Заказ'))}</span>
+            </button>
+          </div>
+        `;
+        menuGrid.appendChild(card);
+        return;
+      }
+
       const card = document.createElement('div');
       card.className = 'menu-card';
 
@@ -633,7 +787,125 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Business Lunch Builder Functions
+  let selectedFirstDishIndex = 0;
+  let selectedSecondDishIndex = 0;
+
+  window.openLunchBuilderModal = function () {
+    const lunchItem = menuData.find(m => m.id === 'l1');
+    if (!lunchItem) return;
+
+    const firstOptionsContainer = document.getElementById('lunchFirstOptionsContainer');
+    const secondOptionsContainer = document.getElementById('lunchSecondOptionsContainer');
+    const modalOverlay = document.getElementById('lunchModalOverlay');
+
+    if (!firstOptionsContainer || !secondOptionsContainer || !modalOverlay) return;
+
+    const firstList = lunchItem.firstCourses[currentLang] || lunchItem.firstCourses.ru;
+    const secondList = lunchItem.secondCourses[currentLang] || lunchItem.secondCourses.ru;
+
+    selectedFirstDishIndex = 0;
+    selectedSecondDishIndex = 0;
+
+    firstOptionsContainer.innerHTML = firstList.map((dish, idx) => `
+      <div class="lunch-option-card ${idx === 0 ? 'selected' : ''}" onclick="selectLunchFirst(${idx})">
+        <div class="lunch-radio-disc"></div>
+        <span class="lunch-option-title">${dish}</span>
+      </div>
+    `).join('');
+
+    secondOptionsContainer.innerHTML = secondList.map((dish, idx) => `
+      <div class="lunch-option-card ${idx === 0 ? 'selected' : ''}" onclick="selectLunchSecond(${idx})">
+        <div class="lunch-radio-disc"></div>
+        <span class="lunch-option-title">${dish}</span>
+      </div>
+    `).join('');
+
+    modalOverlay.classList.add('active');
+  };
+
+  window.closeLunchBuilderModal = function () {
+    const modalOverlay = document.getElementById('lunchModalOverlay');
+    if (modalOverlay) modalOverlay.classList.remove('active');
+  };
+
+  window.selectLunchFirst = function (idx) {
+    selectedFirstDishIndex = idx;
+    const cards = document.querySelectorAll('#lunchFirstOptionsContainer .lunch-option-card');
+    cards.forEach((c, i) => c.classList.toggle('selected', i === idx));
+  };
+
+  window.selectLunchSecond = function (idx) {
+    selectedSecondDishIndex = idx;
+    const cards = document.querySelectorAll('#lunchSecondOptionsContainer .lunch-option-card');
+    cards.forEach((c, i) => c.classList.toggle('selected', i === idx));
+  };
+
+  window.confirmLunchToCart = function () {
+    const lunchItem = menuData.find(m => m.id === 'l1');
+    if (!lunchItem) return;
+
+    const firstList = lunchItem.firstCourses[currentLang] || lunchItem.firstCourses.ru;
+    const secondList = lunchItem.secondCourses[currentLang] || lunchItem.secondCourses.ru;
+    const breadList = lunchItem.additional[currentLang] || lunchItem.additional.ru;
+
+    const firstDish = firstList[selectedFirstDishIndex] || firstList[0];
+    const secondDish = secondList[selectedSecondDishIndex] || secondList[0];
+    const bread = breadList[0] || (currentLang === 'ro' ? '½ lipie uzbecă' : (currentLang === 'en' ? '½ Uzbek flatbread' : '½ узбекской лепёшки'));
+
+    const summary = `${firstDish} + ${secondDish} + ${bread}`;
+
+    const existing = cart.find(c => c.isBusinessLunch && c.selectedSummary === summary);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({
+        id: 'lunch_' + Date.now(),
+        isBusinessLunch: true,
+        price: lunchItem.price,
+        qty: 1,
+        selectedFirst: firstDish,
+        selectedSecond: secondDish,
+        selectedSummary: summary,
+        ru: { name: 'Бизнес-ланч' },
+        ro: { name: 'Business Lunch' },
+        en: { name: 'Business Lunch' }
+      });
+    }
+
+    closeLunchBuilderModal();
+    updateCartUI();
+    if (cartDrawer) cartDrawer.classList.add('active');
+  };
+
+  window.showLunchCategory = function (e) {
+    if (e) e.preventDefault();
+    const lunchTab = document.querySelector('.tab-btn[data-category="lunch"]');
+    if (lunchTab) {
+      lunchTab.click();
+    }
+    const menuSection = document.getElementById('menu');
+    if (menuSection) {
+      menuSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Close lunch modal on clicking outside
+  const lunchModalOverlay = document.getElementById('lunchModalOverlay');
+  if (lunchModalOverlay) {
+    lunchModalOverlay.addEventListener('click', (e) => {
+      if (e.target === lunchModalOverlay) {
+        closeLunchBuilderModal();
+      }
+    });
+  }
+
   window.addToCart = function (id) {
+    if (id === 'l1') {
+      openLunchBuilderModal();
+      return;
+    }
+
     const item = menuData.find(m => m.id === id);
     if (!item) return;
 
@@ -675,11 +947,18 @@ document.addEventListener('DOMContentLoaded', () => {
           portionStr = ` (${typeof item.volume === 'number' ? `${item.volume} ${volumeUnit}` : item.volume})`;
         }
 
+        const detailsHtml = item.selectedSummary ? `
+          <div style="font-size: 0.78rem; color: var(--color-teal-accent); margin-top: 2px; line-height: 1.3;">
+            <i class="fa-solid fa-check" style="font-size: 0.7rem;"></i> ${item.selectedSummary}
+          </div>
+        ` : '';
+
         const cartRow = document.createElement('div');
         cartRow.className = 'cart-item';
         cartRow.innerHTML = `
           <div>
             <strong style="color: #fff; display: block; font-size: 0.95rem;">${itemLang.name}${portionStr}</strong>
+            ${detailsHtml}
             <span style="color: var(--color-gold); font-size: 0.85rem;">${item.price} ${dict.currency} × ${item.qty}</span>
           </div>
           <div style="display: flex; align-items: center; gap: 0.5rem;">

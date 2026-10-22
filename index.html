@@ -63,6 +63,9 @@
           <a href="#menu" class="btn-primary" style="padding: 0.85rem 1.8rem; font-size: 1rem;">
             <i class="fa-solid fa-book-open"></i> <span data-i18n="hero_menu_btn">Посмотреть Меню</span>
           </a>
+          <a href="#menu" class="btn-hero-lunch" onclick="showLunchCategory(event)" style="padding: 0.85rem 1.6rem; font-size: 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; border-radius: 30px; font-weight: 700; border: 1.5px solid var(--color-gold); color: var(--color-gold); background: rgba(212, 175, 55, 0.08); transition: var(--transition-smooth); cursor: pointer;">
+            <i class="fa-solid fa-tag"></i> <span data-i18n="hero_lunch_cta">Бизнес-ланч • 170 лей</span>
+          </a>
         </div>
 
         <div class="hero-meta-strip">
@@ -219,6 +222,56 @@
       </div>
     </div>
   </section>
+
+  <!-- Business Lunch Builder Modal -->
+  <div class="modal-overlay" id="lunchModalOverlay">
+    <div class="lunch-modal-content">
+      <div class="lunch-modal-header">
+        <div>
+          <span class="lunch-tag-pill" style="margin-bottom: 0.4rem; display: inline-flex;"><i class="fa-solid fa-tag"></i> <span data-i18n="cat_lunch">Бизнес-ланч</span></span>
+          <h3 id="lunchModalTitle" style="font-family: var(--font-heading); color: #fff; font-size: 1.4rem; margin: 0.2rem 0;" data-i18n="lunch_modal_title">Соберите свой Бизнес-ланч</h3>
+          <p style="color: var(--color-text-muted); font-size: 0.88rem; margin: 0;" data-i18n="lunch_modal_subtitle">Выберите 1 первое и 1 второе блюдо</p>
+        </div>
+        <button class="modal-close" id="lunchModalCloseBtn" onclick="closeLunchBuilderModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="lunch-modal-body">
+        <div class="lunch-step-group">
+          <label class="lunch-step-label">
+            <span class="step-num">1</span>
+            <strong data-i18n="lunch_first_title">Первое блюдо (на выбор)</strong>
+          </label>
+          <div class="lunch-options-grid" id="lunchFirstOptionsContainer"></div>
+        </div>
+
+        <div class="lunch-step-group">
+          <label class="lunch-step-label">
+            <span class="step-num">2</span>
+            <strong data-i18n="lunch_second_title">Второе блюдо (на выбор)</strong>
+          </label>
+          <div class="lunch-options-grid" id="lunchSecondOptionsContainer"></div>
+        </div>
+
+        <div class="lunch-included-box">
+          <div class="included-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <div>
+            <strong style="color: #fff; font-size: 0.92rem;" data-i18n="lunch_add_title">Дополнительно:</strong>
+            <span style="color: var(--color-gold); font-size: 0.88rem; display: block;" data-i18n="lunch_bread">½ узбекской лепёшки</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lunch-modal-footer">
+        <div class="lunch-modal-price-wrap">
+          <span style="font-size: 0.85rem; color: var(--color-text-muted);" data-i18n="lunch_price_lbl">Цена:</span>
+          <strong class="lunch-modal-price-tag">170 <span data-i18n="currency">лей</span></strong>
+        </div>
+        <button class="btn-primary" id="addLunchConfirmBtn" onclick="confirmLunchToCart()" style="padding: 0.75rem 1.75rem;">
+          <i class="fa-solid fa-plus"></i> <span data-i18n="lunch_modal_confirm">Добавить в Заказ</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Cart / Pre-Order Drawer -->
   <div class="cart-drawer" id="cartDrawer">
