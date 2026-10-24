@@ -18,9 +18,9 @@
   --color-gold-light: #f3dfb0;
   --color-gold-dark: #95691e;
 
-  --color-bg-dark: #f6f1e7;
-  --color-bg-card: rgba(255, 253, 248, 0.92);
-  --color-bg-glass: rgba(255, 253, 248, 0.86);
+  --color-bg-dark: #eee7d9;
+  --color-bg-card: rgba(255, 253, 248, 0.97);
+  --color-bg-glass: rgba(255, 253, 248, 0.92);
   --color-bg-light: #fffdf8;
   
   --color-text-light: #24352f;
@@ -1430,42 +1430,23 @@ body {
 
 .hero-graphic-card {
   height: 460px;
-  padding: 0;
-  background: #d9c5a5;
-  text-align: left;
+  padding: 2.5rem;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(67, 140, 120, 0.72) 0%, rgba(23, 75, 67, 0.98) 70%),
+    linear-gradient(135deg, rgba(189, 138, 44, 0.18), transparent);
+  text-align: center;
 }
 
-.hero-photo {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+.hero-graphic-icon {
+  color: #f0c96f;
 }
 
-.hero-photo-caption {
-  position: absolute;
-  inset: auto 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  padding: 4rem 2rem 1.7rem;
+.hero-graphic-title {
   color: #fffdf8;
-  background: linear-gradient(transparent, rgba(22, 39, 32, 0.78));
 }
 
-.hero-photo-kicker {
-  color: #f4d38f;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.hero-photo-title {
-  font-family: var(--font-heading);
-  font-size: clamp(1.35rem, 2.2vw, 2rem);
-  font-weight: 700;
+.hero-graphic-text {
+  color: #f3dfb0;
 }
 
 .hero-float-badge {
@@ -1556,6 +1537,41 @@ body {
   background: rgba(255, 253, 248, 0.48);
 }
 
+/* Keep the custom lunch feature card dark enough for clear text contrast. */
+.lunch-card-custom {
+  background: linear-gradient(145deg, #285f52 0%, #17453e 100%);
+  border-color: rgba(189, 138, 44, 0.65);
+  box-shadow: 0 15px 35px rgba(35, 61, 51, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.lunch-card-custom:hover {
+  border-color: var(--color-gold);
+  box-shadow: 0 20px 42px rgba(35, 61, 51, 0.27);
+}
+
+.lunch-card-title,
+.lunch-card-subtitle,
+.lunch-card-custom .lunch-option-title,
+.lunch-card-custom li,
+.lunch-card-custom p {
+  color: #fffdf8;
+}
+
+.lunch-card-custom .lunch-card-subtitle,
+.lunch-card-custom .lunch-card-footer {
+  color: #e9eee9;
+}
+
+.lunch-card-custom .lunch-tag-pill,
+.lunch-card-custom .lunch-card-price {
+  color: #f6d985;
+}
+
+.lunch-card-custom .lunch-step-label,
+.lunch-card-custom .lunch-step-label strong {
+  color: #f2d68d;
+}
+
 @media (max-width: 768px) {
   .menu-controls {
     background: rgba(255, 253, 248, 0.96);
@@ -1576,9 +1592,6 @@ body {
     height: 250px;
   }
 
-  .hero-photo-caption {
-    padding: 3rem 1.25rem 1rem;
-  }
 }
 
 /* =============================================================
