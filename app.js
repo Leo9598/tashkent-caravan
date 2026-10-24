@@ -7,6 +7,41 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentCategory = 'all';
   let searchQuery = '';
 
+  // Compact navigation menu for phone layouts
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const primaryNav = document.getElementById('primaryNav');
+  if (mobileMenuToggle && primaryNav) {
+    const closeMobileMenu = () => {
+      primaryNav.classList.remove('open');
+      mobileMenuToggle.setAttribute('aria-expanded', 'false');
+      mobileMenuToggle.setAttribute('aria-label', 'Open navigation menu');
+      mobileMenuToggle.innerHTML = '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
+    };
+
+    mobileMenuToggle.addEventListener('click', () => {
+      const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        closeMobileMenu();
+      } else {
+        primaryNav.classList.add('open');
+        mobileMenuToggle.setAttribute('aria-expanded', 'true');
+        mobileMenuToggle.setAttribute('aria-label', 'Close navigation menu');
+        mobileMenuToggle.innerHTML = '<i class="fa-solid fa-xmark" aria-hidden="true"></i>';
+      }
+    });
+
+    primaryNav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMobileMenu));
+    document.addEventListener('click', event => {
+      if (!primaryNav.contains(event.target) && !mobileMenuToggle.contains(event.target)) closeMobileMenu();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        closeMobileMenu();
+        mobileMenuToggle.focus();
+      }
+    });
+  }
+
   // Global Site Open/Closed State (Default OPEN globally)
   let isSiteOpen = true;
 
