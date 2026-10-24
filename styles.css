@@ -1,38 +1,38 @@
 /* -------------------------------------------------------------
    TASHKENT CARAVAN (ТАШКЕНТ КАРАВАН) - MASTER DESIGN SYSTEM
-   Uzbek Royal Aesthetic: Teal, Amber-Terracotta, Gold & Navy Dark
+   Uzbek-inspired palette: warm ivory, jade, terracotta and saffron
    ------------------------------------------------------------- */
 
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --color-teal-dark: #092c28;
-  --color-teal-main: #0d5c58;
-  --color-teal-light: #188d87;
-  --color-teal-accent: #26bbb2;
+  --color-teal-dark: #174b43;
+  --color-teal-main: #276b5e;
+  --color-teal-light: #438c78;
+  --color-teal-accent: #347c6a;
   
-  --color-terracotta: #c85a28;
-  --color-terracotta-hover: #e06932;
+  --color-terracotta: #b95635;
+  --color-terracotta-hover: #a4492e;
   
-  --color-gold: #d4af37;
-  --color-gold-light: #f5e49c;
-  --color-gold-dark: #a8841a;
+  --color-gold: #bd8a2c;
+  --color-gold-light: #f3dfb0;
+  --color-gold-dark: #95691e;
 
-  --color-bg-dark: #0b111e;
-  --color-bg-card: rgba(16, 25, 44, 0.75);
-  --color-bg-glass: rgba(20, 32, 56, 0.6);
-  --color-bg-light: #FAF6F0;
+  --color-bg-dark: #f6f1e7;
+  --color-bg-card: rgba(255, 253, 248, 0.92);
+  --color-bg-glass: rgba(255, 253, 248, 0.86);
+  --color-bg-light: #fffdf8;
   
-  --color-text-light: #f8fafc;
-  --color-text-muted: #94a3b8;
-  --color-text-dark: #1e293b;
+  --color-text-light: #24352f;
+  --color-text-muted: #65746d;
+  --color-text-dark: #26332d;
   
-  --border-gold: rgba(212, 175, 55, 0.3);
-  --border-teal: rgba(38, 187, 178, 0.2);
-  --border-glass: rgba(255, 255, 255, 0.1);
+  --border-gold: rgba(189, 138, 44, 0.3);
+  --border-teal: rgba(52, 124, 106, 0.2);
+  --border-glass: rgba(39, 67, 55, 0.12);
   
-  --shadow-glow: 0 10px 30px -5px rgba(13, 92, 88, 0.4);
-  --shadow-card: 0 20px 40px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 10px 30px -5px rgba(39, 107, 94, 0.18);
+  --shadow-card: 0 24px 55px rgba(57, 48, 32, 0.16);
   
   --font-heading: 'Cinzel', serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
@@ -55,9 +55,9 @@ html {
 body {
   overflow-x: hidden;
   line-height: 1.6;
-  background-image: 
-    radial-gradient(circle at 15% 15%, rgba(13, 92, 88, 0.25) 0%, transparent 45%),
-    radial-gradient(circle at 85% 85%, rgba(200, 90, 40, 0.15) 0%, transparent 45%);
+  background-image:
+    radial-gradient(circle at 12% 12%, rgba(93, 143, 113, 0.12) 0%, transparent 38%),
+    radial-gradient(circle at 90% 72%, rgba(202, 143, 63, 0.11) 0%, transparent 38%);
   background-attachment: fixed;
 }
 
@@ -85,7 +85,7 @@ body {
   z-index: 1000;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  background: rgba(11, 17, 30, 0.85);
+  background: rgba(255, 253, 248, 0.92);
   border-bottom: 1px solid var(--border-gold);
   transition: var(--transition-smooth);
 }
@@ -127,7 +127,7 @@ body {
   font-size: 1.35rem;
   font-weight: 700;
   letter-spacing: 1px;
-  color: #ffffff;
+  color: var(--color-teal-dark);
   line-height: 1.1;
 }
 
@@ -151,7 +151,7 @@ body {
 }
 
 .nav-link {
-  color: var(--color-text-light);
+  color: var(--color-text-dark);
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
@@ -184,7 +184,7 @@ body {
 }
 
 .lang-btn:hover {
-  color: #fff;
+  color: var(--color-teal-dark);
 }
 
 .lang-btn.active {
@@ -216,9 +216,9 @@ body {
 
 .cart-btn-trigger {
   position: relative;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 253, 248, 0.8);
   border: 1px solid var(--border-glass);
-  color: var(--color-text-light);
+  color: var(--color-text-dark);
   padding: 0.6rem 1rem;
   border-radius: 30px;
   cursor: pointer;
@@ -250,7 +250,7 @@ body {
   padding-top: 100px;
   display: flex;
   align-items: center;
-  background: radial-gradient(circle at 70% 30%, rgba(13, 92, 88, 0.3) 0%, transparent 60%);
+  background: radial-gradient(circle at 70% 30%, rgba(84, 139, 112, 0.16) 0%, transparent 60%);
 }
 
 .hero-grid {
@@ -267,9 +267,9 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(212, 175, 55, 0.12);
+  background: rgba(189, 138, 44, 0.1);
   border: 1px solid var(--border-gold);
-  color: var(--color-gold);
+  color: var(--color-gold-dark);
   padding: 0.4rem 1rem;
   border-radius: 20px;
   font-size: 0.85rem;
@@ -284,7 +284,7 @@ body {
   font-weight: 900;
   line-height: 1.15;
   margin-bottom: 1.25rem;
-  background: linear-gradient(135deg, #ffffff 40%, var(--color-gold-light) 100%);
+  background: linear-gradient(135deg, #27443a 20%, #8c5b27 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -1377,6 +1377,208 @@ body {
   border-top: 1px solid var(--border-glass);
   color: var(--color-text-muted);
   font-size: 0.85rem;
+}
+
+/* Warm, light restaurant theme */
+body {
+  color: var(--color-text-dark);
+  background-color: var(--color-bg-dark);
+}
+
+.navbar {
+  box-shadow: 0 8px 24px rgba(55, 49, 36, 0.08);
+}
+
+.logo-badge {
+  color: #fffdf8;
+  box-shadow: 0 5px 16px rgba(149, 105, 30, 0.22);
+}
+
+.hero-title,
+.section-title,
+.card-title,
+.meta-text strong {
+  color: var(--color-teal-dark);
+}
+
+.hero-title {
+  background: linear-gradient(120deg, #174b43 12%, #9a632a 88%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-subtitle,
+.meta-text span,
+.card-desc,
+.footer {
+  color: var(--color-text-muted);
+}
+
+.hero-meta-strip {
+  border-color: var(--border-glass);
+}
+
+.meta-icon {
+  background: rgba(52, 124, 106, 0.1);
+  color: var(--color-teal-main);
+}
+
+.hero-image-frame {
+  border-color: rgba(255, 253, 248, 0.9);
+  box-shadow: var(--shadow-card), 0 0 0 1px var(--border-gold);
+}
+
+.hero-graphic-card {
+  height: 460px;
+  padding: 0;
+  background: #d9c5a5;
+  text-align: left;
+}
+
+.hero-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-photo-caption {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 4rem 2rem 1.7rem;
+  color: #fffdf8;
+  background: linear-gradient(transparent, rgba(22, 39, 32, 0.78));
+}
+
+.hero-photo-kicker {
+  color: #f4d38f;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero-photo-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  font-weight: 700;
+}
+
+.hero-float-badge {
+  background: rgba(255, 253, 248, 0.96);
+  border-color: var(--border-gold);
+  box-shadow: 0 12px 32px rgba(57, 48, 32, 0.2);
+}
+
+.float-badge-text strong {
+  color: var(--color-teal-dark);
+}
+
+.section-title {
+  color: var(--color-teal-dark);
+}
+
+.section-subtitle {
+  color: var(--color-gold-dark);
+}
+
+.search-input,
+.tab-btn,
+.menu-card,
+.contact-grid {
+  color: var(--color-text-dark);
+  background: var(--color-bg-card);
+}
+
+.search-input::placeholder {
+  color: #78857e;
+}
+
+.tab-btn {
+  border-color: var(--border-glass);
+}
+
+.tab-btn:hover {
+  background: #edf3ed;
+  color: var(--color-teal-dark);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--color-teal-main), var(--color-teal-dark));
+  color: #fffdf8;
+  border-color: var(--color-teal-main);
+}
+
+.menu-card {
+  border-color: rgba(65, 83, 68, 0.13);
+  box-shadow: 0 8px 24px rgba(57, 48, 32, 0.06);
+}
+
+.menu-card:hover {
+  box-shadow: 0 18px 38px rgba(57, 48, 32, 0.14);
+}
+
+.card-title {
+  color: var(--color-teal-dark);
+}
+
+.card-price {
+  color: #8b5d1d;
+  background: #f7edd8;
+}
+
+.btn-add-item {
+  background: #e8f1eb;
+  color: var(--color-teal-dark);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-terracotta), #99442d);
+  border-color: rgba(149, 105, 30, 0.5);
+  box-shadow: 0 6px 16px rgba(153, 68, 45, 0.2);
+}
+
+.lang-switcher,
+.cart-btn-trigger {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.lang-btn.active {
+  background: var(--color-teal-main);
+  color: #fffdf8;
+}
+
+.footer {
+  background: rgba(255, 253, 248, 0.48);
+}
+
+@media (max-width: 768px) {
+  .menu-controls {
+    background: rgba(255, 253, 248, 0.96);
+    box-shadow: 0 8px 20px rgba(57, 48, 32, 0.1);
+  }
+
+  .nav-links {
+    background: rgba(255, 253, 248, 0.99);
+    box-shadow: 0 16px 32px rgba(57, 48, 32, 0.16);
+  }
+
+  .mobile-menu-toggle {
+    color: var(--color-teal-dark);
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .hero-graphic-card {
+    height: 250px;
+  }
+
+  .hero-photo-caption {
+    padding: 3rem 1.25rem 1rem;
+  }
 }
 
 /* =============================================================
