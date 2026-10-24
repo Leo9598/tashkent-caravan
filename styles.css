@@ -18,10 +18,10 @@
   --color-gold-light: #f3dfb0;
   --color-gold-dark: #95691e;
 
-  --color-bg-dark: #eee7d9;
-  --color-bg-card: rgba(255, 253, 248, 0.97);
-  --color-bg-glass: rgba(255, 253, 248, 0.92);
-  --color-bg-light: #fffdf8;
+  --color-bg-dark: #e9dfcc;
+  --color-bg-card: #f4ead7;
+  --color-bg-glass: #f0e5d1;
+  --color-bg-light: #f4ead7;
   
   --color-text-light: #24352f;
   --color-text-muted: #65746d;
@@ -1424,7 +1424,7 @@ body {
 }
 
 .hero-image-frame {
-  border-color: rgba(255, 253, 248, 0.9);
+  border-color: rgba(219, 199, 160, 0.9);
   box-shadow: var(--shadow-card), 0 0 0 1px var(--border-gold);
 }
 
@@ -1450,7 +1450,7 @@ body {
 }
 
 .hero-float-badge {
-  background: rgba(255, 253, 248, 0.96);
+  background: #f4ead7;
   border-color: var(--border-gold);
   box-shadow: 0 12px 32px rgba(57, 48, 32, 0.2);
 }
@@ -1525,7 +1525,7 @@ body {
 
 .lang-switcher,
 .cart-btn-trigger {
-  background: rgba(255, 255, 255, 0.72);
+  background: #f0e5d1;
 }
 
 .lang-btn.active {
@@ -1534,7 +1534,7 @@ body {
 }
 
 .footer {
-  background: rgba(255, 253, 248, 0.48);
+  background: rgba(225, 213, 190, 0.5);
 }
 
 /* Keep the custom lunch feature card dark enough for clear text contrast. */
@@ -1574,12 +1574,12 @@ body {
 
 @media (max-width: 768px) {
   .menu-controls {
-    background: rgba(255, 253, 248, 0.96);
+    background: rgba(240, 229, 209, 0.98);
     box-shadow: 0 8px 20px rgba(57, 48, 32, 0.1);
   }
 
   .nav-links {
-    background: rgba(255, 253, 248, 0.99);
+    background: #f0e5d1;
     box-shadow: 0 16px 32px rgba(57, 48, 32, 0.16);
   }
 
