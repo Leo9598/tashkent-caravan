@@ -14,9 +14,9 @@
   --color-terracotta: #b95635;
   --color-terracotta-hover: #a4492e;
   
-  --color-gold: #bd8a2c;
+  --color-gold: #79551b;
   --color-gold-light: #f3dfb0;
-  --color-gold-dark: #95691e;
+  --color-gold-dark: #79551b;
 
   --color-bg-dark: #e9dfcc;
   --color-bg-card: #f4ead7;
@@ -24,7 +24,7 @@
   --color-bg-light: #f4ead7;
   
   --color-text-light: #24352f;
-  --color-text-muted: #65746d;
+  --color-text-muted: #485a50;
   --color-text-dark: #26332d;
   
   --border-gold: rgba(189, 138, 44, 0.3);
@@ -85,7 +85,7 @@ body {
   z-index: 1000;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  background: rgba(255, 253, 248, 0.92);
+  background: #ddd0b6;
   border-bottom: 1px solid var(--border-gold);
   transition: var(--transition-smooth);
 }
@@ -1961,3 +1961,44 @@ body {
   }
 }
 
+
+/* Surface-specific colors prevent dark panels inheriting light-theme text. */
+.about-panel {
+  background: #ded6c4;
+  border: 1px solid #b9b39f;
+  border-radius: 30px;
+  margin-top: 2rem;
+}
+.about-quote {
+  background: #245449;
+  border: 1px solid #637c61;
+  padding: 2.5rem;
+  border-radius: 24px;
+  --color-gold: #f1d28c;
+}
+.about-quote .fa-quote-left { opacity: 1 !important; }
+.about-panel .hero-grid { padding: 1rem; }
+.nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+.hero-title { background: none; -webkit-text-fill-color: currentColor; }
+.hero .btn-primary { text-decoration: none; }
+section[id] { scroll-margin-top: 100px; }
+.cart-drawer, .lunch-modal-content, .modal-box, .mobile-cart-bar {
+  --color-text-muted: #c4d2cb;
+  --color-text-light: #fffdf8;
+  --color-teal-accent: #83d6bf;
+  --color-gold: #f1d28c;
+  --border-glass: rgba(255,255,255,0.22);
+  color: #fffdf8;
+}
+.cart-input::placeholder { color: #c4d2cb; }
+.card-tag-badge { color: #f1d28c; }
+.search-input::placeholder { color: #485a50; }
+.lunch-brand { color: #dce8e1; }
+@media (max-width: 768px) {
+  .nav-links, .menu-controls { background: #e5dac4; }
+  .mobile-menu-toggle { background: #d6c8ac; color: #174b43; }
+  .mobile-menu-toggle:hover, .mobile-menu-toggle[aria-expanded="true"] { color: #174b43; }
+  .nav-container { flex-wrap: wrap; }
+  .nav-actions { margin-left: auto; gap: 0.4rem; }
+  .about-quote { padding: 1.5rem; }
+}
