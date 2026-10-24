@@ -18,7 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
       mobileMenuToggle.innerHTML = '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
     };
 
-    mobileMenuToggle.addEventListener('click', () => {
+    mobileMenuToggle.addEventListener('click', event => {
+      event.stopPropagation();
       const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
       if (isExpanded) {
         closeMobileMenu();
@@ -35,11 +36,19 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!primaryNav.contains(event.target) && !mobileMenuToggle.contains(event.target)) closeMobileMenu();
     });
     document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' && mobileMenuToggle.getAttribute('aria-expanded') === 'true') {
         closeMobileMenu();
         mobileMenuToggle.focus();
       }
     });
+  }
+
+  // Keep anchor targets and sticky menu controls below the actual header height.
+  const header = document.getElementById('navbar');
+  if (header && 'ResizeObserver' in window) {
+    new ResizeObserver(() => {
+      document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`);
+    }).observe(header);
   }
 
   // Global Site Open/Closed State (Default OPEN globally)
@@ -614,6 +623,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Change Language Function
   function setLanguage(lang) {
     currentLang = lang;
+    document.documentElement.lang = lang;
     const dict = i18n[lang] || i18n.ru;
 
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -625,6 +635,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (menuSearchInput && dict.search_placeholder) {
       menuSearchInput.placeholder = dict.search_placeholder;
+      menuSearchInput.setAttribute('aria-label', dict.search_placeholder);
     }
 
     const nameInput = document.getElementById('orderCustomerName');
@@ -696,7 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const addListHtml = (item.additional[currentLang] || item.additional.ru).map(dish => `<li>${dish}</li>`).join('');
 
         card.innerHTML = `
-          <div>
+          <div class="lunch-card-body">
             <div class="lunch-card-top-row">
               <div class="lunch-tag-pill">
                 <i class="fa-solid fa-tag"></i> <span>${itemLang.tag}</span>
@@ -710,6 +721,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <h3 class="lunch-card-title">${itemLang.name}</h3>
             <p class="lunch-card-subtitle">${itemLang.subtitle}</p>
 
+            <div class="lunch-course-columns">
+            <div class="lunch-course-group">
             <div class="lunch-divider">
               <span class="lunch-diamond">◇</span>
               <span>${itemLang.firstTitle}</span>
@@ -718,6 +731,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <ul class="lunch-list">
               ${firstListHtml}
             </ul>
+            </div>
+            <div class="lunch-course-group">
 
             <div class="lunch-divider">
               <span class="lunch-diamond">◇</span>
@@ -727,6 +742,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <ul class="lunch-list">
               ${secondListHtml}
             </ul>
+            </div>
+            <div class="lunch-course-group">
 
             <div class="lunch-divider">
               <span class="lunch-diamond">◇</span>
@@ -736,6 +753,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <ul class="lunch-list">
               ${addListHtml}
             </ul>
+            </div>
+            </div>
           </div>
 
           <div class="lunch-card-footer">
