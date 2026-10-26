@@ -9,7 +9,6 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Tashkent — Bucătărie uzbecă în Chișinău">
   <meta property="og:description" content="Plov, lagman, manti și frigărui. Explorează meniul restaurantului Tashkent din Chișinău.">
-  <meta property="og:image" content="https://tashkent-caravan.vercel.app/images/hero.jpg">
   <meta property="og:url" content="https://tashkent-caravan.vercel.app/">
   <link rel="canonical" href="https://tashkent-caravan.vercel.app/">
   <link rel="stylesheet" href="styles.css">
@@ -17,8 +16,7 @@
 </head>
 <body>
 
-  <!-- Uzbek Pattern Top Strip -->
-  <div class="uzbek-border-top"></div>
+  <a href="#menu" class="skip-link" data-i18n="skip_menu">Sari la meniu</a>
 
   <!-- Navigation Bar -->
   <nav class="navbar" id="navbar">
@@ -26,7 +24,7 @@
       <a href="#" class="brand-logo" id="brandLogoLink">
         <div class="logo-badge" data-i18n="logo_badge">Т</div>
         <div class="brand-text">
-          <h1 data-i18n="brand_name">ТАШКЕНТ</h1>
+          <span data-i18n="brand_name">ТАШКЕНТ</span>
         </div>
       </a>
 
@@ -50,7 +48,7 @@
         </div>
 
         <!-- Pre-order Cart Button -->
-        <button class="cart-btn-trigger" id="cartOpenBtn" title="Ваш Заказ">
+        <button class="cart-btn-trigger" id="cartOpenBtn" aria-haspopup="dialog" aria-controls="cartDrawer">
           <i class="fa-solid fa-utensils"></i>
           <span class="cart-btn-text" data-i18n="btn_order">Заказ</span>
           <span class="cart-count" id="cartCountBadge">0</span>
@@ -59,24 +57,19 @@
     </div>
   </nav>
 
+  <main>
   <!-- Hero Section -->
   <section class="hero" id="hero">
     <div class="hero-grid">
       <div class="hero-content">
-        <div class="hero-badge">
-          <i class="fa-solid fa-crown"></i> <span data-i18n="hero_badge">Аутентичная Восточная Кухня</span>
-        </div>
+        <div class="hero-badge"><span class="eyebrow-line" aria-hidden="true"></span><span data-i18n="hero_badge">Аутентичная Восточная Кухня</span></div>
         <h1 class="hero-title" data-i18n="hero_title">Вкус Истинного Узбекистана</h1>
         <p class="hero-subtitle" data-i18n="hero_subtitle">
           Погрузитесь в атмосферу восточной сказки. Самый ароматный плов, сочные шашлыки на углях, домашний лагман и выдержанные вина в сердце города.
         </p>
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-          <a href="#menu" class="btn-primary" style="padding: 0.85rem 1.8rem; font-size: 1rem;">
-            <i class="fa-solid fa-book-open"></i> <span data-i18n="hero_menu_btn">Посмотреть Меню</span>
-          </a>
-          <a href="#menu" class="btn-hero-lunch" onclick="showLunchCategory(event)" style="padding: 0.85rem 1.6rem; font-size: 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; border-radius: 30px; font-weight: 700; border: 1.5px solid var(--color-gold); color: var(--color-gold); background: rgba(212, 175, 55, 0.08); transition: var(--transition-smooth); cursor: pointer;">
-            <i class="fa-solid fa-tag"></i> <span data-i18n="hero_lunch_cta">Бизнес-ланч • 170 лей</span>
-          </a>
+        <div class="hero-actions">
+          <a href="#menu" class="btn-primary"><span data-i18n="hero_menu_btn">Посмотреть Меню</span><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
+          <a href="#menu" class="btn-hero-lunch" onclick="showLunchCategory(event)"><span data-i18n="hero_lunch_cta">Бизнес-ланч • 170 лей</span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
         </div>
 
         <div class="hero-meta-strip">
@@ -97,18 +90,18 @@
         </div>
       </div>
 
-      <div class="hero-image-container">
-        <div class="hero-image-frame hero-photo-frame">
-          <img src="images/hero.jpg" alt="Plov uzbec cu carne, servit într-un vas tradițional" class="hero-photo" width="1376" height="768" fetchpriority="high">
+      <aside class="signature-panel" aria-labelledby="signatureTitle">
+        <div class="signature-topline"><span data-i18n="brand_name">TASHKENT</span><span class="signature-mark" aria-hidden="true">✳</span></div>
+        <div class="signature-content">
+          <span class="signature-kicker" data-i18n="cat_mains">Bucate Calde</span>
+          <h2 id="signatureTitle" data-i18n="float_plov_title">Фирменный Ташкентский Плов</h2>
+          <p data-i18n="float_plov_desc">Готовится ежедневно из свежей баранины</p>
         </div>
-        <div class="hero-float-badge">
-          <div class="float-badge-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
-          <div class="float-badge-text">
-            <strong data-i18n="float_plov_title">Фирменный Ташкентский Плов</strong>
-            <span data-i18n="float_plov_desc">Готовится ежедневно из свежей баранины</span>
-          </div>
+        <div class="signature-footer">
+          <div><strong id="signaturePrice"></strong><span id="signaturePortion"></span></div>
+          <button class="signature-order" type="button" onclick="addToCart('m1')"><span data-i18n="btn_add_to_cart">Adaugă</span><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
         </div>
-      </div>
+      </aside>
     </div>
   </section>
 
@@ -119,13 +112,9 @@
       <h2 class="section-title" data-i18n="menu_title">Восточные Изысканности</h2>
     </div>
 
-    <!-- Controls: Search & Category Filter -->
-    <div class="menu-controls">
-      <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="search" aria-label="Search menu" id="menuSearchInput" class="search-input" placeholder="Поиск блюд, напитков..." data-i18n-placeholder="search_placeholder">
-      </div>
-
+    <div class="menu-layout">
+      <aside class="menu-sidebar" aria-label="Categorii meniu">
+        <span class="sidebar-label" data-i18n="nav_menu">Meniu</span>
       <div class="category-tabs" id="categoryTabs">
         <button class="tab-btn active" data-category="all" data-i18n="cat_all" aria-pressed="true">Всё Меню</button>
         <button class="tab-btn" data-category="lunch" data-i18n="cat_lunch">Бизнес-ланч</button>
@@ -141,11 +130,22 @@
         <button class="tab-btn" data-category="bar" data-i18n="cat_bar">Бар & Напитки</button>
         <button class="tab-btn" data-category="alcohol" data-i18n="cat_alcohol">Алкогольные напитки</button>
       </div>
-    </div>
+      </aside>
+      <div class="menu-results">
+        <div class="menu-controls">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="search" aria-label="Search menu" id="menuSearchInput" class="search-input" placeholder="Поиск блюд, напитков..." data-i18n-placeholder="search_placeholder">
+      </div>
 
-    <!-- Dynamic Menu Grid -->
-    <div class="menu-grid" id="menuGrid">
-      <!-- Injected by JavaScript -->
+          <button id="clearMenuSearch" class="search-clear" type="button" data-i18n="clear_search" hidden>Șterge</button>
+        </div>
+        <div class="menu-results-heading">
+          <h3 id="currentCategoryTitle"></h3>
+          <span id="menuResultCount" role="status" aria-live="polite"></span>
+        </div>
+        <div class="menu-grid" id="menuGrid"></div>
+      </div>
     </div>
   </section>
 
@@ -191,14 +191,14 @@
       <h2 class="section-title" data-i18n="contact_title">Контакты & График Работы</h2>
     </div>
 
-    <div class="contact-grid" style="grid-template-columns: 1fr;">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem;">
+    <div class="contact-grid">
+      <div class="contact-details">
         <div style="display: flex; gap: 1rem; align-items: flex-start;">
           <div class="meta-icon"><i class="fa-solid fa-location-dot"></i></div>
           <div>
             <strong style="color: var(--color-text-dark); display: block;" data-i18n="contact_address_lbl">Адрес:</strong>
             <span style="color: var(--color-text-muted);">Str. Mihai Eminescu 64, Chișinău</span>
-            <a class="directions-link" href="https://www.google.com/maps/search/?api=1&amp;query=Strada+Mihai+Eminescu+64%2C+Chi%C8%99in%C4%83u" target="_blank" rel="noopener noreferrer" aria-label="Indicații spre Tashkent în Google Maps">Indicații <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+            <a class="directions-link" href="https://www.google.com/maps/search/?api=1&amp;query=Strada+Mihai+Eminescu+64%2C+Chi%C8%99in%C4%83u" target="_blank" rel="noopener noreferrer" aria-label="Indicații spre Tashkent în Google Maps"><span data-i18n="directions">Indicații</span> <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
           </div>
         </div>
 
@@ -231,9 +231,11 @@
     </div>
   </section>
 
+  </main>
+
   <!-- Business Lunch Builder Modal -->
-  <div class="modal-overlay" id="lunchModalOverlay">
-    <div class="lunch-modal-content">
+  <div class="modal-overlay" id="lunchModalOverlay" aria-hidden="true" inert>
+    <div class="lunch-modal-content" role="dialog" aria-modal="true" aria-labelledby="lunchModalTitle" tabindex="-1">
       <div class="lunch-modal-header">
         <div>
           <span class="lunch-tag-pill" style="margin-bottom: 0.4rem; display: inline-flex;"><i class="fa-solid fa-tag"></i> <span data-i18n="cat_lunch">Бизнес-ланч</span></span>
@@ -249,7 +251,7 @@
             <span class="step-num">1</span>
             <strong data-i18n="lunch_first_title">Первое блюдо (на выбор)</strong>
           </label>
-          <div class="lunch-options-grid" id="lunchFirstOptionsContainer"></div>
+          <div class="lunch-options-grid" id="lunchFirstOptionsContainer" role="radiogroup" aria-label="Felul întâi"></div>
         </div>
 
         <div class="lunch-step-group">
@@ -257,7 +259,7 @@
             <span class="step-num">2</span>
             <strong data-i18n="lunch_second_title">Второе блюдо (на выбор)</strong>
           </label>
-          <div class="lunch-options-grid" id="lunchSecondOptionsContainer"></div>
+          <div class="lunch-options-grid" id="lunchSecondOptionsContainer" role="radiogroup" aria-label="Felul doi"></div>
         </div>
 
         <div class="lunch-included-box">
@@ -282,9 +284,10 @@
   </div>
 
   <!-- Cart / Pre-Order Drawer -->
-  <div class="cart-drawer" id="cartDrawer">
+  <div class="cart-backdrop" id="cartBackdrop" hidden></div>
+  <div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true" tabindex="-1" inert>
     <div class="cart-header">
-      <h3 style="font-family: var(--font-heading); color: #fff;" data-i18n="cart_title">Ваш Предзаказ</h3>
+      <h3 id="cartTitle" style="font-family: var(--font-heading); color: #fff;" data-i18n="cart_title">Ваш Предзаказ</h3>
       <button class="modal-close" id="cartCloseBtn" aria-label="Închide"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
     </div>
 
@@ -294,8 +297,11 @@
 
     <div class="cart-footer">
       <div class="cart-customer-form" style="margin-bottom: 0.5rem;">
-        <input type="text" id="orderCustomerName" class="cart-input" placeholder="Numele Dvs. / Ваше имя *" required>
-        <input type="tel" id="orderCustomerPhone" class="cart-input" placeholder="Număr de telefon / Телефон (ex: 078142911) *" required>
+        <label for="orderCustomerName" data-i18n="customer_name">Numele Dvs.</label>
+        <input type="text" autocomplete="name" id="orderCustomerName" class="cart-input" placeholder="Numele Dvs. / Ваше имя *" required>
+        <label for="orderCustomerPhone" data-i18n="customer_phone">Număr de telefon</label>
+        <input type="tel" autocomplete="tel" inputmode="tel" id="orderCustomerPhone" class="cart-input" placeholder="Număr de telefon / Телефон (ex: 078142911) *" required>
+        <label for="orderNotes" data-i18n="customer_notes">Masa / Comentariu (opțional)</label>
         <input type="text" id="orderNotes" class="cart-input" placeholder="Masa / Comentariu (опционально)">
       </div>
       <div class="cart-total-row">

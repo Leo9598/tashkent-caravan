@@ -2,7 +2,14 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  let currentLang = 'ro';
+  function readPreference(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
+  }
+  function savePreference(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* Storage can be unavailable in private browsing. */ }
+  }
+  let currentLang = readPreference('tashkent_language', 'ro');
+  if (!['ro', 'ru', 'en'].includes(currentLang)) currentLang = 'ro';
   let cart = [];
   let currentCategory = 'all';
   let searchQuery = '';
@@ -14,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeMobileMenu = () => {
       primaryNav.classList.remove('open');
       mobileMenuToggle.setAttribute('aria-expanded', 'false');
-      mobileMenuToggle.setAttribute('aria-label', 'Open navigation menu');
+      mobileMenuToggle.setAttribute('aria-label', i18n[currentLang]?.open_navigation || 'Open navigation menu');
       mobileMenuToggle.innerHTML = '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
     };
 
@@ -26,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         primaryNav.classList.add('open');
         mobileMenuToggle.setAttribute('aria-expanded', 'true');
-        mobileMenuToggle.setAttribute('aria-label', 'Close navigation menu');
+        mobileMenuToggle.setAttribute('aria-label', i18n[currentLang]?.close_navigation || 'Close navigation menu');
         mobileMenuToggle.innerHTML = '<i class="fa-solid fa-xmark" aria-hidden="true"></i>';
       }
     });
@@ -347,6 +354,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  // Interface labels are translated alongside the original restaurant content.
+  Object.assign(i18n.ro, {
+    skip_menu: 'Sari la meniu', clear_search: 'Șterge', reset_filters: 'Arată tot meniul',
+    menu_item: 'preparat', menu_items: 'preparate', directions: 'Indicații', close: 'Închide',
+    customer_name: 'Numele Dvs.', customer_phone: 'Număr de telefon', customer_notes: 'Masa / Comentariu (opțional)',
+    increase: 'Mărește cantitatea', decrease: 'Micșorează cantitatea', no_results: 'Niciun rezultat găsit',
+    open_navigation: 'Deschide navigarea', close_navigation: 'Închide navigarea', categories: 'Categorii meniu'
+  });
+  Object.assign(i18n.ru, {
+    skip_menu: 'Перейти к меню', clear_search: 'Очистить', reset_filters: 'Показать всё меню',
+    menu_item: 'позиция', menu_items: 'позиций', directions: 'Маршрут', close: 'Закрыть',
+    customer_name: 'Ваше имя', customer_phone: 'Номер телефона', customer_notes: 'Столик / Комментарий (необязательно)',
+    increase: 'Увеличить количество', decrease: 'Уменьшить количество', no_results: 'Ничего не найдено',
+    open_navigation: 'Открыть навигацию', close_navigation: 'Закрыть навигацию', categories: 'Категории меню'
+  });
+  Object.assign(i18n.en, {
+    skip_menu: 'Skip to menu', clear_search: 'Clear', reset_filters: 'Show the full menu',
+    menu_item: 'item', menu_items: 'items', directions: 'Directions', close: 'Close',
+    customer_name: 'Your name', customer_phone: 'Phone number', customer_notes: 'Table / Notes (optional)',
+    increase: 'Increase quantity', decrease: 'Decrease quantity', no_results: 'No items found',
+    open_navigation: 'Open navigation', close_navigation: 'Close navigation', categories: 'Menu categories'
+  });
+
   // Full Menu Database
   const menuData = [
     // 0. БИЗНЕС-ЛАНЧ (lunch)
@@ -573,56 +603,93 @@ document.addEventListener('DOMContentLoaded', () => {
   const cartCountBadge = document.getElementById('cartCountBadge');
   const langSwitcher = document.getElementById('langSwitcher');
 
-  // Image Lightbox Modal Engine
-  let lightboxModal = document.getElementById('imageLightboxModal');
-  if (!lightboxModal) {
-    lightboxModal = document.createElement('div');
-    lightboxModal.id = 'imageLightboxModal';
-    lightboxModal.className = 'lightbox-overlay';
-    lightboxModal.innerHTML = `
-      <div class="lightbox-container">
-        <button class="lightbox-close-btn" id="lightboxCloseBtn" aria-label="Close">&times;</button>
-        <img id="lightboxImg" class="lightbox-img" src="" alt="">
-        <div id="lightboxCaption" class="lightbox-caption"></div>
-      </div>
-    `;
-    document.body.appendChild(lightboxModal);
+  const clearMenuSearch = document.getElementById('clearMenuSearch');
+  const cartBackdrop = document.getElementById('cartBackdrop');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  const categoryKeys = { all: 'cat_all', lunch: 'cat_lunch', starters: 'cat_starters', salads: 'cat_salads', soups: 'cat_soups', mains: 'cat_mains', mangal: 'cat_mangal', bakery: 'cat_bakery', sides: 'cat_sides', sauces: 'cat_sauces', desserts: 'cat_desserts', bar: 'cat_bar', alcohol: 'cat_alcohol' };
+  const escapeAttribute = value => value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const categoryLabel = category => i18n[currentLang][categoryKeys[category]];
+  const normalizeSearch = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().trim();
 
-    lightboxModal.addEventListener('click', (e) => {
-      if (e.target === lightboxModal || e.target.id === 'lightboxCloseBtn' || e.target.closest('#lightboxCloseBtn')) {
-        closeImageLightbox();
+  // Restore dish choices only; personal form fields are never saved.
+  const savedCart = readPreference('tashkent_cart', []);
+  if (Array.isArray(savedCart)) {
+    cart = savedCart.slice(0, 150).flatMap(saved => {
+      if (!saved || typeof saved !== 'object' || !Number.isInteger(saved.qty) || saved.qty < 1 || saved.qty > 99) return [];
+      if (saved.isBusinessLunch) {
+        const lunch = menuData.find(item => item.id === 'l1');
+        if (!Number.isInteger(saved.firstIndex) || !Number.isInteger(saved.secondIndex) ||
+            !lunch.firstCourses.ro[saved.firstIndex] || !lunch.secondCourses.ro[saved.secondIndex]) return [];
+        return [{ ...saved, price: lunch.price, ru: { name: lunch.ru.name }, ro: { name: lunch.ro.name }, en: { name: lunch.en.name } }];
       }
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && lightboxModal.classList.contains('active')) {
-        closeImageLightbox();
-      }
+      const item = menuData.find(item => item.id === saved.id && !item.isBusinessLunch);
+      return item ? [{ ...item, qty: saved.qty }] : [];
     });
   }
 
-  window.openImageLightbox = function (imgSrc, captionText) {
-    const imgEl = document.getElementById('lightboxImg');
-    const capEl = document.getElementById('lightboxCaption');
-    if (imgEl && capEl && lightboxModal) {
-      imgEl.src = imgSrc;
-      imgEl.alt = captionText || '';
-      capEl.textContent = captionText || '';
-      lightboxModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-  };
-
-  window.closeImageLightbox = function () {
-    if (lightboxModal) {
-      lightboxModal.classList.remove('active');
+  let activeDialog = null;
+  let dialogReturnFocus = null;
+  function openDialog(element) {
+    if (activeDialog === element) return;
+    if (activeDialog) closeDialog(activeDialog, false);
+    dialogReturnFocus = document.activeElement;
+    activeDialog = element;
+    element.inert = false;
+    element.setAttribute('aria-hidden', 'false');
+    element.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    if (element === cartDrawer) cartBackdrop.hidden = false;
+    document.querySelectorAll('body > nav, body > main, body > footer, .mobile-cart-bar, .skip-link').forEach(region => { region.inert = true; });
+    requestAnimationFrame(() => {
+      if (activeDialog === element) (element.querySelector('button, input') || element).focus({ preventScroll: true });
+    });
+  }
+  function closeDialog(element, restoreFocus = true) {
+    if (!element) return;
+    element.classList.remove('active');
+    element.inert = true;
+    element.setAttribute('aria-hidden', 'true');
+    if (element === cartDrawer) cartBackdrop.hidden = true;
+    if (activeDialog === element) {
+      activeDialog = null;
       document.body.style.overflow = '';
+      document.querySelectorAll('body > nav, body > main, body > footer, .mobile-cart-bar, .skip-link').forEach(region => { region.inert = false; });
+      if (restoreFocus && dialogReturnFocus?.isConnected) dialogReturnFocus.focus({ preventScroll: true });
     }
-  };
+  }
+  document.addEventListener('keydown', event => {
+    if (!activeDialog) return;
+    if (event.key === 'Escape') { closeDialog(activeDialog); return; }
+    if (event.key !== 'Tab') return;
+    const focusable = [...activeDialog.querySelectorAll('button:not([disabled]), input:not([disabled]), a[href], [tabindex="0"]')].filter(el => el.getClientRects().length);
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !activeDialog.contains(document.activeElement))) {
+      event.preventDefault(); last?.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || !activeDialog.contains(document.activeElement))) {
+      event.preventDefault(); first?.focus();
+    }
+  });
+  cartBackdrop.addEventListener('click', () => closeDialog(cartDrawer));
+
+  function updateCategoryButtons() {
+    categoryTabs.querySelectorAll('.tab-btn').forEach(button => {
+      const category = button.dataset.category;
+      button.textContent = categoryLabel(category);
+      button.classList.toggle('active', category === currentCategory);
+      button.setAttribute('aria-pressed', String(category === currentCategory));
+      const count = document.createElement('span');
+      count.className = 'category-count';
+      count.setAttribute('aria-hidden', 'true');
+      count.textContent = category === 'all' ? menuData.length : menuData.filter(item => item.category === category).length;
+      button.appendChild(count);
+    });
+  }
 
   // Change Language Function
   function setLanguage(lang) {
     currentLang = lang;
+    savePreference('tashkent_language', lang);
     document.documentElement.lang = lang;
     const dict = i18n[lang] || i18n.ru;
 
@@ -647,8 +714,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      btn.setAttribute('aria-pressed', String(btn.getAttribute('data-lang') === lang));
     });
 
+    const plov = menuData.find(item => item.id === 'm1');
+    document.getElementById('signaturePrice').textContent = `${plov.price} ${dict.currency}`;
+    document.getElementById('signaturePortion').textContent = `${plov.weight} ${lang === 'ru' ? 'г' : 'g'}`;
+    [nameInput, phoneInput, notesInput].forEach(input => input?.setAttribute('aria-label', input.placeholder));
+    document.querySelectorAll('.modal-close').forEach(button => button.setAttribute('aria-label', dict.close));
+    document.querySelector('.menu-sidebar').setAttribute('aria-label', dict.categories);
+    document.getElementById('lunchFirstOptionsContainer').setAttribute('aria-label', dict.lunch_first_title);
+    document.getElementById('lunchSecondOptionsContainer').setAttribute('aria-label', dict.lunch_second_title);
+    document.querySelector('.directions-link').setAttribute('aria-label', `${dict.directions} — Google Maps`);
+    mobileMenuToggle?.setAttribute('aria-label', mobileMenuToggle.getAttribute('aria-expanded') === 'true' ? dict.close_navigation : dict.open_navigation);
+    updateCategoryButtons();
     renderSiteStatusOverlay();
     renderMenu();
     updateCartUI();
@@ -678,26 +757,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const filtered = menuData.filter(item => {
       const itemLang = item[currentLang] || item.ru;
       const matchesCategory = (currentCategory === 'all') || (item.category === currentCategory);
-      const matchesSearch = itemLang.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        itemLang.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        itemLang.tag.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = normalizeSearch([itemLang.name, itemLang.desc, itemLang.tag,
+        ...(item.firstCourses?.[currentLang] || []), ...(item.secondCourses?.[currentLang] || [])].join(' ')).includes(normalizeSearch(searchQuery));
       return matchesCategory && matchesSearch;
     });
 
+    document.getElementById('currentCategoryTitle').textContent = categoryLabel(currentCategory);
+    document.getElementById('menuResultCount').textContent = `${filtered.length} ${filtered.length === 1 ? dict.menu_item : dict.menu_items}`;
+    clearMenuSearch.hidden = searchQuery.length === 0;
     if (filtered.length === 0) {
-      menuGrid.innerHTML = `
-        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--color-text-muted);">
-          <i class="fa-solid fa-utensils" style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--color-gold);"></i>
-          <p>${currentLang === 'ro' ? 'Niciun rezultat găsit' : (currentLang === 'en' ? 'No items found' : 'Ничего не найдено')}</p>
-        </div>
-      `;
+      menuGrid.innerHTML = `<div class="menu-empty"><p>${dict.no_results}</p><button type="button" class="btn-secondary" onclick="resetMenuFilters()">${dict.reset_filters}</button></div>`;
       return;
     }
 
+    let previousCategory = null;
     filtered.forEach(item => {
       const itemLang = item[currentLang] || item.ru;
 
-      // Special presentation for Business Lunch matching official restaurant design
+      if (currentCategory === 'all' && item.category !== previousCategory && !item.isBusinessLunch) {
+        const heading = document.createElement('h3');
+        heading.className = 'menu-category-heading';
+        heading.textContent = categoryLabel(item.category);
+        menuGrid.appendChild(heading);
+      }
+      previousCategory = item.category;
+      // Keep every course option visible in the business lunch offer.
       if (item.isBusinessLunch) {
         const card = document.createElement('div');
         card.className = 'menu-card lunch-card-custom';
@@ -771,18 +855,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = document.createElement('div');
       card.className = 'menu-card';
 
-      const safeName = itemLang.name.replace(/'/g, "\\'");
-      const imgHtml = item.image ? `
-        <div class="card-image-wrapper" onclick="openImageLightbox('${item.image}', '${safeName}')" title="Apăsați pentru a mări">
-          <img src="${item.image}" alt="${itemLang.name}" class="card-img" loading="lazy">
-          <span class="card-tag-badge"><i class="fa-solid fa-tag"></i> ${itemLang.tag}</span>
-          <span class="zoom-hint-badge"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-        </div>
-      ` : '';
-
-      const inlineTagHtml = (!item.image && itemLang.tag) ? `
-        <span class="inline-tag-badge"><i class="fa-solid fa-tag"></i> ${itemLang.tag}</span>
-      ` : '';
+      const inlineTagHtml = itemLang.tag ? `<span class="inline-tag-badge">${itemLang.tag}</span>` : '';
 
       const weightUnit = currentLang === 'ru' ? 'г' : 'g';
       const volumeUnit = currentLang === 'ru' ? 'мл' : 'ml';
@@ -795,7 +868,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       card.innerHTML = `
-        ${imgHtml}
         <div class="card-body">
           ${inlineTagHtml}
           <div class="card-top">
@@ -811,7 +883,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span style="font-size: 0.82rem; color: var(--color-text-muted); display: inline-flex; align-items: center; gap: 4px;">
             ${portionText ? `<i class="fa-solid fa-utensils" style="color: var(--color-gold); font-size: 0.75rem;"></i> Tashkent` : 'Tashkent'}
           </span>
-          <button class="btn-add-item" onclick="addToCart('${item.id}')">
+          <button class="btn-add-item" onclick="addToCart('${item.id}')" aria-label="${escapeAttribute(`${dict.btn_add_to_cart}: ${itemLang.name}`)}">
             <i class="fa-solid fa-plus"></i> ${dict.btn_add_to_cart}
           </button>
         </div>
@@ -820,29 +892,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (categoryTabs) {
-    categoryTabs.addEventListener('click', (e) => {
-      if (e.target.classList.contains('tab-btn')) {
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-          btn.classList.remove('active');
-          btn.setAttribute('aria-pressed', 'false');
-        });
-        e.target.classList.add('active');
-        e.target.setAttribute('aria-pressed', 'true');
-        currentCategory = e.target.getAttribute('data-category');
-        renderMenu();
-        // Smoothly scroll active tab into view on mobile
-        e.target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      }
-    });
+  function selectCategory(category, scroll = false) {
+    currentCategory = category;
+    updateCategoryButtons();
+    renderMenu();
+    if (scroll) document.querySelector('.menu-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-
-  if (menuSearchInput) {
-    menuSearchInput.addEventListener('input', (e) => {
-      searchQuery = e.target.value;
-      renderMenu();
-    });
-  }
+  categoryTabs.addEventListener('click', event => {
+    const button = event.target.closest('.tab-btn');
+    if (button) selectCategory(button.dataset.category, true);
+  });
+  menuSearchInput.addEventListener('input', event => {
+    searchQuery = event.target.value;
+    renderMenu();
+  });
+  clearMenuSearch.addEventListener('click', () => {
+    searchQuery = '';
+    menuSearchInput.value = '';
+    renderMenu();
+    menuSearchInput.focus();
+  });
+  window.resetMenuFilters = () => {
+    searchQuery = '';
+    menuSearchInput.value = '';
+    selectCategory('all');
+    menuSearchInput.focus();
+  };
 
   // Business Lunch Builder Functions
   let selectedFirstDishIndex = 0;
@@ -865,25 +940,25 @@ document.addEventListener('DOMContentLoaded', () => {
     selectedSecondDishIndex = 0;
 
     firstOptionsContainer.innerHTML = firstList.map((dish, idx) => `
-      <div class="lunch-option-card ${idx === 0 ? 'selected' : ''}" onclick="selectLunchFirst(${idx})">
-        <div class="lunch-radio-disc"></div>
+      <label class="lunch-option-card ${idx === 0 ? 'selected' : ''}">
+        <input type="radio" name="lunch-first" value="${idx}" ${idx === 0 ? 'checked' : ''} onchange="selectLunchFirst(${idx})">
         <span class="lunch-option-title">${dish}</span>
-      </div>
+      </label>
     `).join('');
 
     secondOptionsContainer.innerHTML = secondList.map((dish, idx) => `
-      <div class="lunch-option-card ${idx === 0 ? 'selected' : ''}" onclick="selectLunchSecond(${idx})">
-        <div class="lunch-radio-disc"></div>
+      <label class="lunch-option-card ${idx === 0 ? 'selected' : ''}">
+        <input type="radio" name="lunch-second" value="${idx}" ${idx === 0 ? 'checked' : ''} onchange="selectLunchSecond(${idx})">
         <span class="lunch-option-title">${dish}</span>
-      </div>
+      </label>
     `).join('');
 
-    modalOverlay.classList.add('active');
+    openDialog(modalOverlay);
   };
 
   window.closeLunchBuilderModal = function () {
     const modalOverlay = document.getElementById('lunchModalOverlay');
-    if (modalOverlay) modalOverlay.classList.remove('active');
+    closeDialog(modalOverlay);
   };
 
   window.selectLunchFirst = function (idx) {
@@ -912,13 +987,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const summary = `${firstDish} + ${secondDish} + ${bread}`;
 
-    const existing = cart.find(c => c.isBusinessLunch && c.selectedSummary === summary);
+    const existing = cart.find(c => c.isBusinessLunch && c.firstIndex === selectedFirstDishIndex && c.secondIndex === selectedSecondDishIndex);
     if (existing) {
-      existing.qty++;
+      existing.qty = Math.min(99, existing.qty + 1);
     } else {
       cart.push({
         id: 'lunch_' + Date.now(),
         isBusinessLunch: true,
+        firstIndex: selectedFirstDishIndex,
+        secondIndex: selectedSecondDishIndex,
         price: lunchItem.price,
         qty: 1,
         selectedFirst: firstDish,
@@ -932,19 +1009,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeLunchBuilderModal();
     updateCartUI();
-    if (cartDrawer) cartDrawer.classList.add('active');
+    if (cartDrawer) openDialog(cartDrawer);
   };
 
   window.showLunchCategory = function (e) {
     if (e) e.preventDefault();
-    const lunchTab = document.querySelector('.tab-btn[data-category="lunch"]');
-    if (lunchTab) {
-      lunchTab.click();
-    }
-    const menuSection = document.getElementById('menu');
-    if (menuSection) {
-      menuSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    searchQuery = '';
+    menuSearchInput.value = '';
+    selectCategory('lunch');
+    document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
   };
 
   // Close lunch modal on clicking outside
@@ -968,13 +1041,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const existing = cart.find(c => c.id === id);
     if (existing) {
-      existing.qty++;
+      existing.qty = Math.min(99, existing.qty + 1);
     } else {
       cart.push({ ...item, qty: 1 });
     }
 
     updateCartUI();
-    if (cartDrawer) cartDrawer.classList.add('active');
+    if (cartDrawer) openDialog(cartDrawer);
   };
 
   function updateCartUI() {
@@ -1004,6 +1077,10 @@ document.addEventListener('DOMContentLoaded', () => {
           portionStr = ` (${typeof item.volume === 'number' ? `${item.volume} ${volumeUnit}` : item.volume})`;
         }
 
+        if (item.isBusinessLunch) {
+          const lunch = menuData.find(dish => dish.id === 'l1');
+          item.selectedSummary = `${lunch.firstCourses[currentLang][item.firstIndex]} + ${lunch.secondCourses[currentLang][item.secondIndex]} + ${lunch.additional[currentLang][0]}`;
+        }
         const detailsHtml = item.selectedSummary ? `
           <div style="font-size: 0.78rem; color: var(--color-teal-accent); margin-top: 2px; line-height: 1.3;">
             <i class="fa-solid fa-check" style="font-size: 0.7rem;"></i> ${item.selectedSummary}
@@ -1019,14 +1096,16 @@ document.addEventListener('DOMContentLoaded', () => {
             <span style="color: var(--color-gold); font-size: 0.85rem;">${item.price} ${dict.currency} × ${item.qty}</span>
           </div>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <button onclick="changeCartQty(${index}, -1)" style="background: rgba(255,255,255,0.1); border: 1px solid var(--border-glass); color: #fff; width: 26px; height: 26px; border-radius: 50%; cursor: pointer;">-</button>
+            <button class="qty-button" data-cart-index="${index}" data-delta="-1" onclick="changeCartQty(${index}, -1)" aria-label="${escapeAttribute(`${dict.decrease}: ${itemLang.name}`)}">−</button>
             <span style="color: #fff; font-size: 0.9rem;">${item.qty}</span>
-            <button onclick="changeCartQty(${index}, 1)" style="background: rgba(255,255,255,0.1); border: 1px solid var(--border-glass); color: #fff; width: 26px; height: 26px; border-radius: 50%; cursor: pointer;">+</button>
+            <button class="qty-button" data-cart-index="${index}" data-delta="1" onclick="changeCartQty(${index}, 1)" aria-label="${escapeAttribute(`${dict.increase}: ${itemLang.name}`)}">+</button>
           </div>
         `;
         cartItemsList.appendChild(cartRow);
       });
     }
+
+    savePreference('tashkent_cart', cart.map(item => ({ id: item.id, qty: item.qty, ...(item.isBusinessLunch ? { isBusinessLunch: true, firstIndex: item.firstIndex, secondIndex: item.secondIndex } : {}) })));
 
     if (cartTotalSum) cartTotalSum.textContent = `${total} ${dict.currency}`;
     if (cartCountBadge) cartCountBadge.textContent = count;
@@ -1049,19 +1128,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.changeCartQty = function (index, delta) {
+    if (!cart[index] || (delta > 0 && cart[index].qty >= 99)) return;
     cart[index].qty += delta;
     if (cart[index].qty <= 0) {
       cart.splice(index, 1);
     }
     updateCartUI();
+    const nextIndex = Math.min(index, cart.length - 1);
+    const nextControl = cartItemsList.querySelector(`[data-cart-index="${nextIndex}"][data-delta="${delta}"]`);
+    (nextControl || cartCloseBtn).focus({ preventScroll: true });
   };
 
-  if (cartOpenBtn && cartDrawer) cartOpenBtn.addEventListener('click', () => cartDrawer.classList.add('active'));
-  if (cartCloseBtn && cartDrawer) cartCloseBtn.addEventListener('click', () => cartDrawer.classList.remove('active'));
+  if (cartOpenBtn && cartDrawer) cartOpenBtn.addEventListener('click', () => openDialog(cartDrawer));
+  if (cartCloseBtn && cartDrawer) cartCloseBtn.addEventListener('click', () => closeDialog(cartDrawer));
 
   const mobileCartOpenBtn = document.getElementById('mobileCartOpenBtn');
   if (mobileCartOpenBtn && cartDrawer) {
-    mobileCartOpenBtn.addEventListener('click', () => cartDrawer.classList.add('active'));
+    mobileCartOpenBtn.addEventListener('click', () => openDialog(cartDrawer));
   }
 
   // Send Order to Telegram Bot API
@@ -1125,7 +1208,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (nameInput) nameInput.value = '';
           if (phoneInput) phoneInput.value = '';
           if (notesInput) notesInput.value = '';
-          if (cartDrawer) cartDrawer.classList.remove('active');
+          if (cartDrawer) closeDialog(cartDrawer);
         } else {
           alert(data.message || 'Eroare la trimiterea comenzii în Telegram.');
         }
@@ -1160,5 +1243,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial Load: Fetch global status from Vercel Serverless API
   fetchGlobalSiteStatus();
-  setLanguage('ro');
+  setLanguage(currentLang);
 });
