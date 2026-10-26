@@ -357,21 +357,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // Interface labels are translated alongside the original restaurant content.
   Object.assign(i18n.ro, {
     skip_menu: 'Sari la meniu', clear_search: 'Șterge', reset_filters: 'Arată tot meniul',
-    menu_item: 'preparat', menu_items: 'preparate', directions: 'Indicații', close: 'Închide',
+    menu_item: 'preparat', menu_items: 'preparate', directions: 'Indicații', close: 'Închide', view_photo: 'Vezi fotografia',
     customer_name: 'Numele Dvs.', customer_phone: 'Număr de telefon', customer_notes: 'Masa / Comentariu (opțional)',
     increase: 'Mărește cantitatea', decrease: 'Micșorează cantitatea', no_results: 'Niciun rezultat găsit',
     open_navigation: 'Deschide navigarea', close_navigation: 'Închide navigarea', categories: 'Categorii meniu'
   });
   Object.assign(i18n.ru, {
     skip_menu: 'Перейти к меню', clear_search: 'Очистить', reset_filters: 'Показать всё меню',
-    menu_item: 'позиция', menu_items: 'позиций', directions: 'Маршрут', close: 'Закрыть',
+    menu_item: 'позиция', menu_items: 'позиций', directions: 'Маршрут', close: 'Закрыть', view_photo: 'Посмотреть фото',
     customer_name: 'Ваше имя', customer_phone: 'Номер телефона', customer_notes: 'Столик / Комментарий (необязательно)',
     increase: 'Увеличить количество', decrease: 'Уменьшить количество', no_results: 'Ничего не найдено',
     open_navigation: 'Открыть навигацию', close_navigation: 'Закрыть навигацию', categories: 'Категории меню'
   });
   Object.assign(i18n.en, {
     skip_menu: 'Skip to menu', clear_search: 'Clear', reset_filters: 'Show the full menu',
-    menu_item: 'item', menu_items: 'items', directions: 'Directions', close: 'Close',
+    menu_item: 'item', menu_items: 'items', directions: 'Directions', close: 'Close', view_photo: 'View photo',
     customer_name: 'Your name', customer_phone: 'Phone number', customer_notes: 'Table / Notes (optional)',
     increase: 'Increase quantity', decrease: 'Decrease quantity', no_results: 'No items found',
     open_navigation: 'Open navigation', close_navigation: 'Close navigation', categories: 'Menu categories'
@@ -686,6 +686,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // The restaurant's original meal photos can still be opened at full size.
+  const mealLightbox = document.createElement('div');
+  mealLightbox.className = 'modal-overlay meal-lightbox';
+  mealLightbox.id = 'mealPhotoOverlay';
+  mealLightbox.inert = true;
+  mealLightbox.setAttribute('aria-hidden', 'true');
+  mealLightbox.innerHTML = `
+    <div class="meal-lightbox-content" role="dialog" aria-modal="true" aria-labelledby="mealPhotoCaption" tabindex="-1">
+      <button class="modal-close meal-photo-close" type="button"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+      <img id="mealPhotoImage" alt="">
+      <p id="mealPhotoCaption"></p>
+    </div>`;
+  document.body.appendChild(mealLightbox);
+  mealLightbox.querySelector('button').addEventListener('click', () => closeDialog(mealLightbox));
+  mealLightbox.addEventListener('click', event => {
+    if (event.target === mealLightbox) closeDialog(mealLightbox);
+  });
+  function openMealPhoto(source, caption) {
+    const photo = document.getElementById('mealPhotoImage');
+    photo.src = source;
+    photo.alt = caption;
+    document.getElementById('mealPhotoCaption').textContent = caption;
+    openDialog(mealLightbox);
+  }
+
   // Change Language Function
   function setLanguage(lang) {
     currentLang = lang;
@@ -888,6 +913,27 @@ document.addEventListener('DOMContentLoaded', () => {
           </button>
         </div>
       `;
+      if (item.image) {
+        const photoButton = document.createElement('button');
+        photoButton.type = 'button';
+        photoButton.className = 'card-image-wrapper';
+        photoButton.setAttribute('aria-label', `${dict.view_photo}: ${itemLang.name}`);
+        photoButton.setAttribute('aria-haspopup', 'dialog');
+        const photo = document.createElement('img');
+        photo.src = item.image;
+        photo.alt = itemLang.name;
+        photo.loading = 'lazy';
+        photo.decoding = 'async';
+        photo.className = 'card-img';
+        photoButton.appendChild(photo);
+        const zoomHint = document.createElement('span');
+        zoomHint.className = 'meal-photo-zoom';
+        zoomHint.setAttribute('aria-hidden', 'true');
+        zoomHint.innerHTML = '<i class="fa-solid fa-magnifying-glass-plus"></i>';
+        photoButton.appendChild(zoomHint);
+        photoButton.addEventListener('click', () => openMealPhoto(item.image, itemLang.name));
+        card.prepend(photoButton);
+      }
       menuGrid.appendChild(card);
     });
   }
