@@ -3,8 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ташкент | Ресторан Узбекской Кухни (Tashkent)</title>
-  <meta name="description" content="Аутентичный ресторан узбекской кухни Ташкент в Кишинёве. Плов, шашлыки, лагман, манты, шурпа и блюда на мангале. Улица Михаила Эминеску 64.">
+  <title>Tashkent — Bucătărie uzbecă în Chișinău</title>
+  <meta name="description" content="Descoperă plov, lagman, manti și frigărui la restaurantul Tashkent din Chișinău. Vezi meniul, comandă online sau vizitează-ne pe str. Mihai Eminescu 64.">
+  <meta name="theme-color" content="#174b43">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Tashkent — Bucătărie uzbecă în Chișinău">
+  <meta property="og:description" content="Plov, lagman, manti și frigărui. Explorează meniul restaurantului Tashkent din Chișinău.">
+  <meta property="og:image" content="https://tashkent-caravan.vercel.app/images/hero.jpg">
+  <meta property="og:url" content="https://tashkent-caravan.vercel.app/">
+  <link rel="canonical" href="https://tashkent-caravan.vercel.app/">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -91,12 +98,8 @@
       </div>
 
       <div class="hero-image-container">
-        <div class="hero-image-frame hero-graphic-card">
-          <div class="hero-graphic-content">
-            <i class="fa-solid fa-utensils hero-graphic-icon"></i>
-            <h3 class="hero-graphic-title">Tashkent</h3>
-            <p class="hero-graphic-text" data-i18n="hero_badge">Аутентичная Восточная Кухня</p>
-          </div>
+        <div class="hero-image-frame hero-photo-frame">
+          <img src="images/hero.jpg" alt="Plov uzbec cu carne, servit într-un vas tradițional" class="hero-photo" width="1376" height="768" fetchpriority="high">
         </div>
         <div class="hero-float-badge">
           <div class="float-badge-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
@@ -124,7 +127,7 @@
       </div>
 
       <div class="category-tabs" id="categoryTabs">
-        <button class="tab-btn active" data-category="all" data-i18n="cat_all">Всё Меню</button>
+        <button class="tab-btn active" data-category="all" data-i18n="cat_all" aria-pressed="true">Всё Меню</button>
         <button class="tab-btn" data-category="lunch" data-i18n="cat_lunch">Бизнес-ланч</button>
         <button class="tab-btn" data-category="starters" data-i18n="cat_starters">Холодные закуски</button>
         <button class="tab-btn" data-category="salads" data-i18n="cat_salads">Салаты</button>
@@ -194,7 +197,8 @@
           <div class="meta-icon"><i class="fa-solid fa-location-dot"></i></div>
           <div>
             <strong style="color: var(--color-text-dark); display: block;" data-i18n="contact_address_lbl">Адрес:</strong>
-            <span style="color: var(--color-text-muted);">Str. Mihai Eminescu 64, Кишинёв</span>
+            <span style="color: var(--color-text-muted);">Str. Mihai Eminescu 64, Chișinău</span>
+            <a class="directions-link" href="https://www.google.com/maps/search/?api=1&amp;query=Strada+Mihai+Eminescu+64%2C+Chi%C8%99in%C4%83u" target="_blank" rel="noopener noreferrer" aria-label="Indicații spre Tashkent în Google Maps">Indicații <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
           </div>
         </div>
 
@@ -236,7 +240,7 @@
           <h3 id="lunchModalTitle" style="font-family: var(--font-heading); color: #fff; font-size: 1.4rem; margin: 0.2rem 0;" data-i18n="lunch_modal_title">Соберите свой Бизнес-ланч</h3>
           <p style="color: var(--color-text-muted); font-size: 0.88rem; margin: 0;" data-i18n="lunch_modal_subtitle">Выберите 1 первое и 1 второе блюдо</p>
         </div>
-        <button class="modal-close" id="lunchModalCloseBtn" onclick="closeLunchBuilderModal()"><i class="fa-solid fa-xmark"></i></button>
+        <button class="modal-close" id="lunchModalCloseBtn" onclick="closeLunchBuilderModal()" aria-label="Închide"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
       </div>
 
       <div class="lunch-modal-body">
@@ -281,7 +285,7 @@
   <div class="cart-drawer" id="cartDrawer">
     <div class="cart-header">
       <h3 style="font-family: var(--font-heading); color: #fff;" data-i18n="cart_title">Ваш Предзаказ</h3>
-      <button class="modal-close" id="cartCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+      <button class="modal-close" id="cartCloseBtn" aria-label="Închide"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
     </div>
 
     <div class="cart-items-list" id="cartItemsList">

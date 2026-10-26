@@ -823,8 +823,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (categoryTabs) {
     categoryTabs.addEventListener('click', (e) => {
       if (e.target.classList.contains('tab-btn')) {
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-pressed', 'false');
+        });
         e.target.classList.add('active');
+        e.target.setAttribute('aria-pressed', 'true');
         currentCategory = e.target.getAttribute('data-category');
         renderMenu();
         // Smoothly scroll active tab into view on mobile

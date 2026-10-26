@@ -2110,3 +2110,33 @@ section[id] { scroll-margin-top: calc(var(--header-height) + 18px); }
 
 .cart-drawer { visibility: hidden; }
 .cart-drawer.active { visibility: visible; }
+
+/* Put the restaurant's food at the center of the first impression. */
+.hero { min-height: 0; padding-top: var(--header-height); }
+.hero > .hero-grid { padding-top: clamp(2.5rem, 5vw, 4.5rem); padding-bottom: clamp(3.5rem, 6vw, 5.5rem); }
+.hero-photo-frame { height: clamp(340px, 31vw, 490px); background: #174b43; }
+.hero-photo-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(18, 39, 31, 0.25));
+  pointer-events: none;
+}
+.hero-photo { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
+.hero-image-container { padding-bottom: 1.25rem; }
+.directions-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+  color: var(--color-teal-dark);
+  font-weight: 700;
+  text-underline-offset: 0.2em;
+}
+.directions-link:hover { color: var(--color-terracotta); }
+@media (max-width: 768px) {
+  .hero { min-height: 0; padding-top: var(--header-height); }
+  .hero > .hero-grid { padding-top: 1.75rem; padding-bottom: 2.5rem; }
+  .hero-photo-frame { height: clamp(230px, 65vw, 330px); }
+  .hero-image-container { padding-bottom: 0; }
+}
