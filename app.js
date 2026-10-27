@@ -356,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Interface labels are translated alongside the original restaurant content.
   Object.assign(i18n.ro, {
+    open_maps: 'Deschide în Google Maps', map_title: 'Tashkent — hartă și locație',
     welcome_title: 'Oaspetele este o binecuvântare a casei.',
     welcome_description: 'Tradițiile Drumului Mătăsii, în inima Chișinăului.',
     welcome_link: 'Descoperă povestea noastră',
@@ -366,6 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
     open_navigation: 'Deschide navigarea', close_navigation: 'Închide navigarea', categories: 'Categorii meniu'
   });
   Object.assign(i18n.ru, {
+    open_maps: 'Открыть в Google Maps', map_title: 'Ташкент — карта и адрес',
     welcome_title: 'Гость — благословение дома.',
     welcome_description: 'Традиции Шёлкового пути в самом сердце Кишинёва.',
     welcome_link: 'Откройте нашу историю',
@@ -376,6 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
     open_navigation: 'Открыть навигацию', close_navigation: 'Закрыть навигацию', categories: 'Категории меню'
   });
   Object.assign(i18n.en, {
+    open_maps: 'Open in Google Maps', map_title: 'Tashkent — map and location',
     welcome_title: 'A guest is a blessing to the home.',
     welcome_description: 'The traditions of the Silk Road, in the heart of Chișinău.',
     welcome_link: 'Discover our story',
@@ -757,6 +760,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('lunchFirstOptionsContainer').setAttribute('aria-label', dict.lunch_first_title);
     document.getElementById('lunchSecondOptionsContainer').setAttribute('aria-label', dict.lunch_second_title);
     document.querySelector('.directions-link').setAttribute('aria-label', `${dict.directions} — Google Maps`);
+    const contactMap = document.getElementById('contactMap');
+    contactMap.title = dict.map_title;
+    const mapSource = new URL(contactMap.src);
+    if (mapSource.searchParams.get('hl') !== lang) {
+      mapSource.searchParams.set('hl', lang);
+      contactMap.src = mapSource.href;
+    }
     mobileMenuToggle?.setAttribute('aria-label', mobileMenuToggle.getAttribute('aria-expanded') === 'true' ? dict.close_navigation : dict.open_navigation);
     updateCategoryButtons();
     renderSiteStatusOverlay();

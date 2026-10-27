@@ -166,7 +166,12 @@ section[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 .about-quote .fa-quote-left { opacity: 1 !important; font-size: 28px !important; }
 .about-quote p { font: italic 23px/1.5 var(--font-heading) !important; color: #fffdf8; }
 .about-quote strong { font: 400 11px var(--font-body) !important; }
-.contact-details { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 32px; }
+.contact-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 40px; align-items: stretch; }
+.contact-details { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 32px; align-content: space-evenly; }
+.contact-map { display: grid; grid-template-rows: 330px auto; min-width: 0; overflow: hidden; border: 1px solid #ccd2c4; border-radius: 6px; background: #eeeadd; }
+.contact-map iframe { display: block; width: 100%; height: 100%; border: 0; }
+.map-open-link { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 49px; padding: 12px 17px; border-top: 1px solid #ccd2c4; background: #fffdf8; color: var(--color-teal-dark); font-size: 11px; font-weight: 600; text-decoration: none; }
+.map-open-link:hover { color: var(--color-terracotta); background: #f4f0e6; }
 .contact-details > div { min-width: 0; }
 .contact-details strong { font-size: 11px; margin-bottom: 5px; }
 .contact-details span { font-size: 11px; }
@@ -285,6 +290,7 @@ section[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
   .card-title { font-size: 16px; }
   .card-desc { font-size: 13px; }
   .btn-add-item { min-height: 44px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 30px; }
   .about-panel .hero-grid { gap: 32px; }
   .about-quote { padding: 27px; }
   .about-quote p { font-size: 21px !important; }
@@ -334,6 +340,7 @@ section[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
   .about-stats h3 { font-size: 25px !important; }
   .about-quote { padding: 25px; }
   .contact-details { grid-template-columns: 1fr; gap: 27px; }
+  .contact-map { grid-template-rows: 290px auto; }
   .contact-details span { font-size: 13px; }
   .contact-details strong { font-size: 12px; }
   .directions-link { min-height: 44px; }
