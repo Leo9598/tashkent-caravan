@@ -389,6 +389,58 @@ document.addEventListener('DOMContentLoaded', () => {
     open_navigation: 'Open navigation', close_navigation: 'Close navigation', categories: 'Menu categories'
   });
 
+  Object.assign(i18n.ro, {
+    start_delivery: 'Comandă cu livrare', fulfillment_label: 'Cum doriți comanda?',
+    fulfillment_delivery: 'Livrare', fulfillment_pickup: 'La pachet', fulfillment_dine_in: 'În restaurant',
+    fulfillment_hint_delivery: 'Disponibilitatea, ora și costul livrării se confirmă telefonic de restaurant.',
+    fulfillment_hint_pickup: 'Ridicare de la Str. Mihai Eminescu 64, Chișinău. Restaurantul vă contactează pentru confirmare.',
+    fulfillment_hint_dine_in: 'Pentru servire în restaurant. Puteți indica numărul mesei în comentariu.',
+    delivery_city: 'Localitatea', delivery_street: 'Strada și numărul clădirii', delivery_apartment: 'Apartament (opțional)',
+    delivery_access: 'Intrare / etaj / interfon (opțional)', delivery_notes: 'Instrucțiuni / Comentariu (opțional)',
+    delivery_subtotal: 'Subtotal preparate', delivery_fee_note: 'Costul livrării nu este inclus. Se confirmă telefonic înainte de livrare.',
+    delivery_submit: 'Solicită livrarea', order_sending: 'Se trimite…',
+    order_success: 'Cererea a fost trimisă. Restaurantul vă va contacta telefonic pentru confirmare.',
+    order_failed: 'Comanda nu a putut fi trimisă. Încercați din nou sau sunați la 078 142 911.',
+    order_too_long: 'Comanda este prea mare pentru formular. Sunați la 078 142 911 pentru a o transmite.',
+    error_name: 'Introduceți numele Dvs. (cel puțin 2 caractere).', error_phone: 'Introduceți un număr de telefon valid, cu 8–15 cifre.',
+    error_city: 'Introduceți localitatea pentru livrare.', error_street: 'Introduceți strada și numărul clădirii.',
+    phone_placeholder: 'Numărul la care vă putem contacta'
+  });
+  Object.assign(i18n.ru, {
+    start_delivery: 'Заказать доставку', fulfillment_label: 'Как получить заказ?',
+    fulfillment_delivery: 'Доставка', fulfillment_pickup: 'Самовывоз', fulfillment_dine_in: 'В ресторане',
+    fulfillment_hint_delivery: 'Возможность, время и стоимость доставки ресторан подтвердит по телефону.',
+    fulfillment_hint_pickup: 'Самовывоз: Str. Mihai Eminescu 64, Кишинёв. Ресторан свяжется с вами для подтверждения.',
+    fulfillment_hint_dine_in: 'Для обслуживания в ресторане. Номер столика можно указать в комментарии.',
+    delivery_city: 'Населённый пункт', delivery_street: 'Улица и номер дома', delivery_apartment: 'Квартира (необязательно)',
+    delivery_access: 'Подъезд / этаж / домофон (необязательно)', delivery_notes: 'Инструкции / Комментарий (необязательно)',
+    delivery_subtotal: 'Сумма за блюда', delivery_fee_note: 'Стоимость доставки не включена. Она будет согласована по телефону до доставки.',
+    delivery_submit: 'Запросить доставку', order_sending: 'Отправка…',
+    order_success: 'Заявка отправлена. Ресторан свяжется с вами по телефону для подтверждения.',
+    order_failed: 'Не удалось отправить заказ. Попробуйте ещё раз или позвоните по номеру 078 142 911.',
+    order_too_long: 'Заказ слишком большой для формы. Позвоните по номеру 078 142 911, чтобы передать его.',
+    error_name: 'Укажите ваше имя (минимум 2 символа).', error_phone: 'Укажите корректный номер телефона: от 8 до 15 цифр.',
+    error_city: 'Укажите населённый пункт для доставки.', error_street: 'Укажите улицу и номер дома.',
+    phone_placeholder: 'Номер, по которому с вами связаться'
+  });
+  Object.assign(i18n.en, {
+    start_delivery: 'Order delivery', fulfillment_label: 'How would you like your order?',
+    fulfillment_delivery: 'Delivery', fulfillment_pickup: 'Pickup', fulfillment_dine_in: 'Dine in',
+    fulfillment_hint_delivery: 'The restaurant will confirm delivery availability, timing and any delivery fee by phone.',
+    fulfillment_hint_pickup: 'Collect from Str. Mihai Eminescu 64, Chișinău. The restaurant will contact you to confirm.',
+    fulfillment_hint_dine_in: 'For service in the restaurant. You can include your table number in the notes.',
+    delivery_city: 'City / Town', delivery_street: 'Street and building number', delivery_apartment: 'Apartment (optional)',
+    delivery_access: 'Entrance / floor / intercom (optional)', delivery_notes: 'Instructions / Notes (optional)',
+    delivery_subtotal: 'Food subtotal', delivery_fee_note: 'Delivery is not included. Any fee will be confirmed by phone before delivery.',
+    delivery_submit: 'Request delivery', order_sending: 'Sending…',
+    order_success: 'Your request has been sent. The restaurant will call you to confirm.',
+    order_failed: 'Your order could not be sent. Please try again or call 078 142 911.',
+    order_too_long: 'This order is too large for the form. Please call 078 142 911 to place it.',
+    error_name: 'Please enter your name (at least 2 characters).', error_phone: 'Enter a valid phone number with 8–15 digits.',
+    error_city: 'Please enter the delivery city or town.', error_street: 'Please enter the street and building number.',
+    phone_placeholder: 'A number where we can reach you'
+  });
+
   // Full Menu Database
   const menuData = [
     // 0. БИЗНЕС-ЛАНЧ (lunch)
@@ -618,6 +670,54 @@ document.addEventListener('DOMContentLoaded', () => {
   const clearMenuSearch = document.getElementById('clearMenuSearch');
   const cartBackdrop = document.getElementById('cartBackdrop');
   const checkoutBtn = document.getElementById('checkoutBtn');
+  const orderForm = document.getElementById('orderForm');
+  const deliveryFields = document.getElementById('deliveryFields');
+  const checkoutNotice = document.getElementById('checkoutNotice');
+  let isSubmittingOrder = false;
+  const getFulfillment = () => orderForm.querySelector('input[name="fulfillment"]:checked').value;
+  function showCheckoutNotice(message, isError = false) {
+    checkoutNotice.textContent = message;
+    const messageKey = Object.keys(i18n[currentLang]).find(key => i18n[currentLang][key] === message);
+    if (messageKey) checkoutNotice.setAttribute('data-i18n', messageKey);
+    else checkoutNotice.removeAttribute('data-i18n');
+    checkoutNotice.hidden = !message;
+    checkoutNotice.classList.toggle('error', isError);
+  }
+  function syncFulfillmentUI() {
+    const dict = i18n[currentLang];
+    const mode = getFulfillment();
+    const isDelivery = mode === 'delivery';
+    deliveryFields.hidden = !isDelivery;
+    deliveryFields.querySelectorAll('input').forEach(input => {
+      input.disabled = !isDelivery || isSubmittingOrder;
+      input.required = isDelivery && ['deliveryCity', 'deliveryStreet'].includes(input.id);
+      input.removeAttribute('aria-invalid');
+    });
+    document.getElementById('fulfillmentHint').textContent = dict[`fulfillment_hint_${mode}`];
+    document.getElementById('deliveryFeeNote').hidden = !isDelivery;
+    document.getElementById('orderTotalLabel').textContent = isDelivery ? dict.delivery_subtotal : dict.cart_total_lbl;
+    const notesLabel = mode === 'dine_in' ? dict.customer_notes : dict.delivery_notes;
+    orderForm.querySelector('label[for="orderNotes"]').textContent = notesLabel;
+    document.getElementById('orderNotes').placeholder = notesLabel;
+    document.getElementById('orderNotes').setAttribute('aria-label', notesLabel);
+    document.getElementById('orderCustomerPhone').placeholder = dict.phone_placeholder;
+    document.getElementById('orderCustomerPhone').setAttribute('aria-label', dict.customer_phone);
+    checkoutBtn.innerHTML = `<i class="fa-solid ${isSubmittingOrder ? 'fa-spinner fa-spin' : 'fa-paper-plane'}" aria-hidden="true"></i> <span>${isSubmittingOrder ? dict.order_sending : (isDelivery ? dict.delivery_submit : dict.cart_send_btn)}</span>`;
+  }
+  orderForm.addEventListener('change', event => {
+    if (event.target.name === 'fulfillment') { syncFulfillmentUI(); showCheckoutNotice(''); }
+  });
+  orderForm.addEventListener('input', event => {
+    event.target.removeAttribute('aria-invalid');
+    if (checkoutNotice.classList.contains('error')) showCheckoutNotice('');
+  });
+  document.getElementById('startDeliveryBtn').addEventListener('click', () => {
+    orderForm.querySelector('[value="delivery"]').checked = true;
+    syncFulfillmentUI();
+    searchQuery = '';
+    menuSearchInput.value = '';
+    selectCategory('all');
+  });
   const categoryKeys = { all: 'cat_all', lunch: 'cat_lunch', starters: 'cat_starters', salads: 'cat_salads', soups: 'cat_soups', mains: 'cat_mains', mangal: 'cat_mangal', bakery: 'cat_bakery', sides: 'cat_sides', sauces: 'cat_sauces', desserts: 'cat_desserts', bar: 'cat_bar', alcohol: 'cat_alcohol' };
   const escapeAttribute = value => value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const categoryLabel = category => i18n[currentLang][categoryKeys[category]];
@@ -643,6 +743,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let dialogReturnFocus = null;
   function openDialog(element) {
     if (activeDialog === element) return;
+    if (element === cartDrawer && cart.length && !checkoutNotice.classList.contains('error')) showCheckoutNotice('');
     if (activeDialog) closeDialog(activeDialog, false);
     dialogReturnFocus = document.activeElement;
     activeDialog = element;
@@ -657,7 +758,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   function closeDialog(element, restoreFocus = true) {
-    if (!element) return;
+    if (!element || (element === cartDrawer && isSubmittingOrder)) return;
     element.classList.remove('active');
     element.inert = true;
     element.setAttribute('aria-hidden', 'true');
@@ -769,6 +870,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     mobileMenuToggle?.setAttribute('aria-label', mobileMenuToggle.getAttribute('aria-expanded') === 'true' ? dict.close_navigation : dict.open_navigation);
     updateCategoryButtons();
+    syncFulfillmentUI();
     renderSiteStatusOverlay();
     renderMenu();
     updateCartUI();
@@ -1169,6 +1271,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     savePreference('tashkent_cart', cart.map(item => ({ id: item.id, qty: item.qty, ...(item.isBusinessLunch ? { isBusinessLunch: true, firstIndex: item.firstIndex, secondIndex: item.secondIndex } : {}) })));
 
+    checkoutBtn.disabled = isSubmittingOrder || cart.length === 0;
     if (cartTotalSum) cartTotalSum.textContent = `${total} ${dict.currency}`;
     if (cartCountBadge) cartCountBadge.textContent = count;
 
@@ -1209,80 +1312,66 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileCartOpenBtn.addEventListener('click', () => openDialog(cartDrawer));
   }
 
-  // Send Order to Telegram Bot API
-  if (checkoutBtn) {
-    checkoutBtn.addEventListener('click', async () => {
-      const dict = i18n[currentLang] || i18n.ru;
+  // Submit delivery / pickup / dine-in requests through the existing restaurant channel.
+  orderForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (isSubmittingOrder) return;
+    const dict = i18n[currentLang];
+    if (!cart.length) { showCheckoutNotice(dict.cart_empty.replace(/<br\s*\/?>/gi, ' '), true); return; }
+    const nameInput = document.getElementById('orderCustomerName');
+    const phoneInput = document.getElementById('orderCustomerPhone');
+    const name = nameInput.value.trim();
+    const phone = phoneInput.value.trim();
+    const fulfillment = getFulfillment();
+    const notes = document.getElementById('orderNotes').value.trim();
+    const delivery = fulfillment === 'delivery' ? {
+      city: document.getElementById('deliveryCity').value.trim(),
+      street: document.getElementById('deliveryStreet').value.trim(),
+      apartment: document.getElementById('deliveryApartment').value.trim(),
+      access: document.getElementById('deliveryAccess').value.trim()
+    } : null;
+    function invalid(input, message) {
+      input.setAttribute('aria-invalid', 'true');
+      showCheckoutNotice(message, true);
+      input.focus();
+    }
+    if (name.length < 2) { invalid(nameInput, dict.error_name); return; }
+    if (!/^\+?\d{8,15}$/.test(phone.replace(/[\s().-]/g, ''))) { invalid(phoneInput, dict.error_phone); return; }
+    if (delivery && delivery.city.length < 2) { invalid(document.getElementById('deliveryCity'), dict.error_city); return; }
+    if (delivery && delivery.street.length < 5) { invalid(document.getElementById('deliveryStreet'), dict.error_street); return; }
 
-      if (cart.length === 0) {
-        alert(dict.cart_empty ? dict.cart_empty.replace(/<br\s*\/?>/gi, ' ') : 'Coșul este gol!');
-        return;
+    const submittedCart = cart.map(item => ({ id: item.id, name: item.ro?.name || item.ru?.name, price: item.price, qty: item.qty, ...(item.selectedSummary ? { selectedSummary: item.selectedSummary } : {}) }));
+    isSubmittingOrder = true;
+    showCheckoutNotice('');
+    orderForm.querySelectorAll('input, textarea').forEach(input => { input.disabled = true; });
+    cartItemsList.querySelectorAll('button').forEach(button => { button.disabled = true; });
+    cartCloseBtn.disabled = true;
+    checkoutBtn.disabled = true;
+    syncFulfillmentUI();
+    try {
+      const response = await fetch('/api/send-telegram', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cart: submittedCart, name, phone, notes, fulfillment, delivery })
+      });
+      const data = await response.json();
+      if (response.ok && data.status === 'success') {
+        cart = [];
+        orderForm.reset();
+        orderForm.querySelectorAll('[aria-invalid]').forEach(input => input.removeAttribute('aria-invalid'));
+        showCheckoutNotice(dict.order_success);
+      } else {
+        showCheckoutNotice(data.code === 'ORDER_TOO_LONG' ? dict.order_too_long : dict.order_failed, true);
       }
-
-      const nameInput = document.getElementById('orderCustomerName');
-      const phoneInput = document.getElementById('orderCustomerPhone');
-      const notesInput = document.getElementById('orderNotes');
-
-      const name = nameInput ? nameInput.value.trim() : '';
-      const phone = phoneInput ? phoneInput.value.trim() : '';
-      const notes = notesInput ? notesInput.value.trim() : '';
-
-      if (!name || !phone) {
-        alert(currentLang === 'ro' 
-          ? 'Vă rugăm să introduceți numele și numărul de telefon!' 
-          : (currentLang === 'en' ? 'Please enter your name and phone number!' : 'Пожалуйста, укажите Ваше имя и номер телефона!'));
-        if (!name && nameInput) nameInput.focus();
-        else if (!phone && phoneInput) phoneInput.focus();
-        return;
-      }
-
-      let totalSum = 0;
-      cart.forEach(item => { totalSum += item.price * item.qty; });
-
-      const originalBtnHtml = checkoutBtn.innerHTML;
-      checkoutBtn.disabled = true;
-      checkoutBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${currentLang === 'ro' ? 'Se trimite...' : (currentLang === 'en' ? 'Sending...' : 'Отправка...')}`;
-
-      try {
-        const res = await fetch('/api/send-telegram', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            cart,
-            total: totalSum,
-            name,
-            phone,
-            notes
-          })
-        });
-
-        const data = await res.json();
-
-        if (res.ok && data.status === 'success') {
-          alert(currentLang === 'ro'
-            ? 'Comanda Dvs. a fost trimisă cu succes! Vă vom contacta în curând pentru confirmare.'
-            : (currentLang === 'en'
-              ? 'Your order has been sent successfully! We will contact you shortly.'
-              : 'Ваш заказ успешно отправлен! Мы свяжемся с вами в ближайшее время.'));
-
-          cart = [];
-          updateCartUI();
-          if (nameInput) nameInput.value = '';
-          if (phoneInput) phoneInput.value = '';
-          if (notesInput) notesInput.value = '';
-          if (cartDrawer) closeDialog(cartDrawer);
-        } else {
-          alert(data.message || 'Eroare la trimiterea comenzii în Telegram.');
-        }
-      } catch (err) {
-        console.error('Error sending order to Telegram:', err);
-        alert('Eroare de conexiune cu serverul. Vă rugăm să sunați la 078 142 911 pentru a plasa comanda.');
-      } finally {
-        checkoutBtn.disabled = false;
-        checkoutBtn.innerHTML = originalBtnHtml;
-      }
-    });
-  }
+    } catch {
+      showCheckoutNotice(dict.order_failed, true);
+    } finally {
+      isSubmittingOrder = false;
+      orderForm.querySelectorAll('input, textarea').forEach(input => { input.disabled = false; });
+      cartCloseBtn.disabled = false;
+      syncFulfillmentUI();
+      updateCartUI();
+    }
+  });
 
   // Secret Owner Toggle: Tap Logo 5 Times to Turn Site ON or OFF Globally
   const brandLogo = document.getElementById('brandLogoLink');

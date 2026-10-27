@@ -196,7 +196,10 @@ section[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 .cart-header h3 { font-weight: 400; font-size: 27px; }
 .modal-close { min-width: 42px; width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid #6f8776; border-radius: 50%; background: transparent; color: #fffdf8; font-size: 17px; flex-shrink: 0; }
 .modal-close:hover { background: #315a48; }
-.cart-items-list { padding: 10px 24px 24px; overflow-y: auto; min-height: 80px; flex: 1; overscroll-behavior: contain; }
+.cart-scroll-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.cart-items-list { padding: 8px 24px 20px; }
+.btn-delivery { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; color: var(--color-teal-dark); font-size: 12px; font-weight: 700; text-decoration: none; }
+.btn-delivery:hover { color: var(--color-terracotta); }
 .cart-item { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--border-glass); }
 .cart-item > div:first-child { min-width: 0; }
 .cart-item strong { font-size: 14px !important; line-height: 1.6; }
@@ -204,7 +207,25 @@ section[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 .qty-button { width: 44px; height: 44px; border-radius: 4px; background: #285344; border: 1px solid #66836e; color: #fffdf8; font-size: 18px; }
 .qty-button:hover { background: #3e6954; }
 .cart-footer { padding: 20px 24px max(22px, env(safe-area-inset-bottom)); border-top: 1px solid var(--border-glass); background: #14382f; flex-shrink: 0; }
-.cart-customer-form { display: grid; gap: 4px; }
+.cart-customer-form { display: grid; gap: 5px; margin: 0 24px 24px; padding-top: 20px; border-top: 1px solid var(--border-glass); }
+.fulfillment-options { min-width: 0; border: 0; padding: 0; margin-bottom: 7px; }
+.fulfillment-options legend { font-size: 12px; font-weight: 700; margin-bottom: 11px; }
+.fulfillment-choices { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; }
+.fulfillment-choice { position: relative; margin: 0 !important; }
+.fulfillment-choice input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.fulfillment-choice span { display: grid; place-items: center; min-height: 44px; padding: 10px 5px; border: 1px solid #65816f; border-radius: 5px; color: #d4dfd3; font-size: 11px; text-align: center; cursor: pointer; }
+.fulfillment-choice input:checked + span { background: #e8c88d; border-color: #e8c88d; color: #183f35; }
+.fulfillment-choice input:focus-visible + span { outline: 2px solid #e8c88d; outline-offset: 3px; }
+.fulfillment-hint { color: #c8d8cc; font-size: 11px; line-height: 1.65; margin: 0 0 12px; }
+.delivery-fields { display: grid; gap: 5px; }
+.delivery-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: end; }
+.delivery-field-row label { display: block; min-height: 32px; margin-bottom: 5px; }
+.delivery-fee-note { color: #c8d8cc; font-size: 10px; line-height: 1.6; margin: -5px 0 13px; }
+.checkout-notice { padding: 10px 12px; margin-bottom: 13px; border: 1px solid #8ba68c; border-radius: 5px; color: #fffdf8; background: #285141; font-size: 12px; line-height: 1.65; }
+.checkout-notice.error { border-color: #e5aa92; color: #ffe2d6; background: #57382f; }
+.cart-input[aria-invalid="true"] { border-color: #e5aa92; }
+.cart-input:disabled { opacity: .65; }
+textarea.cart-input { resize: vertical; min-height: 70px; }
 .cart-customer-form label { color: #d2dfd4; font-size: 9px; font-weight: 600; margin-top: 5px; }
 .cart-input { width: 100%; min-height: 42px; padding: 10px 12px; background: #244c40; color: #fffdf8; border: 1px solid #65816f; border-radius: 4px; font-size: 12px; }
 .cart-input::placeholder { color: #bbcebe; }
@@ -347,6 +368,7 @@ section[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
   .footer { padding-bottom: 100px; margin-inline: 20px; font-size: 9px; }
   .cart-header { padding: 18px 20px; }
   .cart-items-list { padding-inline: 20px; }
+  .cart-customer-form { margin-inline: 20px; }
   .cart-footer { padding: 14px 20px max(20px, env(safe-area-inset-bottom)); }
   .cart-input { font-size: 16px; min-height: 42px; padding: 7px 10px; }
   .cart-input::placeholder { font-size: 11px; }

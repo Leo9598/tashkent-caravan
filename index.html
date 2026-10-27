@@ -70,6 +70,7 @@
         <div class="hero-actions">
           <a href="#menu" class="btn-primary"><span data-i18n="hero_menu_btn">Посмотреть Меню</span><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
           <a href="#menu" class="btn-hero-lunch" onclick="showLunchCategory(event)"><span data-i18n="hero_lunch_cta">Бизнес-ланч • 170 лей</span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+          <a href="#menu" class="btn-delivery" id="startDeliveryBtn"><i class="fa-solid fa-truck" aria-hidden="true"></i><span data-i18n="start_delivery">Comandă cu livrare</span></a>
         </div>
 
         <div class="hero-meta-strip">
@@ -290,25 +291,46 @@
       <button class="modal-close" id="cartCloseBtn" aria-label="Închide"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
     </div>
 
-    <div class="cart-items-list" id="cartItemsList">
-      <!-- Items populated by JS -->
+    <div class="cart-scroll-body">
+      <div class="cart-items-list" id="cartItemsList"></div>
+      <form id="orderForm" class="cart-customer-form" novalidate>
+        <fieldset class="fulfillment-options">
+          <legend data-i18n="fulfillment_label">Cum doriți comanda?</legend>
+          <div class="fulfillment-choices">
+            <label class="fulfillment-choice"><input type="radio" name="fulfillment" value="delivery"><span data-i18n="fulfillment_delivery">Livrare</span></label>
+            <label class="fulfillment-choice"><input type="radio" name="fulfillment" value="pickup"><span data-i18n="fulfillment_pickup">La pachet</span></label>
+            <label class="fulfillment-choice"><input type="radio" name="fulfillment" value="dine_in" checked><span data-i18n="fulfillment_dine_in">În restaurant</span></label>
+          </div>
+        </fieldset>
+        <p class="fulfillment-hint" id="fulfillmentHint"></p>
+        <label for="orderCustomerName"><span data-i18n="customer_name">Numele Dvs.</span> *</label>
+        <input type="text" autocomplete="name" id="orderCustomerName" class="cart-input" maxlength="100" minlength="2" required>
+        <label for="orderCustomerPhone"><span data-i18n="customer_phone">Număr de telefon</span> *</label>
+        <input type="tel" autocomplete="tel" inputmode="tel" id="orderCustomerPhone" class="cart-input" maxlength="30" required>
+        <div class="delivery-fields" id="deliveryFields" hidden>
+          <label for="deliveryCity"><span data-i18n="delivery_city">Localitatea</span> *</label>
+          <input type="text" autocomplete="address-level2" id="deliveryCity" class="cart-input" value="Chișinău" maxlength="80" disabled>
+          <label for="deliveryStreet"><span data-i18n="delivery_street">Strada și numărul clădirii</span> *</label>
+          <input type="text" autocomplete="address-line1" id="deliveryStreet" class="cart-input" maxlength="200" disabled>
+          <div class="delivery-field-row">
+            <div><label for="deliveryApartment" data-i18n="delivery_apartment">Apartament (opțional)</label><input type="text" autocomplete="address-line2" id="deliveryApartment" class="cart-input" maxlength="40" disabled></div>
+            <div><label for="deliveryAccess" data-i18n="delivery_access">Intrare / etaj / interfon (opțional)</label><input type="text" id="deliveryAccess" class="cart-input" maxlength="120" disabled></div>
+          </div>
+        </div>
+        <label for="orderNotes" data-i18n="customer_notes">Masa / Comentariu (opțional)</label>
+        <textarea id="orderNotes" class="cart-input" rows="2" maxlength="1000"></textarea>
+      </form>
     </div>
 
     <div class="cart-footer">
-      <div class="cart-customer-form" style="margin-bottom: 0.5rem;">
-        <label for="orderCustomerName" data-i18n="customer_name">Numele Dvs.</label>
-        <input type="text" autocomplete="name" id="orderCustomerName" class="cart-input" placeholder="Numele Dvs. / Ваше имя *" required>
-        <label for="orderCustomerPhone" data-i18n="customer_phone">Număr de telefon</label>
-        <input type="tel" autocomplete="tel" inputmode="tel" id="orderCustomerPhone" class="cart-input" placeholder="Număr de telefon / Телефон (ex: 078142911) *" required>
-        <label for="orderNotes" data-i18n="customer_notes">Masa / Comentariu (opțional)</label>
-        <input type="text" id="orderNotes" class="cart-input" placeholder="Masa / Comentariu (опционально)">
-      </div>
       <div class="cart-total-row">
-        <span data-i18n="cart_total_lbl">Итого:</span>
+        <span id="orderTotalLabel" data-i18n="cart_total_lbl">Total:</span>
         <span id="cartTotalSum">0 lei</span>
       </div>
-      <button class="btn-primary" id="checkoutBtn" style="width: 100%; justify-content: center;">
-        <i class="fa-solid fa-paper-plane"></i> <span data-i18n="cart_send_btn">Отправить Заказ</span>
+      <p class="delivery-fee-note" id="deliveryFeeNote" data-i18n="delivery_fee_note" hidden>Livrarea se confirmă telefonic. Costul livrării nu este inclus în subtotal.</p>
+      <p class="checkout-notice" id="checkoutNotice" role="status" aria-live="polite" hidden></p>
+      <button class="btn-primary" id="checkoutBtn" type="submit" form="orderForm" style="width: 100%; justify-content: center;">
+        <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> <span data-i18n="cart_send_btn">Trimite Comanda</span>
       </button>
     </div>
   </div>
