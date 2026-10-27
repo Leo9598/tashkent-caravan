@@ -106,13 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
           <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.6;">${closedSubtitle}</p>
           
           <div style="background: rgba(255,255,255,0.05); padding: 1.25rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 1.5rem; text-align: left;">
-            <div style="color: #d4af37; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">🕒 Program (10:00 - 23:00)</div>
+            <div style="color: #d4af37; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;"><i class="fa-regular fa-clock" aria-hidden="true"></i> Program (10:00 - 23:00)</div>
             <div style="color: #fff; font-size: 0.9rem;">Str. Mihai Eminescu 64, Chișinău</div>
             <div style="color: #fff; font-size: 0.9rem; margin-top: 0.25rem;">Tel: <a href="tel:078142911" style="color: #d4af37; font-weight: 700;">078 142 911</a></div>
           </div>
 
           <button id="adminToggleBtn" style="background: transparent; border: 1px solid rgba(212, 175, 55, 0.4); color: #d4af37; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; cursor: pointer;">
-            🔓 Deschide site-ul global (pentru proprietar)
+            <i class="fa-solid fa-lock-open" aria-hidden="true"></i> Deschide site-ul global (pentru proprietar)
           </button>
         </div>
       `;
@@ -148,8 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         renderSiteStatusOverlay();
         alert(targetOpen
-          ? '🟢 Site-ul a fost DESCHIS cu succes pentru toți clienții!'
-          : '🔴 Site-ul a fost ÎNCHIS cu succes! Mesajul "Site-ul nu lucrează temporar!" este afișat.');
+          ? 'Site-ul a fost DESCHIS cu succes pentru toți clienții!'
+          : 'Site-ul a fost ÎNCHIS cu succes! Mesajul "Site-ul nu lucrează temporar!" este afișat.');
       } else {
         alert(data.message || 'Cod PIN incorect!');
       }
@@ -356,6 +356,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Interface labels are translated alongside the original restaurant content.
   Object.assign(i18n.ro, {
+    welcome_title: 'Oaspetele este o binecuvântare a casei.',
+    welcome_description: 'Tradițiile Drumului Mătăsii, în inima Chișinăului.',
+    welcome_link: 'Descoperă povestea noastră',
     skip_menu: 'Sari la meniu', clear_search: 'Șterge', reset_filters: 'Arată tot meniul',
     menu_item: 'preparat', menu_items: 'preparate', directions: 'Indicații', close: 'Închide', view_photo: 'Vezi fotografia',
     customer_name: 'Numele Dvs.', customer_phone: 'Număr de telefon', customer_notes: 'Masa / Comentariu (opțional)',
@@ -363,6 +366,9 @@ document.addEventListener('DOMContentLoaded', () => {
     open_navigation: 'Deschide navigarea', close_navigation: 'Închide navigarea', categories: 'Categorii meniu'
   });
   Object.assign(i18n.ru, {
+    welcome_title: 'Гость — благословение дома.',
+    welcome_description: 'Традиции Шёлкового пути в самом сердце Кишинёва.',
+    welcome_link: 'Откройте нашу историю',
     skip_menu: 'Перейти к меню', clear_search: 'Очистить', reset_filters: 'Показать всё меню',
     menu_item: 'позиция', menu_items: 'позиций', directions: 'Маршрут', close: 'Закрыть', view_photo: 'Посмотреть фото',
     customer_name: 'Ваше имя', customer_phone: 'Номер телефона', customer_notes: 'Столик / Комментарий (необязательно)',
@@ -370,6 +376,9 @@ document.addEventListener('DOMContentLoaded', () => {
     open_navigation: 'Открыть навигацию', close_navigation: 'Закрыть навигацию', categories: 'Категории меню'
   });
   Object.assign(i18n.en, {
+    welcome_title: 'A guest is a blessing to the home.',
+    welcome_description: 'The traditions of the Silk Road, in the heart of Chișinău.',
+    welcome_link: 'Discover our story',
     skip_menu: 'Skip to menu', clear_search: 'Clear', reset_filters: 'Show the full menu',
     menu_item: 'item', menu_items: 'items', directions: 'Directions', close: 'Close', view_photo: 'View photo',
     customer_name: 'Your name', customer_phone: 'Phone number', customer_notes: 'Table / Notes (optional)',
@@ -742,9 +751,6 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.setAttribute('aria-pressed', String(btn.getAttribute('data-lang') === lang));
     });
 
-    const plov = menuData.find(item => item.id === 'm1');
-    document.getElementById('signaturePrice').textContent = `${plov.price} ${dict.currency}`;
-    document.getElementById('signaturePortion').textContent = `${plov.weight} ${lang === 'ru' ? 'г' : 'g'}`;
     [nameInput, phoneInput, notesInput].forEach(input => input?.setAttribute('aria-label', input.placeholder));
     document.querySelectorAll('.modal-close').forEach(button => button.setAttribute('aria-label', dict.close));
     document.querySelector('.menu-sidebar').setAttribute('aria-label', dict.categories);
@@ -1244,10 +1250,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (res.ok && data.status === 'success') {
           alert(currentLang === 'ro'
-            ? '✅ Comanda Dvs. a fost trimisă cu succes! Vă vom contacta în curând pentru confirmare.'
+            ? 'Comanda Dvs. a fost trimisă cu succes! Vă vom contacta în curând pentru confirmare.'
             : (currentLang === 'en'
-              ? '✅ Your order has been sent successfully! We will contact you shortly.'
-              : '✅ Ваш заказ успешно отправлен! Мы свяжемся с вами в ближайшее время.'));
+              ? 'Your order has been sent successfully! We will contact you shortly.'
+              : 'Ваш заказ успешно отправлен! Мы свяжемся с вами в ближайшее время.'));
 
           cart = [];
           updateCartUI();

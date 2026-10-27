@@ -79,19 +79,22 @@ section[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
 .meta-icon { display: grid; place-items: center; color: var(--color-gold); width: 22px; min-width: 22px; font-size: 18px; }
 .meta-text strong { color: var(--color-teal-dark); display: block; font-size: 12px; font-weight: 700; }
 .meta-text span { color: var(--color-text-muted); display: block; font-size: 10px; margin-top: 3px; }
-.signature-panel { color: #fcf8ed; background: var(--color-teal-dark); padding: 30px; border-radius: 3px 3px 60px 3px; align-self: center; position: relative; }
-.signature-topline { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid #547264; color: #e8c88d; font-size: 10px; letter-spacing: .17em; }
-.signature-mark { font-size: 32px; line-height: 1; }
-.signature-content { padding: 34px 0 32px; }
-.signature-kicker { color: #b8cdbf; font-size: 10px; letter-spacing: .09em; text-transform: uppercase; }
-.signature-content h2 { font: 400 clamp(30px, 3vw, 43px)/1.13 var(--font-heading); letter-spacing: -.025em; margin: 16px 0; }
-.signature-content p { font-size: 14px; line-height: 1.8; color: #d3dfd3; max-width: 270px; }
-.signature-footer { border-top: 1px solid #547264; padding-top: 20px; display: flex; gap: 18px; align-items: center; justify-content: space-between; }
-.signature-footer strong { display: block; color: #e8c88d; font: 400 29px var(--font-heading); white-space: nowrap; }
-.signature-footer span#signaturePortion { display: block; color: #b8cdbf; font-size: 11px; margin-top: 2px; }
-.signature-order { display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 10px 14px; min-height: 44px; border: 1px solid #a7b89f; border-radius: 5px; color: #fffdf8; background: transparent; font-size: 11px; font-weight: 600; }
-.signature-order:hover { background: #315a49; }
-.signature-panel :focus-visible { outline-color: #e8c88d; }
+
+/* A typographic welcome inspired by an architectural arch; no emoji glyphs. */
+.welcome-panel { position: relative; align-self: center; padding: 52px 34px 30px; color: #fcf8ed; background: var(--color-teal-dark); border-radius: 180px 180px 8px 8px; text-align: center; isolation: isolate; }
+.welcome-panel::before { content: ''; position: absolute; inset: 12px; border: 1px solid #73856a; border-radius: inherit; pointer-events: none; z-index: -1; }
+.welcome-monogram { display: grid; place-items: center; width: 43px; height: 43px; margin: 0 auto 26px; border: 1px solid #d6b979; transform: rotate(45deg); color: #e8c88d; }
+.welcome-monogram span { transform: rotate(-45deg); font: 27px var(--font-heading); }
+.welcome-kicker { display: block; color: #d9c395; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .13em; }
+.welcome-panel h2 { margin: 20px auto 18px; max-width: 350px; font: 400 clamp(31px, 3.1vw, 42px)/1.15 var(--font-heading); letter-spacing: -.025em; text-wrap: balance; }
+.welcome-description { max-width: 275px; margin-inline: auto; color: #cbd9cc; font-size: 12px; line-height: 1.85; }
+.welcome-link { display: flex; align-items: center; justify-content: center; gap: 14px; min-height: 54px; margin: 28px 0 0; padding: 17px 0 0; border-top: 1px solid #617660; color: #f1dab0; font-size: 10px; font-weight: 600; text-decoration: none; }
+.welcome-link i { transition: transform var(--transition-smooth); }
+.welcome-link:hover { color: #fffdf8; }
+.welcome-link:hover i { transform: translateX(4px); }
+.welcome-panel :focus-visible { outline-color: #e8c88d; }
+@media (max-width: 900px) { .welcome-panel { padding-inline: 27px; } .welcome-panel h2 { font-size: 33px; } }
+@media (max-width: 600px) { .welcome-panel { padding: 48px 30px 27px; width: 100%; border-radius: 170px 170px 8px 8px; } .welcome-panel h2 { font-size: 34px; } }
 
 /* Menu: category navigation, search, and a readable paper-menu rhythm. */
 .section { max-width: 1328px; margin-inline: auto; padding: 64px 32px; }
@@ -249,7 +252,6 @@ section[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
   .brand-text { font-size: 20px; }
   .hero-grid { gap: 44px; padding-inline: 24px; grid-template-columns: 1.25fr .85fr; }
   .hero-title { font-size: 52px; }
-  .signature-panel { padding: 26px; }
   .section { padding-inline: 24px; }
   .menu-layout { gap: 28px; grid-template-columns: 190px minmax(0,1fr); }
   .menu-grid { gap: 0 24px; }
@@ -269,11 +271,6 @@ section[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
   .hero-badge { font-size: 9px; letter-spacing: .1em; }
   .hero-subtitle { font-size: 14px; }
   .hero-meta-strip { gap: 16px; }
-  .signature-panel { padding: 23px; }
-  .signature-content { padding-block: 26px; }
-  .signature-content h2 { font-size: 32px; }
-  .signature-footer { flex-wrap: wrap; gap: 14px; }
-  .signature-order { flex: 1; }
   .menu-layout { grid-template-columns: minmax(0,1fr); gap: 20px; }
   .menu-sidebar { top: var(--header-height); max-height: none; overflow: visible; background: #f7f4ec; border-right: 0; border-bottom: 1px solid #cdd5c5; padding: 10px 24px; margin-inline: -24px; z-index: 40; }
   .sidebar-label { display: none; }
@@ -311,12 +308,6 @@ section[id] { scroll-margin-top: calc(var(--header-height) + 20px); }
   .hero-meta-strip { margin-top: 26px; padding-top: 20px; flex-direction: column; gap: 17px; }
   .meta-text strong { font-size: 12px; }
   .meta-text span { font-size: 10px; }
-  .signature-panel { padding: 25px; border-bottom-right-radius: 40px; width: 100%; }
-  .signature-content { padding-block: 24px; }
-  .signature-content h2 { font-size: 34px; max-width: 260px; }
-  .signature-content p { max-width: 100%; }
-  .signature-footer { flex-wrap: nowrap; }
-  .signature-order { flex: initial; }
   .section { padding: 42px 20px; }
   .section-header { margin-bottom: 20px; padding-bottom: 22px; }
   .section-title { font-size: 34px; }
