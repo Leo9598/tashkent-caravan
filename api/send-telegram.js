@@ -73,7 +73,7 @@ function field(value, maxLength) {
   if (typeof value !== 'string' || value.trim().length > maxLength) throw new Error('Invalid field');
   return value.trim();
 }
-function normalizeOrder(body) {
+export function normalizeOrder(body) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) throw new Error('Invalid order');
   // Older cached forms submit dine-in requests without a fulfillment field.
   const fulfillment = body.fulfillment ?? 'dine_in';

@@ -674,6 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const deliveryFields = document.getElementById('deliveryFields');
   const checkoutNotice = document.getElementById('checkoutNotice');
   let isSubmittingOrder = false;
+  let checkoutAttempt = null;
   const getFulfillment = () => orderForm.querySelector('input[name="fulfillment"]:checked').value;
   function showCheckoutNotice(message, isError = false) {
     checkoutNotice.textContent = message;
@@ -1340,7 +1341,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (delivery && delivery.city.length < 2) { invalid(document.getElementById('deliveryCity'), dict.error_city); return; }
     if (delivery && delivery.street.length < 5) { invalid(document.getElementById('deliveryStreet'), dict.error_street); return; }
 
-    const submittedCart = cart.map(item => ({ id: item.id, name: item.ro?.name || item.ru?.name, price: item.price, qty: item.qty, ...(item.selectedSummary ? { selectedSummary: item.selectedSummary } : {}) }));
+    const requestFingerprint = JSON.stringify({ cart, name, phone, notes, fulfillment, delivery });
+    if (checkoutAttempt?.fingerprint !== requestFingerprint) checkoutAttempt = { fingerprint: requestFingerprint, id: crypto.randomUUID() };
+    const requestId = checkoutAttempt.id;
+    const submittedCart = cart.map(item => ({ id: item.isBusinessLunch ? 'l1' : item.id, ...(item.isBusinessLunch ? { firstIndex: item.firstIndex, secondIndex: item.secondIndex } : {}), name: item.ro?.name || item.ru?.name, price: item.price, qty: item.qty, ...(item.selectedSummary ? { selectedSummary: item.selectedSummary } : {}) }));
     isSubmittingOrder = true;
     showCheckoutNotice('');
     orderForm.querySelectorAll('input, textarea').forEach(input => { input.disabled = true; });
@@ -1349,16 +1353,17 @@ document.addEventListener('DOMContentLoaded', () => {
     checkoutBtn.disabled = true;
     syncFulfillmentUI();
     try {
-      const response = await fetch('/api/send-telegram', {
+      const response = await fetch('/api/orders', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cart: submittedCart, name, phone, notes, fulfillment, delivery })
+        body: JSON.stringify({ cart: submittedCart, name, phone, notes, fulfillment, delivery, requestId })
       });
       const data = await response.json();
       if (response.ok && data.status === 'success') {
         cart = [];
+        checkoutAttempt = null;
         orderForm.reset();
         orderForm.querySelectorAll('[aria-invalid]').forEach(input => input.removeAttribute('aria-invalid'));
-        showCheckoutNotice(dict.order_success);
+        showCheckoutNotice(dict.order_success + (data.reference ? ` (${data.reference})` : ''));
       } else {
         showCheckoutNotice(data.code === 'ORDER_TOO_LONG' ? dict.order_too_long : dict.order_failed, true);
       }
