@@ -17,5 +17,6 @@
     "food"
   ],
   "author": "Antigravity",
-  "license": "ISC"
+  "license": "ISC",
+  "type": "module"
 }

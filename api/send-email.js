@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 function generateOrderHtml(cart, total, customerName = 'Guest', customerPhone = '', notes = '') {
   const submittedAt = new Date().toLocaleString('en-US', {

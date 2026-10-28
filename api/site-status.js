@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
 
 const STATUS_FILE = path.join('/tmp', 'tashkent_global_site_status.json');
 
